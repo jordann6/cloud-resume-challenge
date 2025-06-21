@@ -8,6 +8,7 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 });
 
 const counter = document.querySelector(".counter-number");
+
 if (counter) {
   async function updateCounter() {
     try {
