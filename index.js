@@ -12,7 +12,7 @@ if (counter) {
   async function updateCounter() {
     try {
       const response = await fetch(
-        "https://n72723cjxg.execute-api.us-east-1.amazonaws.com/count"
+        "https://n72723cjxg.execute-api.us-east-1.amazonaws.com/prod/count"
       );
       const data = await response.json();
       counter.innerHTML = `Views: ${data.visits}`;
