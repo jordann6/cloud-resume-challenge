@@ -16,7 +16,8 @@ if (counter) {
         "https://n72723cjxg.execute-api.us-east-1.amazonaws.com/prod/count"
       );
       const data = await response.json();
-      counter.innerHTML = `Views: ${data.visits}`;
+      const visits = JSON.parse(data.body).visits;
+      counter.innerHTML = `Views: ${visits}`;
     } catch (error) {
       console.error("Counter error:", error);
       counter.innerHTML = "Views: error";
