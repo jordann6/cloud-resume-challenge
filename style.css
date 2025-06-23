@@ -7,9 +7,10 @@ body {
   color: #333;
 }
 
-main {
-  padding: 20px;
-  position: relative;
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .quote-top {
