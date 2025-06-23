@@ -1,6 +1,6 @@
 Cloud Resume Challenge – JordanDesigns.io
 
-The Cloud Resume Challenge showcases a person's ability to turn their resume into a live website using modern cloud technologies. JordanDesigns.io is my implementation of this challenge, originally created by Forrest Brazeal. With the help of his book and YouTube videos, I built and deployed this project to sharpen my skills in cloud architecture, DevOps, and automation.
+The Cloud Resume Challenge showcases a person's ability to turn their resume into a live website using modern cloud technologies. JordanDesigns.io is my implementation of this challenge, originally created by Forrest Brazeal. With the help of his book, documentation, and YouTube videos, I built and deployed this project to sharpen my skills in cloud architecture, DevOps, and automation.
 
 Features
 
