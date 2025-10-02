@@ -12,30 +12,49 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: jakejarvis/s3-sync-action@v0.5.1
-        with:
-          args: --delete --cache-control "max-age=60,public"
-        env:
-          AWS_S3_BUCKET: jordandesigns.io
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-east-1
-          SOURCE_DIR: .
-
+      # Configure AWS for both S3 sync and CloudFront CLI calls
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Invalidate CloudFront
+      # Sync site to S3
+      - name: Sync to S3
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --delete --cache-control "max-age=60,public"
         env:
-          DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+          AWS_S3_BUCKET: jordandesigns.io
+          AWS_REGION: us-east-1
+          SOURCE_DIR: .
+
+      - name: Validate CloudFront distribution ID
+        id: validate
+        env:
+          DIST_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+        shell: bash
         run: |
-          if [ -n "$DISTRIBUTION_ID" ]; then
-            aws cloudfront create-invalidation \
-              --distribution-id "$DISTRIBUTION_ID" \
-              --paths "/*"
-          else
+          set -euo pipefail
+          if [ -z "${DIST_ID:-}" ]; then
+            echo "missing=true" >> "$GITHUB_OUTPUT"
             echo "CLOUDFRONT_DISTRIBUTION_ID not set; skipping invalidation."
+            exit 0
           fi
+          # Basic format check: CloudFront IDs start with 'E' and are 13–16 chars
+          if ! [[ "$DIST_ID" =~ ^E[A-Z0-9]{12,20}$ ]]; then
+            echo "Invalid-looking CloudFront ID in secret: $DIST_ID"
+            exit 1
+          fi
+          # API check—will fail if ID doesn't exist in your account
+          aws cloudfront get-distribution --id "$DIST_ID" >/dev/null
+          echo "missing=false" >> "$GITHUB_OUTPUT"
+
+      - name: Invalidate CloudFront
+        if: steps.validate.outputs.missing == 'false'
+        env:
+          DIST_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "$DIST_ID" \
+            --paths "/*"
