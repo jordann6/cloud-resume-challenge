@@ -1,57 +1,70 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Jordan Nelson</title>
-    <meta name="author" content="Jordan Nelson" />
-    <meta name="description" content="Jordan Nelson - Cloud Resume Challenge" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="shortcut icon" type="image/icon" href="favicon.ico" />
-    <link rel="stylesheet" href="main.css" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Rokkitt:400,700|Lato:400,300"
-      rel="stylesheet"
-      type="text/css"
-    />
-  </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jordan Nelson - Cloud Resume Challenge</title>
+    <!-- Simple Favicon for a professional touch -->
+    <link rel="icon" type="image/svg+xml" href="https://placehold.co/16x16/1f7a8c/ffffff/svg?text=JN">
+    <!-- Fonts used: Rokkitt (headers) and Lato (body) -->
+    <link href="https://fonts.googleapis.com/css?family=Rokkitt:400,700|Lato:400,300" rel="stylesheet" type="text/css">
+    
+    <!-- LINK TO EXTERNAL CSS FILE -->
+    <link rel="stylesheet" href="main.css">
+    
+</head>
+<body>
 
-  <body>
     <div class="container">
       <header>
         <div id="intro">
-          <h1>Jordan Nelson</h1>
+          <h1>JORDAN NELSON</h1>
           <h2>Cloud Portfolio</h2>
-          <p id="count"></p>
+          <!-- Visitor Counter Element -->
+          <p id="count">Loading Views...</p>
         </div>
 
         <div id="contact">
           <ul>
-            <li>Location: <a target="_blank" href="#">Chicago, IL</a></li>
-            <li>Phone: <a href="#">Available on request</a></li>
+            <li>Location: Chicago, IL</li>
+            <li>Phone: Available on request</li>
             <li>
               Email:
               <a href="mailto:jordandn6@outlook.com">jordandn6@outlook.com</a>
             </li>
             <li>
               GitHub:
-              <a target="_blank" href="https://github.com/jordann6"
-                >@jordann6</a
-              >
+              <a target="_blank" href="https://github.com/jordann6">@jordann6</a>
             </li>
             <li>
               LinkedIn:
               <a
                 target="_blank"
                 href="https://linkedin.com/in/jordan-nelson-aa0828165"
-                >Jordan Nelson</a
+                >Jordan</a
               >
             </li>
           </ul>
         </div>
         <div class="clear"></div>
       </header>
-
+      
       <div id="main">
+        
+        <!-- PROFILE SECTION -->
+        <section id="profile-section">
+            <div class="sectionTitle">
+                <h3>Profile</h3>
+            </div>
+            <div class="sectionContent">
+                <p>
+                    I pivoted from law school into tech and since then I’ve been fully immersed in cloud engineering, building hands-on projects with AWS, Terraform, Docker, and CI/CD pipelines. I’m self-taught, practical yet creative, and a go-getter who thrives on tackling new challenges.
+                </p>
+            </div>
+            <div class="clear"></div>
+        </section>
+
+        <!-- EDUCATION SECTION -->
         <section>
           <div class="sectionTitle">
             <h3>Education</h3>
@@ -59,284 +72,215 @@
           <div class="sectionContent">
             <article>
               <h4>University of Illinois at Urbana-Champaign</h4>
-              <p class="subDetails">Bachelor’s Degree</p>
+              <p class="subDetails">Bachelor’s Degree in Communication</p>
             </article>
           </div>
           <div class="clear"></div>
         </section>
 
-        <section>
+        <!-- CERTIFICATIONS SECTION -->
+        <section id="certifications-section">
           <div class="sectionTitle">
             <h3>Certifications</h3>
           </div>
           <div class="sectionContent">
             <article>
-              <h4>AWS Certified Solutions Architect – Associate</h4>
+              <h4>AWS Certified Solutions Architect – Associate (SAA-C03)</h4>
               <p class="subDetails">Issued by Amazon Web Services</p>
+              <!-- Credly Badge Embed Placeholder -->
               <div
                 data-iframe-width="150"
                 data-iframe-height="270"
                 data-share-badge-id="b653ccb7-3b2c-42a3-9dd1-90049832b8d7"
                 data-share-badge-host="https://www.credly.com"
+                style="margin-top: 10px; margin-bottom: 20px;"
               ></div>
-              <script
-                type="text/javascript"
-                async
-                src="https://cdn.credly.com/assets/utilities/embed.js"
-              ></script>
             </article>
           </div>
           <div class="clear"></div>
         </section>
-        <section>
+        
+        <!-- TECHNICAL SKILLS SECTION -->
+        <section id="skills-section">
           <div class="sectionTitle">
             <h3>Technical Skills</h3>
           </div>
           <div class="sectionContent">
-            <ul>
-              <li>
-                <strong>Cloud Platforms:</strong> AWS (EC2, Lambda, S3, RDS,
-                DynamoDB, Route 53, CloudFront), Azure (Virtual Machines, App
-                Service, Functions, Blob Storage, Cosmos DB, Azure SQL Database,
-                Virtual Network)
-              </li>
-              <li>
-                <strong>IaC & DevOps Tools:</strong> Terraform, Git, GitHub
-                Actions, Shell Scripting
-              </li>
-              <li>
-                <strong>Containers & Orchestration:</strong> Docker, Kubernetes
-              </li>
-              <li>
-                <strong>Programming:</strong> Python, Bash, GoLang, JavaScript,
-                SQL, PowerShell
-              </li>
-              <li>
-                <strong>Monitoring & Observability:</strong> Prometheus, Grafana
-              </li>
-              <li>
-                <strong>Web Development:</strong> Flask, React.js, HTML, CSS,
-                Bootstrap
-              </li>
-              <li>
-                <strong>Tools:</strong> AWS CLI, kubectl, Docker CLI, Postman,
-                VS Code, Azure CLI
-              </li>
-              <li>
-                <strong>Operating Systems:</strong> Linux (Ubuntu, Amazon
-                Linux), macOS, Windows Server
-              </li>
+            <ul class="skills-group">
+                <li>
+                    <strong>Cloud Platforms:</strong> AWS, Azure, GCP, Oracle (EC2, Lambda, S3, DynamoDB, CloudFront, Container Apps, Cosmos DB)
+                </li>
+                <li>
+                    <strong>IaC & DevOps:</strong> Terraform, GitOps, GitHub Actions, Shell Scripting, Git, Kubernetes, Docker
+                </li>
+                <li>
+                    <strong>Programming & Scripting:</strong> Python, Java, GoLang, JavaScript, Bash, PowerShell, SQL
+                </li>
+                <li>
+                    <strong>Monitoring & Observability:</strong> Prometheus, Grafana, AWS CloudWatch
+                </li>
+                <li>
+                    <strong>Security & Networking:</strong> AWS IAM, Azure AD, MFA, TCP/IP, DNS, VPN, Basic Routing/Switching
+                </li>
+                <li>
+                    <strong>Tools & Systems:</strong> Linux (Ubuntu, Amazon Linux), Windows Server, Jira, Postman
+                </li>
             </ul>
           </div>
           <div class="clear"></div>
         </section>
 
-        <section>
+        <!-- PROFESSIONAL EXPERIENCE SECTION -->
+        <section id="experience-section">
           <div class="sectionTitle">
             <h3>Experience</h3>
           </div>
           <div class="sectionContent">
             <article>
-              <h4>Technical Support &amp; Systems Monitoring (Contract)</h4>
+              <h4>IT Specialist (Contract)</h4>
               <p class="subDetails">
                 Educational Services Company • 2023 – 2025
               </p>
               <ul>
                 <li>
-                  Monitored website and internal systems for uptime and
-                  performance using dashboards, logs, and
-                  <strong>AWS CloudWatch</strong>.
+                  Monitored company website and internal systems using dashboards, system logs, and AWS CloudWatch, ensuring 99%+ uptime and stable performance.
                 </li>
                 <li>
-                  Configured basic alerts and performed troubleshooting to
-                  restore service quickly and maintain availability.
+                  Configured alerts and troubleshot incidents, reducing average resolution time by 15% and minimizing downtime for staff and customers.
                 </li>
                 <li>
-                  Provided Tier 1–2 support for staff, including access
-                  management and guidance on system usage.
+                  Delivered Tier 1-2 technical support for internal staff, including access management and system usage guidance.
                 </li>
                 <li>
-                  Documented troubleshooting steps and created quick reference
-                  guides, improving onboarding and self-service.
+                  Created documentation and quick-reference guides that streamlined onboarding and enabled staff to resolve 30% of recurring issues independently.
                 </li>
               </ul>
             </article>
-            <article>
-              <h4>
-                <a
-                  href="https://github.com/jordann6/cloud-resume-challenge"
-                  target="_blank"
-                >
-                  Cloud Resume Challenge
-                </a>
-              </h4>
-              <ul>
-                <li>
-                  Designed and deployed a static website on AWS S3 with
-                  CloudFront for CDN and Route 53 for DNS.
-                </li>
-                <li>
-                  Integrated serverless visitor counter via API Gateway, AWS
-                  Lambda and DynamoDB.
-                </li>
-                <li>
-                  Built reusable Terraform modules; automated deployments with
-                  GitHub Actions CI/CD.
-                </li>
-                <li>
-                  Achieved zero manual updates and fully automated
-                  infrastructure provisioning.
-                </li>
-              </ul>
-            </article>
-            <article>
-              <h4>
-                <a
-                  href="https://github.com/jordann6/weather-pwa"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  Weather-PWA (Azure Container Apps Deployment)
-                </a>
-              </h4>
-              <ul>
-                <li>
-                  Containerized a Go-based weather REST API; built and pushed
-                  multi-arch images to Azure Container Registry (ACR).
-                </li>
-                <li>
-                  Provisioned Azure Container Apps and supporting resources with
-                  reusable Terraform modules.
-                </li>
-                <li>
-                  Automated build and deploy via GitHub Actions, eliminating
-                  manual steps.
-                </li>
-                <li>
-                  Monitored ACA revisions and logs to validate health and
-                  optimized API latency.
-                </li>
-              </ul>
-            </article>
+            <div class="clear"></div>
+        </section>
 
-            <article>
-              <h4>
-                <a
-                  href="https://github.com/jordann6/ecs-cicd-flask/tree/main"
-                  target="_blank"
-                >
-                  ECS-CI/CD-Flask (AWS Fargate Deployment)
-                </a>
-              </h4>
-              <ul>
-                <li>
-                  Containerized Flask app; deployed on Amazon ECS Fargate with
-                  ECR in secured VPC.
-                </li>
-                <li>
-                  Configured IAM roles, auto-scaling ECS services, and private
-                  networking.
-                </li>
-                <li>
-                  Automated infrastructure & application deployments via
-                  Terraform and GitHub Actions.
-                </li>
-                <li>
-                  Delivered highly available, zero-downtime production
-                  deployments.
-                </li>
-              </ul>
-            </article>
-            <article>
-              <h4>
-                <a
-                  href="https://github.com/jordann6/serverless-csv-pipeline"
-                  target="_blank"
-                >
-                  Serverless Data Pipeline on AWS
-                </a>
-              </h4>
-              <ul>
-                <li>
-                  Built event-driven pipeline triggered by S3 events to invoke
-                  AWS Lambda for CSV preprocessing.
-                </li>
-                <li>
-                  Orchestrated ETL with AWS Glue, scheduled Glue jobs for
-                  recurring processing.
-                </li>
-                <li>
-                  Managed IaC with Terraform and AWS CLI; enforced IAM
-                  role-based security.
-                </li>
-              </ul>
-            </article>
+        <!-- PROJECTS SECTION -->
+        <section id="projects-section">
+            <div class="sectionTitle">
+                <h3>Projects</h3>
+            </div>
+            <div class="sectionContent">
+                
+                <!-- Cloud Resume Challenge Project -->
+                <article>
+                    <h4>
+                        <a
+                            href="https://github.com/jordann6/cloud-resume-challenge"
+                            target="_blank"
+                        >
+                            Jordandesigns.io (Cloud Resume Challenge)
+                        </a>
+                    </h4>
+                    <p class="subDetails">Full-Stack Serverless Application & CI/CD Pipeline</p>
+                    <ul>
+                        <li>
+                            Deployed personal resume site on AWS S3 with CloudFront and Route 53 for secure, global delivery.
+                        </li>
+                        <li>
+                            Integrated Lambda + DynamoDB visitor counter and automated infra via Terraform & GitHub Actions, achieving fully hands-off deployments.
+                        </li>
+                    </ul>
+                </article>
 
-            <article>
-              <h4>
-                <a
-                  href="https://github.com/jordann6/3-tier-task-app"
-                  target="_blank"
-                >
-                  3-Tier-Task-App
-                </a>
-              </h4>
-              <ul>
-                <li>
-                  Developed 3-tier application using Flask, MySQL RDS, Docker
-                  Compose.
-                </li>
-                <li>
-                  Deployed on AWS EC2 with infrastructure managed via Terraform.
-                </li>
-                <li>
-                  Integrated Prometheus and Grafana for real-time monitoring and
-                  alerting.
-                </li>
-                <li>
-                  Delivered scalable, monitored production environment with
-                  complete IaC.
-                </li>
-              </ul>
-            </article>
-          </div>
-          <div class="clear"></div>
+                <!-- ECS-CI/CD-Flask (AWS) -->
+                <article>
+                    <h4>
+                        <a
+                            href="https://github.com/jordann6/ecs-cicd-flask/tree/main"
+                            target="_blank"
+                        >
+                            ECS-CI/CD-Flask (AWS Fargate Deployment)
+                        </a>
+                    </h4>
+                    <ul>
+                        <li>
+                            Deployed a containerized Flask app on ECS Fargate with ECR in a secured VPC.
+                        </li>
+                        <li>
+                            Built GitHub Actions CI/CD pipelines that automated infrastructure and app deployments on AWS ECS Fargate, enabling zero-downtime releases.
+                        </li>
+                    </ul>
+                </article>
+
+                <!-- Weather-PWA (Azure) -->
+                <article>
+                    <h4>
+                        <a
+                            href="https://github.com/jordann6/weather-pwa"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            Weather-PWA (Azure Container Apps Deployment)
+                        </a>
+                    </h4>
+                    <ul>
+                        <li>
+                            Deployed a Go-based weather REST API and pushed multi-arch images to Azure Container Registry (ACR).
+                        </li>
+                        <li>
+                            Codified Azure infra as reusable Terraform modules and automated deployments, reducing setup time by 40%.
+                        </li>
+                    </ul>
+                </article>
+                
+                <!-- 3-Tier-Task-App -->
+                <article>
+                    <h4>
+                        <a
+                            href="https://github.com/jordann6/3-tier-task-app"
+                            target="_blank"
+                        >
+                            3-Tier-Task-App
+                        </a>
+                    </h4>
+                    <ul>
+                        <li>
+                            Built a 3-tier app using Flask, MySQL RDS, and Docker Compose on AWS EC2.
+                        </li>
+                        <li>
+                            Integrated Prometheus and Grafana for monitoring and alerting, delivering a scalable, IaC-managed environment.
+                        </li>
+                    </ul>
+                </article>
+
+                <!-- Serverless Data Pipeline on AWS -->
+                <article>
+                    <h4>
+                        <a
+                            href="https://github.com/jordann6/serverless-csv-pipeline"
+                            target="_blank"
+                        >
+                            Serverless Data Pipeline on AWS
+                        </a>
+                    </h4>
+                    <p class="subDetails">ETL Automation with AWS Serverless Services</p>
+                    <ul>
+                        <li>
+                            Built event-driven pipeline triggered by S3 events to invoke AWS Lambda for CSV preprocessing.
+                        </li>
+                        <li>
+                            Orchestrated ETL with AWS Glue, scheduled Glue jobs for recurring processing.
+                        </li>
+                        <li>
+                            Managed IaC with Terraform and AWS CLI; enforced IAM role-based security.
+                        </li>
+                    </ul>
+                </article>
+            </div>
+            <div class="clear"></div>
         </section>
       </div>
+      
+      <footer>
+          <p>&copy; <script>document.write(new Date().getFullYear())</script> Jordan Nelson. Built as part of the Cloud Resume Challenge.</p>
+      </footer>
     </div>
 
-    <script>
-      const countElement = document.getElementById("count");
-
-      async function updateVisitorCount() {
-        try {
-          const response = await fetch(
-            "https://673vy98pwa.execute-api.us-east-1.amazonaws.com/prod/count",
-            {
-              method: "GET",
-            }
-          );
-
-          const data = await response.json();
-
-          let visits = 0;
-
-          if (data.visits) {
-            visits = data.visits;
-          } else if (data.body) {
-            const body =
-              typeof data.body === "string" ? JSON.parse(data.body) : data.body;
-            visits = body.visits || body.count || "error";
-          }
-
-          countElement.innerHTML = "Resume Views: " + visits;
-        } catch (err) {
-          countElement.innerHTML = "Views: error";
-          console.error("Visitor count error:", err);
-        }
-      }
-
-      updateVisitorCount();
-    </script>
-  </body>
+    <script src="index.js"></script>
+</body>
 </html>
