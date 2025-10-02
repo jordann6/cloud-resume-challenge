@@ -12,13 +12,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Configure AWS creds for both S3 sync and CloudFront CLI
+      # Configure AWS Credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
+
+      # Ensure AWS CLI is available and authenticated
+      - name: Verify AWS CLI installation and authentication
+        run: aws sts get-caller-identity
 
       # Sync site to S3 using the AWS CLI
       - name: Sync to S3
@@ -27,7 +31,7 @@ jobs:
             --delete \
             --cache-control "max-age=60,public"
 
-      # Validate the CloudFront distribution ID from the secret
+      #  Validate the CloudFront distribution ID
       - name: Validate CloudFront distribution ID
         id: validate
         env:
@@ -42,16 +46,18 @@ jobs:
             exit 0
           fi
 
-          if ! [[ "$DIST_ID" =~ ^E[A-Z0-9]{12,20}$ ]]; then
+          # Standard CloudFront ID format check (E + 14 alphanumeric chars)
+          if ! [[ "$DIST_ID" =~ ^E[A-Z0-9]{14}$ ]]; then
             echo "Invalid-looking CloudFront ID in secret: $DIST_ID"
             exit 1
           fi
 
+          # Verify distribution exists and credentials have permission
           aws cloudfront get-distribution --id "$DIST_ID" >/dev/null
 
           echo "missing=false" >> "$GITHUB_OUTPUT"
 
-      # Invalidate CloudFront (won’t fail deploy if this errors)
+      # Invalidate CloudFront
       - name: Invalidate CloudFront
         if: steps.validate.outputs.missing == 'false'
         env:
