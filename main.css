@@ -185,7 +185,7 @@ header {
 /* Section Styling (Two-Column Layout) */
 section {
   border-top: 1px solid #ccc; /* Lighter separator border */
-  padding: 20px 0 0;
+  padding: 30px 0 0; /* INCREASED vertical padding for better separation */
 }
 
 section:first-child {
@@ -196,16 +196,15 @@ section:last-child {
   padding: 20px 0 10px;
 }
 
-/* Added extra separation rules */
+/* Specific Section Adjustments */
 #experience-section {
-  /* Keeping the margin-bottom previously added */
-  margin-bottom: 20px;
+  margin-bottom: 0; /* Removing previous margin-bottom adjustment */
 }
 
-/* NEW RULE: Increase separation above the Projects section title */
 #projects-section {
-  margin-top: 30px; /* Adds extra vertical space above the entire Projects section */
-  border-top: 2px solid #1f7a8c; /* Makes the border line darker/more prominent */
+  /* Using a distinct, stronger top border and extra margin for a clear break */
+  margin-top: 40px;
+  border-top: 3px solid #1f7a8c; /* Makes the border line the main accent color */
   padding-top: 20px;
 }
 
