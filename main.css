@@ -196,6 +196,11 @@ section:last-child {
   padding: 20px 0 10px;
 }
 
+/* ADDED RULE: Increase margin after the main Experience block to visually separate it from Projects */
+#experience-section {
+  margin-bottom: 20px;
+}
+
 .sectionTitle {
   float: left;
   width: 25%;
