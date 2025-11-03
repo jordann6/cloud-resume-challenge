@@ -3,320 +3,212 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jordan - Cloud Resume Challenge</title>
-    <!-- Simple Favicon for a professional touch -->
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="https://placehold.co/16x16/1f7a8c/ffffff/svg?text=JN"
-    />
-    <!-- Fonts used: Rokkitt (headers) and Lato (body) -->
-    <link
-      href="https://fonts.googleapis.com/css?family=Rokkitt:400,700|Lato:400,300"
-      rel="stylesheet"
-      type="text/css"
-    />
+    <title>Jordan's Cloud Portfolio</title>
 
-    <!-- LINK TO EXTERNAL CSS FILE -->
     <link rel="stylesheet" href="main.css" />
   </head>
   <body>
     <div class="container">
       <header>
-        <div id="intro">
-          <h1>JORDAN</h1>
-          <h2>Cloud Portfolio</h2>
-          <!-- Visitor Counter Element -->
-          <p id="count">Loading Views...</p>
+        <div class="title-block">
+          <h1>Jordan</h1>
+          <h2>Cloud Resume Challenge</h2>
         </div>
-
-        <div id="contact">
-          <ul>
-            <li>Location: Chicago, IL</li>
-            <li>Phone: Available on request</li>
-            <li>
-              Email:
-              <a href="mailto:jordandn6@outlook.com">jordandn6@outlook.com</a>
-            </li>
-            <li>
-              GitHub:
-              <a target="_blank" href="https://github.com/jordann6"
-                >@jordann6</a
-              >
-            </li>
-            <li>
-              LinkedIn:
-              <a
-                target="_blank"
-                href="https://linkedin.com/in/jordan-nelson-aa0828165"
-                >Jordan</a
-              >
-            </li>
-          </ul>
+        <div class="contact-block">
+          <a href="mailto:jordandn6@outlook.com">jordandn6@outlook.com</a>
+          <span class="separator">|</span>
+          <a
+            target="_blank"
+            href="https://linkedin.com/in/jordan-nelson-aa0828165"
+            >LinkedIn</a
+          >
+          <span class="separator">|</span>
+          <a target="_blank" href="https://github.com/jordann6">GitHub</a>
+          <span class="separator">|</span>
+          <span id="count" class="visitor-count">Loading Views...</span>
         </div>
-        <div class="clear"></div>
       </header>
 
-      <div id="main">
-        <!-- PROFILE SECTION -->
-        <section id="profile-section">
-          <div class="sectionTitle">
-            <h3>Profile</h3>
-          </div>
-          <div class="sectionContent">
-            <p>
-              I pivoted from law school into tech and since then I’ve been fully
-              immersed in cloud engineering, building hands-on projects with
-              AWS, Terraform, Docker, and CI/CD pipelines. I’m self-taught,
-              practical yet creative, and a go-getter who thrives on tackling
-              new challenges.
-            </p>
-          </div>
-          <div class="clear"></div>
+      <main>
+        <section id="profile">
+          <h3>Profile</h3>
+          <p>
+            After reading about Forrest Brazeal's Cloud Resume Challenge, I took
+            it upon myself to attempt it and document my continuous learning in
+            Cloud Computing, coding languages, and various tech stacks. I will
+            continue to update this portfolio as I go through this journey.
+          </p>
         </section>
 
-        <!-- EDUCATION SECTION -->
-        <section>
-          <div class="sectionTitle">
-            <h3>Education</h3>
-          </div>
-          <div class="sectionContent">
-            <article>
-              <h4>University of Illinois at Urbana-Champaign</h4>
-              <p class="subDetails">Bachelor’s Degree in Communication</p>
-            </article>
-          </div>
-          <div class="clear"></div>
-        </section>
-
-        <!-- CERTIFICATIONS SECTION -->
-        <section id="certifications-section">
-          <div class="sectionTitle">
-            <h3>Certifications</h3>
-          </div>
-          <div class="sectionContent">
-            <article>
-              <h4>AWS Certified Solutions Architect – Associate (SAA-C03)</h4>
-              <p class="subDetails">Issued by Amazon Web Services</p>
-              <!-- Credly Badge Embed Placeholder -->
+        <section id="certifications">
+          <h3>Certifications</h3>
+          <article class="job-entry">
+            <div class="badge-placeholder">
               <div
                 data-iframe-width="150"
                 data-iframe-height="270"
                 data-share-badge-id="b653ccb7-3b2c-42a3-9dd1-90049832b8d7"
                 data-share-badge-host="https://www.credly.com"
-                style="margin-top: 10px; margin-bottom: 20px"
               ></div>
-            </article>
-          </div>
-          <div class="clear"></div>
+              <p class="certification">
+                AWS Certified Solutions Architect – Associate (SAA-C03)
+              </p>
+            </div>
+          </article>
         </section>
 
-        <!-- TECHNICAL SKILLS SECTION -->
-        <section id="skills-section">
-          <div class="sectionTitle">
-            <h3>Technical Skills</h3>
-          </div>
-          <div class="sectionContent">
-            <ul class="skills-group">
+        <section id="skills">
+          <h3>Skills</h3>
+          <ul class="skills-list">
+            <li>
+              <strong>IaC & DevOps:</strong> Terraform, Git, GitHub Actions,
+              CI/CD, Shell Scripting, GitOps
+            </li>
+            <li>
+              <strong>Cloud Platforms:</strong> AWS (S3, CloudFront, Lambda,
+              ECS, DynamoDB), Azure (Container Apps, ACR, VNet)
+            </li>
+            <li>
+              <strong>Containerization:</strong> Docker, Kubernetes, ECS
+              Fargate, ECR
+            </li>
+            <li>
+              <strong>Monitoring:</strong> Prometheus, Grafana, AWS CloudWatch,
+              System Logs
+            </li>
+            <li>
+              <strong>Development:</strong> Python, GoLang, JavaScript, SQL,
+              Flask, HTML, CSS
+            </li>
+          </ul>
+        </section>
+
+        <section id="experience">
+          <h3>Experience</h3>
+          <article class="job-entry">
+            <h4>IT Specialist (Contract)</h4>
+            <span class="duration">April 2023 – Present (Contract)</span>
+            <ul>
               <li>
-                <strong>Cloud Platforms:</strong> AWS, Azure, GCP, Oracle (EC2,
-                Lambda, S3, DynamoDB, CloudFront, Container Apps, Cosmos DB)
+                Monitored company website and internal systems using dashboards,
+                system logs, and AWS CloudWatch, ensuring **99%+ uptime** and
+                stable performance.
               </li>
               <li>
-                <strong>IaC & DevOps:</strong> Terraform, GitOps, GitHub
-                Actions, Shell Scripting, Git, Kubernetes, Docker
+                Configured alerts and troubleshot incidents, reducing average
+                resolution time by 15% and minimizing downtime for staff and
+                customers.
               </li>
               <li>
-                <strong>Programming & Scripting:</strong> Python, Java, GoLang,
-                JavaScript, Bash, PowerShell, SQL
+                Delivered Tier 1–2 technical support for internal staff,
+                including access management and system usage guidance.
               </li>
               <li>
-                <strong>Monitoring & Observability:</strong> Prometheus,
-                Grafana, AWS CloudWatch
-              </li>
-              <li>
-                <strong>Security & Networking:</strong> AWS IAM, Azure AD, MFA,
-                TCP/IP, DNS, VPN, Basic Routing/Switching
-              </li>
-              <li>
-                <strong>Tools & Systems:</strong> Linux (Ubuntu, Amazon Linux),
-                Windows Server, Jira, Postman
+                Created documentation and quick-reference guides that
+                streamlined onboarding and enabled staff to resolve 30% of
+                recurring issues independently.
               </li>
             </ul>
-          </div>
-          <div class="clear"></div>
+          </article>
         </section>
 
-        <!-- PROFESSIONAL EXPERIENCE SECTION -->
-        <section id="experience-section">
-          <div class="sectionTitle">
-            <h3>Experience</h3>
-          </div>
-          <div class="sectionContent">
-            <article>
-              <h4>IT Specialist (Contract)</h4>
-              <p class="subDetails">
-                Educational Services Company • 2023 – 2025
-              </p>
-              <ul>
-                <li>
-                  Monitored company website and internal systems using
-                  dashboards, system logs, and AWS CloudWatch, ensuring 99%+
-                  uptime and stable performance.
-                </li>
-                <li>
-                  Configured alerts and troubleshot incidents, reducing average
-                  resolution time by 15% and minimizing downtime for staff and
-                  customers.
-                </li>
-                <li>
-                  Delivered Tier 1-2 technical support for internal staff,
-                  including access management and system usage guidance.
-                </li>
-                <li>
-                  Created documentation and quick-reference guides that
-                  streamlined onboarding and enabled staff to resolve 30% of
-                  recurring issues independently.
-                </li>
-              </ul>
-            </article>
-          </div>
-          <!-- ✅ fixed: close .sectionContent -->
-          <div class="clear"></div>
+        <section id="projects">
+          <h3>Projects</h3>
+
+          <article class="project-entry">
+            <h4>
+              <a
+                href="https://github.com/jordann6/cloud-resume-challenge"
+                target="_blank"
+              >
+                Jordandesigns.io: Cloud Resume Challenge Infrastructure
+              </a>
+            </h4>
+            <p class="project-details">
+              Architected the entire deployment platform for the resume site:
+              deployed to AWS S3/CloudFront/Route 53. Automated infra and
+              content updates using Terraform and GitHub Actions for fully
+              hands-off delivery. Implemented serverless Lambda/DynamoDB visitor
+              tracking.
+            </p>
+          </article>
+
+          <article class="project-entry">
+            <h4>
+              <a
+                href="https://github.com/jordann6/ecs-cicd-flask/tree/main"
+                target="_blank"
+              >
+                ECS-CI/CD-Flask: Containerized Component Deployment
+              </a>
+            </h4>
+            <p class="project-details">
+              Built and deployed a containerized Flask application (simulating a
+              live design system viewer) onto AWS ECS Fargate in a secured VPC.
+              Established zero-downtime CI/CD pipelines with GitHub Actions,
+              automating infrastructure and application releases.
+            </p>
+          </article>
+
+          <article class="project-entry">
+            <h4>
+              <a
+                href="https://github.com/jordann6/weather-pwa"
+                target="_blank"
+                rel="noopener"
+              >
+                Weather-PWA: Azure Container Apps Deployment
+              </a>
+            </h4>
+            <p class="project-details">
+              Deployed a Go-based REST API on Azure Container Apps. Codified the
+              entire Azure infrastructure using reusable Terraform modules and
+              automated the deployment process, reducing setup time by 40%.
+            </p>
+          </article>
+
+          <article class="project-entry">
+            <h4>
+              <a
+                href="https://github.com/jordann6/3-tier-task-app"
+                target="_blank"
+              >
+                3-Tier-Task-App: Scalable, IaC-Managed Environment
+              </a>
+            </h4>
+            <p class="project-details">
+              Engineered a complete 3-tier application stack (Flask, MySQL RDS)
+              using Docker Compose on AWS EC2. Implemented full observability by
+              integrating Prometheus and Grafana for advanced monitoring and
+              alerting across the environment.
+            </p>
+          </article>
+
+          <article class="project-entry">
+            <h4>
+              <a
+                href="https://github.com/jordann6/serverless-csv-pipeline"
+                target="_blank"
+              >
+                Serverless Data Pipeline: ETL Automation on AWS
+              </a>
+            </h4>
+            <p class="project-details">
+              Designed an event-driven ETL pipeline leveraging S3 events to
+              trigger AWS Lambda for CSV preprocessing. Orchestrated full ETL
+              workflow using AWS Glue for recurring jobs, with all resources
+              managed via Terraform and IAM role-based security enforced.
+            </p>
+          </article>
         </section>
-
-        <!-- PROJECTS SECTION -->
-        <section id="projects-section">
-          <div class="sectionTitle">
-            <h3>Projects</h3>
-          </div>
-          <div class="sectionContent">
-            <!-- Cloud Resume Challenge Project -->
-            <article>
-              <h4>
-                <a
-                  href="https://github.com/jordann6/cloud-resume-challenge"
-                  target="_blank"
-                >
-                  Jordandesigns.io (Cloud Resume Challenge)
-                </a>
-              </h4>
-              <p class="subDetails">
-                Full-Stack Serverless Application & CI/CD Pipeline
-              </p>
-              <ul>
-                <li>
-                  Deployed personal resume site on AWS S3 with CloudFront and
-                  Route 53 for secure, global delivery.
-                </li>
-                <li>
-                  Integrated Lambda + DynamoDB visitor counter and automated
-                  infra via Terraform & GitHub Actions, achieving fully
-                  hands-off deployments.
-                </li>
-              </ul>
-            </article>
-
-            <!-- ECS-CI/CD-Flask (AWS) -->
-            <article>
-              <h4>
-                <a
-                  href="https://github.com/jordann6/ecs-cicd-flask/tree/main"
-                  target="_blank"
-                >
-                  ECS-CI/CD-Flask (AWS Fargate Deployment)
-                </a>
-              </h4>
-              <ul>
-                <li>
-                  Deployed a containerized Flask app on ECS Fargate with ECR in
-                  a secured VPC.
-                </li>
-                <li>
-                  Built GitHub Actions CI/CD pipelines that automated
-                  infrastructure and app deployments on AWS ECS Fargate,
-                  enabling zero-downtime releases.
-                </li>
-              </ul>
-            </article>
-
-            <!-- Weather-PWA (Azure) -->
-            <article>
-              <h4>
-                <a
-                  href="https://github.com/jordann6/weather-pwa"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  Weather-PWA (Azure Container Apps Deployment)
-                </a>
-              </h4>
-              <ul>
-                <li>
-                  Deployed a Go-based weather REST API and pushed multi-arch
-                  images to Azure Container Registry (ACR).
-                </li>
-                <li>
-                  Codified Azure infra as reusable Terraform modules and
-                  automated deployments, reducing setup time by 40%.
-                </li>
-              </ul>
-            </article>
-
-            <!-- 3-Tier-Task-App -->
-            <article>
-              <h4>
-                <a
-                  href="https://github.com/jordann6/3-tier-task-app"
-                  target="_blank"
-                >
-                  3-Tier-Task-App
-                </a>
-              </h4>
-              <ul>
-                <li>
-                  Built a 3-tier app using Flask, MySQL RDS, and Docker Compose
-                  on AWS EC2.
-                </li>
-                <li>
-                  Integrated Prometheus and Grafana for monitoring and alerting,
-                  delivering a scalable, IaC-managed environment.
-                </li>
-              </ul>
-            </article>
-
-            <!-- Serverless Data Pipeline on AWS -->
-            <article>
-              <h4>
-                <a
-                  href="https://github.com/jordann6/serverless-csv-pipeline"
-                  target="_blank"
-                >
-                  Serverless Data Pipeline on AWS
-                </a>
-              </h4>
-              <p class="subDetails">
-                ETL Automation with AWS Serverless Services
-              </p>
-              <ul>
-                <li>
-                  Built event-driven pipeline triggered by S3 events to invoke
-                  AWS Lambda for CSV preprocessing.
-                </li>
-                <li>
-                  Orchestrated ETL with AWS Glue, scheduled Glue jobs for
-                  recurring processing.
-                </li>
-                <li>
-                  Managed IaC with Terraform and AWS CLI; enforced IAM
-                  role-based security.
-                </li>
-              </ul>
-            </article>
-          </div>
-          <div class="clear"></div>
+        <section id="education">
+          <h3>Education</h3>
+          <article class="job-entry">
+            <h4>University of Illinois at Urbana-Champaign</h4>
+            <span class="duration">Bachelor of Arts in Communication</span>
+          </article>
         </section>
-      </div>
+      </main>
 
       <footer>
         <p>
@@ -324,11 +216,12 @@
           <script>
             document.write(new Date().getFullYear());
           </script>
-          Jordan. Built as part of the Cloud Resume Challenge.
+          Jordan. Powered by AWS.
         </p>
       </footer>
     </div>
 
     <script src="index.js"></script>
+    <script src="https://cdn.credly.com/assets/utilities/embed.js"></script>
   </body>
 </html>
