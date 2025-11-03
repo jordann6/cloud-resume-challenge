@@ -61,24 +61,19 @@
           <h3>Skills</h3>
           <ul class="skills-list">
             <li>
-              <strong>IaC & DevOps:</strong> Terraform, Git, GitHub Actions,
-              CI/CD, Shell Scripting, GitOps
+              IaC & DevOps: Terraform, Git, GitHub Actions, CI/CD, Shell
+              Scripting, GitOps
             </li>
             <li>
-              <strong>Cloud Platforms:</strong> AWS (S3, CloudFront, Lambda,
-              ECS, DynamoDB), Azure (Container Apps, ACR, VNet)
+              Cloud Platforms: AWS (S3, CloudFront, Lambda, ECS, DynamoDB),
+              Azure (Container Apps, ACR, VNet)
+            </li>
+            <li>Containerization: Docker, Kubernetes, ECS Fargate, ECR</li>
+            <li>
+              Monitoring: Prometheus, Grafana, AWS CloudWatch, System Logs
             </li>
             <li>
-              <strong>Containerization:</strong> Docker, Kubernetes, ECS
-              Fargate, ECR
-            </li>
-            <li>
-              <strong>Monitoring:</strong> Prometheus, Grafana, AWS CloudWatch,
-              System Logs
-            </li>
-            <li>
-              <strong>Development:</strong> Python, GoLang, JavaScript, SQL,
-              Flask, HTML, CSS
+              Development: Python, GoLang, JavaScript, SQL, Flask, HTML, CSS
             </li>
           </ul>
         </section>
@@ -91,8 +86,8 @@
             <ul>
               <li>
                 Monitored company website and internal systems using dashboards,
-                system logs, and AWS CloudWatch, ensuring **99%+ uptime** and
-                stable performance.
+                system logs, and AWS CloudWatch, ensuring 99%+ uptime and stable
+                performance.
               </li>
               <li>
                 Configured alerts and troubleshot incidents, reducing average
@@ -124,13 +119,17 @@
                 Jordandesigns.io: Cloud Resume Challenge Infrastructure
               </a>
             </h4>
-            <p class="project-details">
-              Architected the entire deployment platform for the resume site:
-              deployed to AWS S3/CloudFront/Route 53. Automated infra and
-              content updates using Terraform and GitHub Actions for fully
-              hands-off delivery. Implemented serverless Lambda/DynamoDB visitor
-              tracking.
-            </p>
+            <ul>
+              <li>
+                Deployed personal resume site on AWS S3 with CloudFront and
+                Route 53 for secure, global delivery.
+              </li>
+              <li>
+                Integrated Lambda and DynamoDB visitor counter and automated
+                infra via Terraform & GitHub Actions, achieving fully hands-off
+                deployments.
+              </li>
+            </ul>
           </article>
 
           <article class="project-entry">
@@ -142,12 +141,17 @@
                 ECS-CI/CD-Flask: Containerized Component Deployment
               </a>
             </h4>
-            <p class="project-details">
-              Built and deployed a containerized Flask application (simulating a
-              live design system viewer) onto AWS ECS Fargate in a secured VPC.
-              Established zero-downtime CI/CD pipelines with GitHub Actions,
-              automating infrastructure and application releases.
-            </p>
+            <ul>
+              <li>
+                Deployed a containerized Flask app on ECS Fargate with ECR in a
+                secured VPC.
+              </li>
+              <li>
+                Built GitHub Actions CI/CD pipelines that automated
+                infrastructure and app deployments, enabling zero-downtime
+                releases and high availability.
+              </li>
+            </ul>
           </article>
 
           <article class="project-entry">
@@ -160,11 +164,14 @@
                 Weather-PWA: Azure Container Apps Deployment
               </a>
             </h4>
-            <p class="project-details">
-              Deployed a Go-based REST API on Azure Container Apps. Codified the
-              entire Azure infrastructure using reusable Terraform modules and
-              automated the deployment process, reducing setup time by 40%.
-            </p>
+            <ul>
+              <li>Deployed a Go-based REST API on Azure Container Apps.</li>
+              <li>
+                Codified the entire Azure infrastructure using reusable
+                Terraform modules and automated the deployment process, reducing
+                setup time by 40%.
+              </li>
+            </ul>
           </article>
 
           <article class="project-entry">
@@ -176,12 +183,17 @@
                 3-Tier-Task-App: Scalable, IaC-Managed Environment
               </a>
             </h4>
-            <p class="project-details">
-              Engineered a complete 3-tier application stack (Flask, MySQL RDS)
-              using Docker Compose on AWS EC2. Implemented full observability by
-              integrating Prometheus and Grafana for advanced monitoring and
-              alerting across the environment.
-            </p>
+            <ul>
+              <li>
+                Engineered a complete 3-tier application stack (Flask, MySQL
+                RDS) using Docker Compose on AWS EC2.
+              </li>
+              <li>
+                Implemented full observability by integrating Prometheus and
+                Grafana for advanced monitoring and alerting across the
+                environment.
+              </li>
+            </ul>
           </article>
 
           <article class="project-entry">
@@ -193,12 +205,20 @@
                 Serverless Data Pipeline: ETL Automation on AWS
               </a>
             </h4>
-            <p class="project-details">
-              Designed an event-driven ETL pipeline leveraging S3 events to
-              trigger AWS Lambda for CSV preprocessing. Orchestrated full ETL
-              workflow using AWS Glue for recurring jobs, with all resources
-              managed via Terraform and IAM role-based security enforced.
-            </p>
+            <ul>
+              <li>
+                Built event-driven pipeline triggered by S3 events to invoke AWS
+                Lambda for CSV preprocessing.
+              </li>
+              <li>
+                Orchestrated ETL with AWS Glue, scheduled Glue jobs for
+                recurring processing.
+              </li>
+              <li>
+                Managed IaC with Terraform and AWS CLI; enforced IAM role-based
+                security.
+              </li>
+            </ul>
           </article>
         </section>
         <section id="education">
