@@ -153,15 +153,41 @@
         <section id="projects">
           <h3>Projects</h3>
  <article class="project-entry">
+  <h4>
+    <a
+      href="https://github.com/jordann6/event-driven-aws-remediation"
+      target="_blank"
+      rel="noopener"
+    >
+      Event-Driven AWS Performance Remediation
+    </a>
+  </h4>
+  <ul>
+    <li>
+      Engineered an event driven remediation workflow using AWS Lambda and Python with Boto3 to automatically resolve API latency issues by rebooting targeted EC2 instances provisioned through Infrastructure as Code.
+    </li>
+    <li>
+      Enforced least privilege security by scoping IAM permissions to explicit EC2 instance and SNS topic ARNs enabling controlled remediation and notification without excess access.
+    </li>
+    <li>
+      Enhanced system observability by integrating JSON-formatted logging for CloudWatch and developing a Sumo Logic query to identify latency trends across API endpoints.
+    </li>
+    <li>
+      Built an end-to-end Bash validation script leveraging the IAM Policy Simulator and Lambda invocation to verify remediation behavior.
+    </li>
+  </ul>
+</article>
+
+          <article class="project-entry">
     <h4>
     <a href="https://jordann6.substack.com" target="_blank" rel="noopener">
-  K3s Homelab, Arch Linux
+  K3s Home Lab, Arch Linux
 </a>
 
     </h4>
     <ul>
       <li>
-        Fortified a self hosted container orchestration environment by repurposing a T2 MacBook into an Arch Linux based K3s homelab, configuring namespaces, services, logging, and secure remote access for operator level system administration.
+        Fortified a self hosted container orchestration environment by repurposing a T2 MacBook into an Arch Linux based K3s home lab, configuring namespaces, services, logging, and secure remote access for operator level system administration.
       </li>
       <li>
         Implemented runtime observability and security controls by deploying Prometheus and Grafana for metrics and visualization and Falco for behavioral alerting, enabling hands on analysis of system health and anomaly detection across containerized workloads.
