@@ -102,21 +102,20 @@
             <span class="duration">Snorkel AI • November 2025 to Present</span>
             <ul>
               <li>
-                Architected a production DevSecOps pipeline integrating SAST, DAST, container image scanning, and IaC validation across
-automated Git-driven workflows.
-
+              Reduced vulnerable build promotion by 90% through a custom DevSecOps pipeline integrating SAST, DAST, and IaC
+scanning.
       </li>
               </li>
               <li>
-                Enforced automated security gates that prevented vulnerable builds from reaching production, reducing security risk exposure
-throughout the software delivery lifecycle.
+               Implemented Kubernetes blue-green deployment strategies enabling zero-downtime releases and rapid rollback
+capability, standardizing secure pipelines across environments and reducing deployment failures by ~70%.
               </li>
               <li>
-              Implemented Kubernetes blue-green deployment strategies enabling zero-downtime releases and rapid rollback capability,
-eliminating deployment-related production incidents.
+            Orchestrated an event-driven remediation workflow using AWS Lambda and Boto3 to automatically resolve API latency
+degradation by rebooting targeted EC2 instances provisioned via IaC, reducing MTTR by ~40%
               <li>
-                 Improved platform reliability by standardizing secure deployment pipelines across environments, reducing configuration related
-deployment failures.
+                 Built end-to-end infrastructure validation using Bash scripts that invoke the IAM Policy Simulator and Lambda to verify
+remediation reliability prior to production promotion.
               </li>
             </ul>
           </article>
@@ -126,18 +125,15 @@ deployment failures.
     <span class="duration">2024 to 2026</span>
     <ul>
       <li>
-        Contributed hands on to a cross cloud migration from Amazon Web Services to Microsoft Azure by performing service dependency mapping, environment parity validation, and cutover readiness checks to ensure data integrity and zero downtime during transition.
+     Executed a cloud rehosting migration from AWS to Azure, performing service dependency mapping to ensure data
+integrity across the firm's accounting infrastructure throughout cutover.
+      <li>
+     Provisioned and rightsized replacement Azure infrastructure using IaC, aligning compute and storage resources to firm
+budget constraints while maintaining 99%+ uptime post-migration.
       </li>
       <li>
-       Executed a cross-cloud rehosting migration from AWS to Microsoft Azure by performing deep service dependency mapping to
-ensure no data loss within the firm's delicate accounting infrastructure.
-      <li>
-        Engineered Python and Bash scripts to standardize cloud support workflows, reducing manual intervention for recurring identity
-and authentication incidents.
-      </li>
-      <li>
-        Optimized post-migration cloud resources by rightsizing Azure Instances to align with the firm's budget while maintaining
-performance stability.
+      Engineered Python and Bash scripts to automate recurring Entra ID authentication remediation, cutting resolution time
+by ~50%.
       </li>
     </ul>
   </article>
@@ -147,14 +143,14 @@ performance stability.
             <span class="duration"> 2023 – 2024 (Contract)</span>
             <ul>
               <li>
-                Managed mission-critical data recovery through backup restoration and environment repair, preventing data loss and client
-delays.
+           Managed data recovery through backup restoration and environment repair, preventing data loss and client-facing
+delays across 5+ critical client engagements.
               </li>
               <li>
-Resolved 40+ monthly MFA and authentication incidents while sustaining high first-contact resolution rates and availability.
+Resolved 40+ monthly MFA and authentication incidents while maintaining high first-contact resolution rates
               </li>
               <li>
-Streamlined Tier-2 handoffs by documenting reproducible steps and diagnostic context to reduce complex incident delays.
+Streamlined Tier-2 handoffs by authoring diagnostic runbooks, reducing complex incident resolution time by ~30%.
               </li>
         
             </ul>
@@ -164,6 +160,36 @@ Streamlined Tier-2 handoffs by documenting reproducible steps and diagnostic con
         <section id="projects">
           <h3>Projects</h3>
  <article class="project-entry">
+  <h4>
+    <a
+      href="https://github.com/jordann6/nfl-data-reliability-platform"
+      target="_blank"
+      rel="noopener"
+    >
+      NFL Data Reliability Platform
+    </a>
+  </h4>
+  <ul>
+    <li>
+      Deployed a containerized Python ingestion service to Azure Container Apps
+      via Terraform, routing NFL API payloads through tiered Blob Storage with
+      automated schema validation and quarantine logic for data quality
+      enforcement
+    </li>
+    <li>
+      Instrumented custom Prometheus metrics for SLI and SLO tracking including
+      ingestion success rate, schema validity, and data freshness, using a
+      scraper sidecar and PromQL burn rate analysis visualized through Azure
+      Managed Grafana
+    </li>
+    <li>
+      Orchestrated the platform as modular Terraform with a remote state backend,
+      integrating Azure Container Registry, Key Vault, and RBAC managed identity
+      permissions across isolated bootstrap and dev environments
+    </li>
+  </ul>
+</article>
+          <article class="project-entry">
             <h4>
               <a
                 href="https://github.com/jordann6/sb-intel-center"
