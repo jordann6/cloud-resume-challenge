@@ -184,14 +184,7 @@
   </div>
 </section>
 
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="section-header fade-in">
-    <span class="section-num">03</span>
-    <h2 class="section-title">Projects</h2>
-    <div class="section-line"></div>
-  </div>
-  <div class="projects-grid">
+<div class="projects-grid">
 
     <a class="project-card fade-in" href="https://github.com/jordann6/nba-intel-center/tree/main" target="_blank">
       <div class="project-card-inner">
@@ -239,9 +232,33 @@
       </div>
     </a>
 
-    <a class="project-card fade-in" href="https://github.com/jordann6/event-driven-aws-remediation" target="_blank">
+    <a class="project-card fade-in" href="https://github.com/jordann6/sb-intel-center" target="_blank">
       <div class="project-card-inner">
         <span class="project-num">Project 03</span>
+        <div class="project-title">Super Bowl LX Intelligence Center</div>
+        <p class="project-desc">
+          End-to-end data engineering and AI pipeline generating predictive scouting reports
+          for Super Bowl LX. Extracts and processes NFLverse datasets with Python, implements
+          dynamic data fallback logic to handle API sync lags, and feeds Azure OpenAI GPT-4o
+          for high-dimensional player prop analysis. Containerized with Docker and deployed
+          via GitHub Actions to GHCR, with Azure infrastructure provisioned through Terraform.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">Azure OpenAI</span>
+          <span class="project-tag">GPT-4o</span>
+          <span class="project-tag">Python</span>
+          <span class="project-tag">Docker</span>
+          <span class="project-tag">GitHub Actions</span>
+          <span class="project-tag">Terraform</span>
+          <span class="project-tag">Key Vault</span>
+        </div>
+        <span class="project-link">View on GitHub</span>
+      </div>
+    </a>
+
+    <a class="project-card fade-in" href="https://github.com/jordann6/event-driven-aws-remediation" target="_blank">
+      <div class="project-card-inner">
+        <span class="project-num">Project 04</span>
         <div class="project-title">Event-Driven AWS Performance Remediation</div>
         <p class="project-desc">
           An automated remediation pipeline on AWS detecting underperforming EC2 instances via
@@ -264,7 +281,7 @@
 
     <a class="project-card fade-in" href="https://github.com/jordann6/azure-devsecops-project/tree/main" target="_blank">
       <div class="project-card-inner">
-        <span class="project-num">Project 04</span>
+        <span class="project-num">Project 05</span>
         <div class="project-title">Azure DevSecOps Project</div>
         <p class="project-desc">
           End-to-end Azure deployment workflow for a containerized Flask app using Terraform,
@@ -286,7 +303,7 @@
 
     <a class="project-card fade-in" href="https://jordann6.substack.com" target="_blank">
       <div class="project-card-inner">
-        <span class="project-num">Project 05</span>
+        <span class="project-num">Project 06</span>
         <div class="project-title">K3s Home Lab — Arch Linux</div>
         <p class="project-desc">
           Self-hosted container orchestration environment built on a repurposed T2 MacBook running
@@ -308,7 +325,7 @@
 
     <a class="project-card fade-in" href="https://github.com/jordann6/cloud-resume-challenge" target="_blank">
       <div class="project-card-inner">
-        <span class="project-num">Project 06</span>
+        <span class="project-num">Project 07</span>
         <div class="project-title">jordandesigns.io — Cloud Resume Challenge</div>
         <p class="project-desc">
           Serverless resume site on AWS with strong uptime and fast global load times via S3,
@@ -331,7 +348,7 @@
 
     <a class="project-card fade-in" href="https://github.com/jordann6/ecs-cicd-flask/tree/main" target="_blank">
       <div class="project-card-inner">
-        <span class="project-num">Project 07</span>
+        <span class="project-num">Project 08</span>
         <div class="project-title">ECS CI/CD Flask</div>
         <p class="project-desc">
           Containerized Flask app deployed on ECS Fargate with ECR in a secured VPC.
@@ -352,7 +369,7 @@
 
     <a class="project-card fade-in" href="https://github.com/jordann6/weather-pwa" target="_blank">
       <div class="project-card-inner">
-        <span class="project-num">Project 08</span>
+        <span class="project-num">Project 09</span>
         <div class="project-title">Weather PWA — Azure Container Apps</div>
         <p class="project-desc">
           Go-based REST API deployed on Azure Container Apps. Entire Azure infrastructure
@@ -371,7 +388,7 @@
 
     <a class="project-card fade-in" href="https://github.com/jordann6/3-tier-task-app" target="_blank">
       <div class="project-card-inner">
-        <span class="project-num">Project 09</span>
+        <span class="project-num">Project 10</span>
         <div class="project-title">3-Tier Task App</div>
         <p class="project-desc">
           Complete 3-tier application stack (Flask, MySQL RDS) using Docker Compose on AWS EC2.
@@ -392,7 +409,7 @@
 
     <a class="project-card fade-in" href="https://github.com/jordann6/serverless-csv-pipeline" target="_blank">
       <div class="project-card-inner">
-        <span class="project-num">Project 10</span>
+        <span class="project-num">Project 11</span>
         <div class="project-title">Serverless CSV Pipeline</div>
         <p class="project-desc">
           Event-driven ETL pipeline triggered by S3 events invoking AWS Lambda for CSV
@@ -412,89 +429,6 @@
     </a>
 
   </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills">
-  <div class="section-header fade-in">
-    <span class="section-num">04</span>
-    <h2 class="section-title">Skills & Stack</h2>
-    <div class="section-line"></div>
-  </div>
-  <div class="skills-grid">
-    <div class="skill-group fade-in">
-      <div class="skill-group-title">Languages & Frameworks</div>
-      <div class="skill-items">
-        <span class="skill-item">Python</span>
-        <span class="skill-item">JavaScript</span>
-        <span class="skill-item">Bash</span>
-        <span class="skill-item">SQL</span>
-        <span class="skill-item">Go</span>
-        <span class="skill-item">C++</span>
-        <span class="skill-item">Java</span>
-        <span class="skill-item">FastAPI</span>
-        <span class="skill-item">React</span>
-        <span class="skill-item">REST APIs</span>
-        <span class="skill-item">PromQL</span>
-      </div>
-    </div>
-    <div class="skill-group fade-in">
-      <div class="skill-group-title">Cloud Platforms</div>
-      <div class="skill-items">
-        <span class="skill-item">AWS</span>
-        <span class="skill-item">Azure</span>
-        <span class="skill-item">GCP</span>
-        <span class="skill-item">Oracle Cloud</span>
-      </div>
-    </div>
-    <div class="skill-group fade-in">
-      <div class="skill-group-title">Infrastructure & DevOps</div>
-      <div class="skill-items">
-        <span class="skill-item">Terraform</span>
-        <span class="skill-item">Docker</span>
-        <span class="skill-item">Kubernetes</span>
-        <span class="skill-item">CI/CD</span>
-        <span class="skill-item">GitHub Actions</span>
-        <span class="skill-item">Shell Scripting</span>
-        <span class="skill-item">IaC</span>
-        <span class="skill-item">Git</span>
-      </div>
-    </div>
-    <div class="skill-group fade-in">
-      <div class="skill-group-title">Databases & Data</div>
-      <div class="skill-items">
-        <span class="skill-item">PostgreSQL</span>
-        <span class="skill-item">MySQL</span>
-        <span class="skill-item">DynamoDB</span>
-        <span class="skill-item">MongoDB</span>
-        <span class="skill-item">Redis</span>
-        <span class="skill-item">SQLite</span>
-        <span class="skill-item">Qdrant</span>
-      </div>
-    </div>
-    <div class="skill-group fade-in">
-      <div class="skill-group-title">Monitoring & Observability</div>
-      <div class="skill-items">
-        <span class="skill-item">Prometheus</span>
-        <span class="skill-item">Grafana</span>
-        <span class="skill-item">Falco</span>
-        <span class="skill-item">PromQL</span>
-        <span class="skill-item">SLI / SLO</span>
-        <span class="skill-item">Burn Rate Analysis</span>
-      </div>
-    </div>
-    <div class="skill-group fade-in">
-      <div class="skill-group-title">Systems & Environments</div>
-      <div class="skill-items">
-        <span class="skill-item">Linux</span>
-        <span class="skill-item">Windows Server</span>
-        <span class="skill-item">macOS</span>
-        <span class="skill-item">K3s</span>
-        <span class="skill-item">Entra ID</span>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- CERTIFICATIONS -->
 <section id="certifications">
@@ -518,7 +452,7 @@
         <div class="cert-name">Azure Administrator Associate</div>
         <div class="cert-provider">Microsoft Azure · AZ-104</div>
       </div>
-      <span class="cert-status">Active</span>
+      <span class="cert-status">Expired</span>
     </div>
     <div class="cert-card fade-in" style="opacity:0.5; cursor: default;">
       <div class="cert-icon" style="color:var(--text-dim); background:var(--bg2); border-color:var(--border);">AI<br>PRE</div>
