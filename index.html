@@ -1,422 +1,639 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jordan's Cloud Portfolio</title>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jordan Nelson — DevOps & Cloud Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="main.css" />
+</head>
+<body>
 
-    <link rel="stylesheet" href="main.css" />
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <div class="title-block">
-          <h1>Jordan</h1>
-          <h2>Cloud Resume Challenge</h2>
-        </div>
-        <div class="contact-block">
-          <a href="mailto:jordandn6@outlook.com">jordandn6@outlook.com</a>
-          <span class="separator">|</span>
-          <a
-            target="_blank"
-            href="https://linkedin.com/in/jordan-nelson-aa0828165"
-            >LinkedIn</a
-          >
-          <span class="separator">|</span>
-          <a target="_blank" href="https://github.com/jordann6">GitHub</a>
-          <span class="separator">|</span>
-          <span id="count" class="visitor-count">Loading Views...</span>
-        </div>
-      </header>
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">JN<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="mailto:jordandn6@outlook.com">Hire Me</a>
+</nav>
 
-      <main>
-        <section id="profile">
-          <h3>Profile</h3>
-          <p>
-            I transitioned into technology through hands on experience,
-            beginning in help desk and progressing into a Software Engineer I
-            role by steadily expanding my development and automation
-            responsibilities. After leaving law school, I redirected my focus
-            toward software engineering and cloud infrastructure, treating
-            learning as a deliberate and continuous practice. My work emphasizes
-            reliability, reproducibility, and operational awareness across the
-            software development lifecycle, with a strong focus on cloud native
-            systems and DevOps aligned workflows.
-          </p>
-        </section>
-
-        <section id="certifications">
-          <h3>Certifications</h3>
-          <article class="job-entry">
-            <div class="badge-placeholder">
-              <div
-                data-iframe-width="150"
-                data-iframe-height="270"
-                data-share-badge-id="b653ccb7-3b2c-42a3-9dd1-90049832b8d7"
-                data-share-badge-host="https://www.credly.com"
-              ></div>
-              <p class="certification">
-                AWS Certified Solutions Architect – Associate (SAA-C03)
-              </p>
-            </div>
-          </article>
-        </section>
-
-        <section id="skills">
-          <h3>Skills</h3>
-          <ul class="skills-list">
-            <li>
-              AI and LLM Engineering: agentic workflow design, automated model
-              testing, prompt engineering, scenario design, ground truth
-              validation, failure mode analysis
-            </li>
-            <li>
-              Cloud Platforms: AWS, Azure, Google Cloud Platform, Oracle Cloud
-            </li>
-            <li>
-              Infrastructure as Code and DevOps: Terraform, Pulumi, Git, GitHub
-              Actions, continuous integration and delivery, shell scripting,
-              GitOps, CloudFormation
-            </li>
-            <li>Containerization and Orchestration: Docker, Kubernetes</li>
-            <li>
-              Monitoring and Observability: Prometheus, Grafana, AWS CloudWatch
-            </li>
-            <li>
-              Programming and Scripting: Python, Bash, Go, JavaScript, SQL,
-              PowerShell, Java
-            </li>
-            <li>Web Development: Flask, React, HTML, CSS, REST API design</li>
-            <li>Systems and Platforms: Linux, Windows Server, macOS</li>
-            <li>
-              Identity and Networking: IAM, Active Directory, DNS, VPNs,
-              firewalls, Route 53, CloudFront
-            </li>
-          </ul>
-        </section>
-
-        <section id="experience">
-          <h3>Experience</h3>
-          <article class="job-entry">
-            <h4>DevOps Engineer</h4>
-            <span class="duration">Snorkel AI • November 2025 to Present</span>
-            <ul>
-              <li>
-              Reduced vulnerable build promotion by 90% through a custom DevSecOps pipeline integrating SAST, DAST, and IaC
-scanning.
-      </li>
-              </li>
-              <li>
-               Implemented Kubernetes blue-green deployment strategies enabling zero-downtime releases and rapid rollback
-capability, standardizing secure pipelines across environments and reducing deployment failures by ~70%.
-              </li>
-              <li>
-            Orchestrated an event-driven remediation workflow using AWS Lambda and Boto3 to automatically resolve API latency
-degradation by rebooting targeted EC2 instances provisioned via IaC, reducing MTTR by ~40%
-              <li>
-                 Built end-to-end infrastructure validation using Bash scripts that invoke the IAM Policy Simulator and Lambda to verify
-remediation reliability prior to production promotion.
-              </li>
-            </ul>
-          </article>
-
- <article class="job-entry">
-    <h4>IT Support Specialist</h4>
-    <span class="duration">2024 to 2026</span>
-    <ul>
-      <li>
-     Executed a cloud rehosting migration from AWS to Azure, performing service dependency mapping to ensure data
-integrity across the firm's accounting infrastructure throughout cutover.
-      <li>
-     Provisioned and rightsized replacement Azure infrastructure using IaC, aligning compute and storage resources to firm
-budget constraints while maintaining 99%+ uptime post-migration.
-      </li>
-      <li>
-      Engineered Python and Bash scripts to automate recurring Entra ID authentication remediation, cutting resolution time
-by ~50%.
-      </li>
-    </ul>
-  </article>
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">// Available for new opportunities</p>
+    <h1 class="hero-name">
+      Jordan
+      <span class="accent-line">Nelson</span>
+    </h1>
+    <p class="hero-title">DevOps &amp; Cloud Engineer</p>
+    <p class="hero-desc">
+      Infrastructure engineer deploying and operating secure cloud infrastructure
+      across AWS and Azure, with a focus on AI-integrated platforms, infrastructure
+      automation, and observability.
+    </p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#projects">View Projects</a>
+      <a class="btn-secondary" href="#contact">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-badges">
+    <span class="badge">AWS SAA-C03</span>
+    <span class="badge">AZ-104</span>
+    <span class="badge">Chicago, IL</span>
+    <span class="badge" id="count">Loading Views...</span>
+  </div>
 </section>
-          <article class="job-entry">
-            <h4>Help Desk Technician (Contract)</h4>
-            <span class="duration"> 2023 – 2024 (Contract)</span>
-            <ul>
-              <li>
-           Managed data recovery through backup restoration and environment repair, preventing data loss and client-facing
-delays across 5+ critical client engagements.
-              </li>
-              <li>
-Resolved 40+ monthly MFA and authentication incidents while maintaining high first-contact resolution rates
-              </li>
-              <li>
-Streamlined Tier-2 handoffs by authoring diagnostic runbooks, reducing complex incident resolution time by ~30%.
-              </li>
-        
-            </ul>
-          </article>
-        </section>
 
-        <section id="projects">
-          <h3>Projects</h3>
- <article class="project-entry">
-  <h4>
-    <a
-      href="https://github.com/jordann6/nfl-data-reliability-platform"
-      target="_blank"
-      rel="noopener"
-    >
-      NFL Data Reliability Platform
-    </a>
-  </h4>
-  <ul>
-    <li>
-      Deployed a containerized Python ingestion service to Azure Container Apps
-      via Terraform, routing NFL API payloads through tiered Blob Storage with
-      automated schema validation and quarantine logic for data quality
-      enforcement
-    </li>
-    <li>
-      Instrumented custom Prometheus metrics for SLI and SLO tracking including
-      ingestion success rate, schema validity, and data freshness, using a
-      scraper sidecar and PromQL burn rate analysis visualized through Azure
-      Managed Grafana
-    </li>
-    <li>
-      Orchestrated the platform as modular Terraform with a remote state backend,
-      integrating Azure Container Registry, Key Vault, and RBAC managed identity
-      permissions across isolated bootstrap and dev environments
-    </li>
-  </ul>
-</article>
-          <article class="project-entry">
-            <h4>
-              <a
-                href="https://github.com/jordann6/sb-intel-center"
-                target="_blank"
-                rel="noopener"
-              >
-                Super Bowl LX Intelligence Center
-              </a>
-            </h4>
-            <ul>
-              <li>
-                Provisioned a cloud native analytics pipeline using Python and
-                Azure OpenAI (GPT 4o) to perform high dimensional forecasting on
-                NFL performance datasets for Super Bowl LX
-              </li>
-              <li>
-                Developed a custom Python data injection layer to mitigate
-                upstream API synchronization lag, preserving data integrity and
-                enabling reliable real time analysis for time sensitive events
-              </li>
-              <li>
-                Accelerated decision making cycles by automating complex data
-                aggregation and LLM driven analysis to reduce manual evaluation
-                overhead and improve forecast turnaround time
-              </li>
-            </ul>
-          </article>
-          <article class="project-entry">
-  <h4>
-    <a
-      href="https://github.com/jordann6/event-driven-aws-remediation"
-      target="_blank"
-      rel="noopener"
-    >
-      Event-Driven AWS Performance Remediation
-    </a>
-  </h4>
-  <ul>
-    <li>
-      Engineered an event driven remediation workflow using AWS Lambda and Python with Boto3 to automatically resolve API latency issues by rebooting targeted EC2 instances provisioned through Infrastructure as Code.
-    </li>
-    <li>
-      Enforced least privilege security by scoping IAM permissions to explicit EC2 instance and SNS topic ARNs enabling controlled remediation and notification without excess access.
-    </li>
-    <li>
-      Enhanced system observability by integrating JSON-formatted logging for CloudWatch and developing a Sumo Logic query to identify latency trends across API endpoints.
-    </li>
-    <li>
-      Built an end-to-end Bash validation script leveraging the IAM Policy Simulator and Lambda invocation to verify remediation behavior.
-    </li>
-  </ul>
-</article>
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header fade-in">
+    <span class="section-num">01</span>
+    <h2 class="section-title">About</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-text fade-in">
+      <p>
+        I transitioned into technology through hands-on experience, beginning in help desk and
+        progressing into a <strong>DevOps Engineer role</strong> by steadily expanding my development
+        and automation responsibilities.
+      </p>
+      <p>
+        After leaving law school, I redirected my focus toward software engineering and cloud
+        infrastructure, treating learning as a deliberate and continuous practice. My work emphasizes
+        <strong>reliability, reproducibility, and operational awareness</strong> across the software
+        development lifecycle, with a strong focus on cloud-native systems and DevOps-aligned workflows.
+      </p>
+      <p>
+        Currently at <strong>Snorkel AI</strong>, I build DevSecOps pipelines, Kubernetes blue-green
+        deployment strategies, and event-driven remediation systems on AWS and Azure — with everything
+        defined, versioned, and automated.
+      </p>
+    </div>
+    <div class="about-stats fade-in">
+      <div class="stat-card">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">Years in Cloud Engineering</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Cloud Certifications</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">AWS</div>
+        <div class="stat-label">+ Azure Focus</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">IaC</div>
+        <div class="stat-label">Terraform First</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-          <article class="project-entry">
-    <h4>
-    <a href="https://jordann6.substack.com" target="_blank" rel="noopener">
-  K3s Home Lab, Arch Linux
-</a>
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header fade-in">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Experience</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="exp-list">
 
-    </h4>
-    <ul>
-      <li>
-        Fortified a self hosted container orchestration environment by repurposing a T2 MacBook into an Arch Linux based K3s home lab, configuring namespaces, services, logging, and secure remote access for operator level system administration.
-      </li>
-      <li>
-        Implemented runtime observability and security controls by deploying Prometheus and Grafana for metrics and visualization and Falco for behavioral alerting, enabling hands on analysis of system health and anomaly detection across containerized workloads.
-      </li>
-    </ul>
-  </article>
-<article class="project-entry">
-  <h4>
-    <a href="https://github.com/jordann6/azure-devsecops-project/tree/main" target="_blank" rel="noopener">
-      Azure DevSecOps Project
-    </a>
-  </h4>
-  <ul>
-    <li>
-      Built an end to end Azure deployment workflow for a containerized Flask app using Terraform, Azure Container Registry, and Azure Kubernetes Service.
-    </li>
-    <li>
-      Implemented Blue Green release flow on AKS to support safer cutovers and fast rollback during failed deploys.
-    </li>
-    <li>
-      Hardened container runtime by running as a non root user and integrating image vulnerability scanning into the workflow.
-    </li>
-    <li>
-      Debugged and fixed CrashLoopBackOff caused by CPU architecture mismatch by enforcing linux amd64 builds for AKS nodes.
-    </li>
-  </ul>
-</article>
-          <article class="project-entry">
-            <h4>
-              <a
-                href="https://github.com/jordann6/cloud-resume-challenge"
-                target="_blank"
-              >
-                Jordandesigns.io: Cloud Resume Challenge Infrastructure
-              </a>
-            </h4>
-            <ul>
-              <li>
-                Deployed a serverless resume site on AWS achieving strong uptime
-                and fast global load times through S3, CloudFront, and Route 53
-                with TLS enforcement.
-              </li>
-              <li>
-                Implemented a real time visitor counter using Lambda and
-                DynamoDB supporting near one thousand tracked visits with
-                consistently low latency.
-              </li>
-              <li>
-                Automated all infrastructure and deployments using Terraform and
-                GitHub Actions including remote state stored in an S3 backend.
-              </li>
-            </ul>
-          </article>
-
-          <article class="project-entry">
-            <h4>
-              <a
-                href="https://github.com/jordann6/ecs-cicd-flask/tree/main"
-                target="_blank"
-              >
-                ECS-CI/CD-Flask: Containerized Component Deployment
-              </a>
-            </h4>
-            <ul>
-              <li>
-                Deployed a containerized Flask app on ECS Fargate with ECR in a
-                secured VPC.
-              </li>
-              <li>
-                Built GitHub Actions CI/CD pipelines that automated
-                infrastructure and app deployments, enabling zero-downtime
-                releases and high availability.
-              </li>
-            </ul>
-          </article>
-
-          <article class="project-entry">
-            <h4>
-              <a
-                href="https://github.com/jordann6/weather-pwa"
-                target="_blank"
-                rel="noopener"
-              >
-                Weather-PWA: Azure Container Apps Deployment
-              </a>
-            </h4>
-            <ul>
-              <li>Deployed a Go-based REST API on Azure Container Apps.</li>
-              <li>
-                Codified the entire Azure infrastructure using reusable
-                Terraform modules and automated the deployment process, reducing
-                setup time by 40%.
-              </li>
-            </ul>
-          </article>
-
-          <article class="project-entry">
-            <h4>
-              <a
-                href="https://github.com/jordann6/3-tier-task-app"
-                target="_blank"
-              >
-                3-Tier-Task-App: Scalable, IaC-Managed Environment
-              </a>
-            </h4>
-            <ul>
-              <li>
-                Engineered a complete 3-tier application stack (Flask, MySQL
-                RDS) using Docker Compose on AWS EC2.
-              </li>
-              <li>
-                Implemented full observability by integrating Prometheus and
-                Grafana for advanced monitoring and alerting across the
-                environment.
-              </li>
-            </ul>
-          </article>
-
-          <article class="project-entry">
-            <h4>
-              <a
-                href="https://github.com/jordann6/serverless-csv-pipeline"
-                target="_blank"
-              >
-                Serverless Data Pipeline: ETL Automation on AWS
-              </a>
-            </h4>
-            <ul>
-              <li>
-                Built event-driven pipeline triggered by S3 events to invoke AWS
-                Lambda for CSV preprocessing.
-              </li>
-              <li>
-                Orchestrated ETL with AWS Glue, scheduled Glue jobs for
-                recurring processing.
-              </li>
-              <li>
-                Managed IaC with Terraform and AWS CLI; enforced IAM role-based
-                security.
-              </li>
-            </ul>
-          </article>
-        </section>
-        <section id="education">
-          <h3>Education</h3>
-          <article class="job-entry">
-            <h4>University of Illinois at Urbana-Champaign</h4>
-            <span class="duration">Bachelor of Arts in Communication</span>
-          </article>
-        </section>
-      </main>
-
-      <footer>
-        <p>
-          &copy;
-          <script>
-            document.write(new Date().getFullYear());
-          </script>
-          Jordan. Powered by AWS.
-        </p>
-      </footer>
+    <div class="exp-item fade-in">
+      <div class="exp-meta">
+        <div class="exp-period">2025 — Present</div>
+        <div class="exp-company">Snorkel AI</div>
+      </div>
+      <div class="exp-body">
+        <div class="exp-role">DevOps Specialist</div>
+        <ul class="exp-bullets">
+          <li>Reduced vulnerable build promotion by 90% through a custom DevSecOps pipeline integrating SAST, DAST, and IaC scanning.</li>
+          <li>Implemented Kubernetes blue-green deployment strategies enabling zero-downtime releases and rapid rollback, reducing deployment failures by ~70%.</li>
+          <li>Orchestrated an event-driven remediation workflow using AWS Lambda and Boto3 to automatically resolve API latency degradation, reducing MTTR by ~40%.</li>
+          <li>Validated remediation reliability pre-promotion using Bash scripts invoking the IAM Policy Simulator and Lambda.</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">AWS Lambda</span>
+          <span class="exp-tag">Kubernetes</span>
+          <span class="exp-tag">Boto3</span>
+          <span class="exp-tag">DevSecOps</span>
+          <span class="exp-tag">Bash</span>
+          <span class="exp-tag">IAM</span>
+          <span class="exp-tag">CI/CD</span>
+        </div>
+      </div>
     </div>
 
-    <script src="index.js"></script>
-    <script src="https://cdn.credly.com/assets/utilities/embed.js"></script>
-  </body>
+    <div class="exp-item fade-in">
+      <div class="exp-meta">
+        <div class="exp-period">2024 — 2025</div>
+        <div class="exp-company">Wiggs CPA Tax & Accounting</div>
+      </div>
+      <div class="exp-body">
+        <div class="exp-role">IT Support Specialist</div>
+        <ul class="exp-bullets">
+          <li>Executed a cloud rehosting migration from AWS to Azure, performing service dependency mapping to ensure data integrity across the firm's accounting infrastructure throughout cutover.</li>
+          <li>Provisioned and rightsized Azure infrastructure using IaC, aligning compute and storage to budget constraints while maintaining 99%+ uptime post-migration.</li>
+          <li>Engineered Python and Bash scripts to automate recurring Entra ID authentication remediation, cutting resolution time by ~50%.</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">Azure</span>
+          <span class="exp-tag">AWS</span>
+          <span class="exp-tag">Terraform</span>
+          <span class="exp-tag">Python</span>
+          <span class="exp-tag">Bash</span>
+          <span class="exp-tag">Entra ID</span>
+          <span class="exp-tag">IaC</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exp-item fade-in">
+      <div class="exp-meta">
+        <div class="exp-period">2022 — 2024</div>
+        <div class="exp-company">Wiggs CPA Tax & Accounting</div>
+      </div>
+      <div class="exp-body">
+        <div class="exp-role">Desktop Specialist</div>
+        <ul class="exp-bullets">
+          <li>Prevented data loss and client-facing delays across 20+ critical engagements through backup restoration and environment repair.</li>
+          <li>Resolved 40+ monthly MFA and authentication incidents while maintaining high first-contact resolution rates.</li>
+          <li>Streamlined Tier-2 handoffs by authoring diagnostic runbooks, reducing complex incident resolution time by ~30%.</li>
+        </ul>
+        <div class="exp-tags">
+          <span class="exp-tag">Windows</span>
+          <span class="exp-tag">MFA</span>
+          <span class="exp-tag">Incident Response</span>
+          <span class="exp-tag">Runbooks</span>
+          <span class="exp-tag">IT Support</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header fade-in">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Projects</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="projects-grid">
+
+    <a class="project-card fade-in" href="https://github.com/jordann6/nba-intel-center/tree/main" target="_blank">
+      <div class="project-card-inner">
+        <span class="project-num">Project 01</span>
+        <div class="project-title">NBA Intel Center</div>
+        <p class="project-desc">
+          A mobile-responsive NBA prop analysis tool with a conversational AI layer powered by
+          Azure OpenAI GPT-4o, enabling natural language queries against live player stats and
+          prop lines. Built a RAG pipeline using a Qdrant vector store on a self-hosted K3s cluster,
+          integrating The Odds API and NBA API for live data ingestion.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">Azure OpenAI</span>
+          <span class="project-tag">GPT-4o</span>
+          <span class="project-tag">FastAPI</span>
+          <span class="project-tag">Qdrant</span>
+          <span class="project-tag">RAG</span>
+          <span class="project-tag">K3s</span>
+          <span class="project-tag">Python</span>
+        </div>
+        <span class="project-link">View on GitHub</span>
+      </div>
+    </a>
+
+    <a class="project-card fade-in" href="https://github.com/jordann6/nfl-data-reliability-platform" target="_blank">
+      <div class="project-card-inner">
+        <span class="project-num">Project 02</span>
+        <div class="project-title">NFL Data Reliability Platform</div>
+        <p class="project-desc">
+          A containerized Python ingestion service deployed to Azure Container Apps via Terraform,
+          routing NFL API payloads through tiered Blob Storage with automated schema validation
+          and quarantine logic. Custom Prometheus metrics for SLI/SLO tracking with PromQL burn
+          rate analysis surfaced through Grafana.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">Azure Container Apps</span>
+          <span class="project-tag">Terraform</span>
+          <span class="project-tag">Prometheus</span>
+          <span class="project-tag">Grafana</span>
+          <span class="project-tag">PromQL</span>
+          <span class="project-tag">Python</span>
+          <span class="project-tag">SRE</span>
+        </div>
+        <span class="project-link">View on GitHub</span>
+      </div>
+    </a>
+
+    <a class="project-card fade-in" href="https://github.com/jordann6/event-driven-aws-remediation" target="_blank">
+      <div class="project-card-inner">
+        <span class="project-num">Project 03</span>
+        <div class="project-title">Event-Driven AWS Performance Remediation</div>
+        <p class="project-desc">
+          An automated remediation pipeline on AWS detecting underperforming EC2 instances via
+          CloudWatch alarms and triggering Lambda functions with Boto3 to right-size or restart
+          affected resources. Pre-promotion validation via Bash scripts invoking the IAM Policy
+          Simulator — no manual intervention required.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">AWS Lambda</span>
+          <span class="project-tag">Boto3</span>
+          <span class="project-tag">EC2</span>
+          <span class="project-tag">CloudWatch</span>
+          <span class="project-tag">EventBridge</span>
+          <span class="project-tag">IAM</span>
+          <span class="project-tag">Python</span>
+        </div>
+        <span class="project-link">View on GitHub</span>
+      </div>
+    </a>
+
+    <a class="project-card fade-in" href="https://github.com/jordann6/azure-devsecops-project/tree/main" target="_blank">
+      <div class="project-card-inner">
+        <span class="project-num">Project 04</span>
+        <div class="project-title">Azure DevSecOps Project</div>
+        <p class="project-desc">
+          End-to-end Azure deployment workflow for a containerized Flask app using Terraform,
+          Azure Container Registry, and AKS with blue-green release flow for safer cutovers.
+          Hardened container runtime with non-root execution and image vulnerability scanning
+          integrated into the pipeline.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">AKS</span>
+          <span class="project-tag">Terraform</span>
+          <span class="project-tag">ACR</span>
+          <span class="project-tag">Flask</span>
+          <span class="project-tag">Blue-Green</span>
+          <span class="project-tag">DevSecOps</span>
+        </div>
+        <span class="project-link">View on GitHub</span>
+      </div>
+    </a>
+
+    <a class="project-card fade-in" href="https://jordann6.substack.com" target="_blank">
+      <div class="project-card-inner">
+        <span class="project-num">Project 05</span>
+        <div class="project-title">K3s Home Lab — Arch Linux</div>
+        <p class="project-desc">
+          Self-hosted container orchestration environment built on a repurposed T2 MacBook running
+          Arch Linux. Configured namespaces, services, logging, and secure remote access.
+          Deployed Prometheus, Grafana, and Falco for runtime observability, metrics, and
+          behavioral alerting across containerized workloads.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">K3s</span>
+          <span class="project-tag">Arch Linux</span>
+          <span class="project-tag">Prometheus</span>
+          <span class="project-tag">Grafana</span>
+          <span class="project-tag">Falco</span>
+          <span class="project-tag">Kubernetes</span>
+        </div>
+        <span class="project-link">View on Substack</span>
+      </div>
+    </a>
+
+    <a class="project-card fade-in" href="https://github.com/jordann6/cloud-resume-challenge" target="_blank">
+      <div class="project-card-inner">
+        <span class="project-num">Project 06</span>
+        <div class="project-title">jordandesigns.io — Cloud Resume Challenge</div>
+        <p class="project-desc">
+          Serverless resume site on AWS with strong uptime and fast global load times via S3,
+          CloudFront, and Route 53 with TLS enforcement. Real-time visitor counter using Lambda
+          and DynamoDB. All infrastructure automated with Terraform and GitHub Actions with
+          remote state in S3.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">S3</span>
+          <span class="project-tag">CloudFront</span>
+          <span class="project-tag">Route 53</span>
+          <span class="project-tag">Lambda</span>
+          <span class="project-tag">DynamoDB</span>
+          <span class="project-tag">Terraform</span>
+          <span class="project-tag">GitHub Actions</span>
+        </div>
+        <span class="project-link">View on GitHub</span>
+      </div>
+    </a>
+
+    <a class="project-card fade-in" href="https://github.com/jordann6/ecs-cicd-flask/tree/main" target="_blank">
+      <div class="project-card-inner">
+        <span class="project-num">Project 07</span>
+        <div class="project-title">ECS CI/CD Flask</div>
+        <p class="project-desc">
+          Containerized Flask app deployed on ECS Fargate with ECR in a secured VPC.
+          GitHub Actions CI/CD pipelines automate infrastructure and app deployments,
+          enabling zero-downtime releases and high availability.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">ECS Fargate</span>
+          <span class="project-tag">ECR</span>
+          <span class="project-tag">Flask</span>
+          <span class="project-tag">GitHub Actions</span>
+          <span class="project-tag">VPC</span>
+          <span class="project-tag">CI/CD</span>
+        </div>
+        <span class="project-link">View on GitHub</span>
+      </div>
+    </a>
+
+    <a class="project-card fade-in" href="https://github.com/jordann6/weather-pwa" target="_blank">
+      <div class="project-card-inner">
+        <span class="project-num">Project 08</span>
+        <div class="project-title">Weather PWA — Azure Container Apps</div>
+        <p class="project-desc">
+          Go-based REST API deployed on Azure Container Apps. Entire Azure infrastructure
+          codified using reusable Terraform modules with automated deployment, reducing
+          setup time by 40%.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">Go</span>
+          <span class="project-tag">Azure Container Apps</span>
+          <span class="project-tag">Terraform</span>
+          <span class="project-tag">REST API</span>
+        </div>
+        <span class="project-link">View on GitHub</span>
+      </div>
+    </a>
+
+    <a class="project-card fade-in" href="https://github.com/jordann6/3-tier-task-app" target="_blank">
+      <div class="project-card-inner">
+        <span class="project-num">Project 09</span>
+        <div class="project-title">3-Tier Task App</div>
+        <p class="project-desc">
+          Complete 3-tier application stack (Flask, MySQL RDS) using Docker Compose on AWS EC2.
+          Full observability implemented with Prometheus and Grafana for monitoring and
+          alerting across the environment.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">Flask</span>
+          <span class="project-tag">MySQL</span>
+          <span class="project-tag">Docker Compose</span>
+          <span class="project-tag">EC2</span>
+          <span class="project-tag">Prometheus</span>
+          <span class="project-tag">Grafana</span>
+        </div>
+        <span class="project-link">View on GitHub</span>
+      </div>
+    </a>
+
+    <a class="project-card fade-in" href="https://github.com/jordann6/serverless-csv-pipeline" target="_blank">
+      <div class="project-card-inner">
+        <span class="project-num">Project 10</span>
+        <div class="project-title">Serverless CSV Pipeline</div>
+        <p class="project-desc">
+          Event-driven ETL pipeline triggered by S3 events invoking AWS Lambda for CSV
+          preprocessing. Orchestrated with AWS Glue for recurring processing, managed
+          with Terraform and AWS CLI, and secured with IAM role-based access controls.
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">Lambda</span>
+          <span class="project-tag">S3</span>
+          <span class="project-tag">AWS Glue</span>
+          <span class="project-tag">Terraform</span>
+          <span class="project-tag">IAM</span>
+          <span class="project-tag">ETL</span>
+        </div>
+        <span class="project-link">View on GitHub</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header fade-in">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Skills & Stack</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-group fade-in">
+      <div class="skill-group-title">Languages & Frameworks</div>
+      <div class="skill-items">
+        <span class="skill-item">Python</span>
+        <span class="skill-item">JavaScript</span>
+        <span class="skill-item">Bash</span>
+        <span class="skill-item">SQL</span>
+        <span class="skill-item">Go</span>
+        <span class="skill-item">C++</span>
+        <span class="skill-item">Java</span>
+        <span class="skill-item">FastAPI</span>
+        <span class="skill-item">React</span>
+        <span class="skill-item">REST APIs</span>
+        <span class="skill-item">PromQL</span>
+      </div>
+    </div>
+    <div class="skill-group fade-in">
+      <div class="skill-group-title">Cloud Platforms</div>
+      <div class="skill-items">
+        <span class="skill-item">AWS</span>
+        <span class="skill-item">Azure</span>
+        <span class="skill-item">GCP</span>
+        <span class="skill-item">Oracle Cloud</span>
+      </div>
+    </div>
+    <div class="skill-group fade-in">
+      <div class="skill-group-title">Infrastructure & DevOps</div>
+      <div class="skill-items">
+        <span class="skill-item">Terraform</span>
+        <span class="skill-item">Docker</span>
+        <span class="skill-item">Kubernetes</span>
+        <span class="skill-item">CI/CD</span>
+        <span class="skill-item">GitHub Actions</span>
+        <span class="skill-item">Shell Scripting</span>
+        <span class="skill-item">IaC</span>
+        <span class="skill-item">Git</span>
+      </div>
+    </div>
+    <div class="skill-group fade-in">
+      <div class="skill-group-title">Databases & Data</div>
+      <div class="skill-items">
+        <span class="skill-item">PostgreSQL</span>
+        <span class="skill-item">MySQL</span>
+        <span class="skill-item">DynamoDB</span>
+        <span class="skill-item">MongoDB</span>
+        <span class="skill-item">Redis</span>
+        <span class="skill-item">SQLite</span>
+        <span class="skill-item">Qdrant</span>
+      </div>
+    </div>
+    <div class="skill-group fade-in">
+      <div class="skill-group-title">Monitoring & Observability</div>
+      <div class="skill-items">
+        <span class="skill-item">Prometheus</span>
+        <span class="skill-item">Grafana</span>
+        <span class="skill-item">Falco</span>
+        <span class="skill-item">PromQL</span>
+        <span class="skill-item">SLI / SLO</span>
+        <span class="skill-item">Burn Rate Analysis</span>
+      </div>
+    </div>
+    <div class="skill-group fade-in">
+      <div class="skill-group-title">Systems & Environments</div>
+      <div class="skill-items">
+        <span class="skill-item">Linux</span>
+        <span class="skill-item">Windows Server</span>
+        <span class="skill-item">macOS</span>
+        <span class="skill-item">K3s</span>
+        <span class="skill-item">Entra ID</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-header fade-in">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Certifications</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="certs-grid">
+    <div class="cert-card fade-in">
+      <div class="cert-icon">AWS<br>SAA</div>
+      <div class="cert-info">
+        <div class="cert-name">Solutions Architect Associate</div>
+        <div class="cert-provider">Amazon Web Services · SAA-C03</div>
+      </div>
+      <span class="cert-status">Active</span>
+    </div>
+    <div class="cert-card fade-in">
+      <div class="cert-icon">AZ<br>104</div>
+      <div class="cert-info">
+        <div class="cert-name">Azure Administrator Associate</div>
+        <div class="cert-provider">Microsoft Azure · AZ-104</div>
+      </div>
+      <span class="cert-status">Active</span>
+    </div>
+    <div class="cert-card fade-in" style="opacity:0.5; cursor: default;">
+      <div class="cert-icon" style="color:var(--text-dim); background:var(--bg2); border-color:var(--border);">AI<br>PRE</div>
+      <div class="cert-info">
+        <div class="cert-name">AI Practitioner</div>
+        <div class="cert-provider">Amazon Web Services · In Progress</div>
+      </div>
+      <span class="cert-status" style="color:var(--text-dim); background:transparent; border-color:var(--border);">Planned</span>
+    </div>
+    <div class="cert-card fade-in" style="opacity:0.5; cursor: default;">
+      <div class="cert-icon" style="color:var(--text-dim); background:var(--bg2); border-color:var(--border);">CC<br>NA</div>
+      <div class="cert-info">
+        <div class="cert-name">CCNA</div>
+        <div class="cert-provider">Cisco · Networking · In Progress</div>
+      </div>
+      <span class="cert-status" style="color:var(--text-dim); background:transparent; border-color:var(--border);">Planned</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header fade-in">
+    <span class="section-num">06</span>
+    <h2 class="section-title">Contact</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="contact-inner">
+    <div class="contact-text fade-in">
+      <h3 class="contact-headline">Let's<br><span>Build</span><br>Something.</h3>
+      <p class="contact-sub">
+        Open to Cloud Engineer, DevOps Engineer, and Platform Engineer roles. 
+        Remote or hybrid in Chicago preferred — strong opportunities considered anywhere.
+      </p>
+      <a class="btn-primary" href="mailto:jordandn6@outlook.com">Send an Email</a>
+    </div>
+    <div class="contact-links fade-in">
+    <div class="contact-links fade-in">
+      <a class="contact-link" href="mailto:jordandn6@outlook.com">
+        <div>
+          <span class="contact-link-label">Email</span>
+          <span class="contact-link-value">jordandn6@outlook.com</span>
+        </div>
+        <span class="contact-link-arrow">↗</span>
+      </a>
+      <a class="contact-link" href="https://linkedin.com/in/jordan-nelson-aa0828165" target="_blank">
+        <div>
+          <span class="contact-link-label">LinkedIn</span>
+          <span class="contact-link-value">linkedin.com/in/jordan-nelson-aa0828165</span>
+        </div>
+        <span class="contact-link-arrow">↗</span>
+      </a>
+      <a class="contact-link" href="https://github.com/jordann6" target="_blank">
+        <div>
+          <span class="contact-link-label">GitHub</span>
+          <span class="contact-link-value">github.com/jordann6</span>
+        </div>
+        <span class="contact-link-arrow">↗</span>
+      </a>
+      <a class="contact-link" href="https://jordandesigns.io" target="_blank">
+        <div>
+          <span class="contact-link-label">Portfolio</span>
+          <span class="contact-link-value">jordandesigns.io</span>
+        </div>
+        <span class="contact-link-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-copy">© 2026 Jordan Nelson</span>
+  <span class="footer-right">Built on <span>AWS</span> · jordandesigns.io</span>
+</footer>
+
+<script>
+  // Scroll fade-in observer
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const delay = el.dataset.delay || 0;
+        setTimeout(() => el.classList.add('visible'), delay);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  // Stagger in each section
+  document.querySelectorAll('.fade-in').forEach((el, i) => {
+    const siblings = el.parentElement.querySelectorAll('.fade-in');
+    let idx = Array.from(siblings).indexOf(el);
+    el.dataset.delay = idx * 80;
+    observer.observe(el);
+  });
+
+  // Active nav link highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.style.color = link.getAttribute('href') === '#' + entry.target.id
+            ? 'var(--accent-bright)'
+            : '';
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => navObserver.observe(s));
+</script>
+<script src="index.js"></script>
+</body>
 </html>

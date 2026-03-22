@@ -1,0 +1,18 @@
+{
+  "Comment": "Add ACM DNS validation record for jordandesigns.io",
+  "Changes": [
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "_d839731fe597444099e1d0e76d3ff10b.jordandesigns.io.",
+        "Type": "CNAME",
+        "TTL": 300,
+        "ResourceRecords": [
+          {
+            "Value": "_5ba7bc3ce3e31e5a186f2b1d9edbea91.zfyfvmchrl.acm-validations.aws."
+          }
+        ]
+      }
+    }
+  ]
+}
