@@ -214,24 +214,30 @@
       </div>
     </a>
 
-    <a class="project-card fade-in" href="https://github.com/jordann6/nba-intel-center/tree/main" target="_blank">
+    <a class="project-card fade-in" href="https://github.com/jordann6/cloud-security-lab" target="_blank">
       <div class="project-card-inner">
         <span class="project-num">Project 02</span>
-        <div class="project-title">NBA Intel Center</div>
+        <div class="project-title">Cloud Security Lab</div>
         <p class="project-desc">
-          A mobile-responsive NBA prop analysis tool with a conversational AI layer powered by
-          Azure OpenAI GPT-4o, enabling natural language queries against live player stats and
-          prop lines. Built a RAG pipeline using a Qdrant vector store on a self-hosted K3s cluster,
-          integrating The Odds API and NBA API for live data ingestion.
+          End to end threat detection, incident response, and automated remediation across AWS
+          and Kubernetes. Deployed 62 Terraform resources across 7 modules covering intentionally
+          vulnerable infrastructure, a CloudTrail and GuardDuty detection pipeline, OpenSearch SIEM
+          with kill chain correlation dashboards, and EventBridge to Lambda automated remediation.
+          Executed a full MITRE ATT&CK mapped kill chain using Pacu: privilege escalation from
+          1,039 to 15,319 IAM permissions, S3 data exfiltration, and lateral movement through
+          STS role assumption. Deployed Falco with custom detection rules on K3s catching 100%
+          of runtime attack scenarios, and enforced preventive controls via OPA Gatekeeper
+          blocking privileged containers, host namespace access, and root execution at admission.
         </p>
         <div class="project-tags">
-          <span class="project-tag">Azure OpenAI</span>
-          <span class="project-tag">GPT-4o</span>
-          <span class="project-tag">FastAPI</span>
-          <span class="project-tag">Qdrant</span>
-          <span class="project-tag">RAG</span>
+          <span class="project-tag">Terraform</span>
+          <span class="project-tag">CloudTrail</span>
+          <span class="project-tag">GuardDuty</span>
+          <span class="project-tag">OpenSearch</span>
+          <span class="project-tag">Falco</span>
+          <span class="project-tag">OPA Gatekeeper</span>
+          <span class="project-tag">MITRE ATT&CK</span>
           <span class="project-tag">K3s</span>
-          <span class="project-tag">Python</span>
         </div>
         <span class="project-link">View on GitHub</span>
       </div>
