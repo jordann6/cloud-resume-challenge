@@ -1,46 +1,51 @@
-Cloud Resume Challenge – JordanDesigns.io
+# Cloud Resume Challenge — [jordandesigns.io](https://jordandesigns.io)
 
-The Cloud Resume Challenge showcases a person's ability to turn their resume into a live website using modern cloud technologies. JordanDesigns.io is my implementation of this challenge, originally created by Forrest Brazeal. With the help of his book, documentation, and YouTube videos, I built and deployed this project to sharpen my skills in cloud architecture, DevOps, and automation.
+Portfolio site built as an implementation of Forrest Brazeal's Cloud Resume Challenge. Serverless architecture on AWS with automated deployments, real-time visitor tracking, and all infrastructure defined in Terraform.
 
-Features
+## Architecture
 
-Frontend: Responsive resume site built using HTML, CSS, and JavaScript
-Hosting: Static site hosted on AWS S3 with custom domain via Route 53 and global delivery using CloudFront
-Backend: Real-time visitor counter implemented using AWS Lambda, API Gateway (REST), and DynamoDB
-CI/CD: Continuous deployment pipeline configured with GitHub Actions for automatic S3 updates on push
-Infrastructure as Code: All resources managed and provisioned using Terraform
-Architecture Diagram
+**Frontend:** HTML, CSS, and JavaScript served from S3 through CloudFront with TLS enforcement and custom domain via Route 53.
 
-Project Structure
+**Backend:** Visitor counter powered by API Gateway (REST), Lambda (Python), and DynamoDB. Counter displays on success and hides silently on failure.
 
+**CI/CD:** GitHub Actions pipeline syncs to S3 and invalidates CloudFront cache on every push to main.
+
+**Infrastructure as Code:** All AWS resources provisioned and managed with Terraform.
+
+## Project Structure
+
+```
 cloud-resume-challenge/
-│
-├── index.html # Resume website (HTML)
-├── style.css # Styling (CSS)
-├── script.js # JavaScript for visitor counter
-├── lambda_function.py # AWS Lambda function (Python)
-├── main.tf # Terraform configuration
-├── variables.tf # Terraform variables
-├── .github/workflows/ci.yml # GitHub Actions workflow
-└── README.md # Project documentation
-Deployment Overview
+├── index.html              # Portfolio site
+├── main.css                # Styling
+├── index.js                # Visitor counter logic
+├── assets/                 # Cert badges, diagrams
+├── backend/
+│   ├── lambda_function.py  # Visitor counter Lambda
+│   └── uptime_checker.py   # Uptime monitor Lambda
+├── infrastructure/
+│   └── terraform/          # All IaC definitions
+├── .github/
+│   └── workflows/
+│       └── deploy.yml      # CI/CD pipeline
+└── README.md
+```
 
-Frontend
-Developed in HTML/CSS/JavaScript
-Deployed to AWS S3 with public website hosting enabled
-Domain registered and managed with Route 53
-Served securely via CloudFront
-Backend
-Visitor counter hits API Gateway (REST)
-Triggers AWS Lambda written in Python
-Lambda updates and returns visitor count from DynamoDB
-CI/CD
-GitHub Actions workflow auto-deploys on push to main
-Syncs files to the S3 bucket using s3-sync-action
-Infrastructure
-All cloud resources are provisioned with Terraform in a reproducible and version-controlled setup
-Contact
+## Deployment
 
-Email: jordandn6@outlook.com
-GitHub: github.com/jordann6
-LinkedIn: linkedin.com/in/jordan-nelson-aa0828165
+Push to `main` triggers the full pipeline:
+
+1. GitHub Actions checks out the repo
+2. Syncs site files to S3 with cache headers
+3. Invalidates CloudFront distribution to serve latest content
+
+## Tech Stack
+
+S3, CloudFront, Route 53, Lambda, API Gateway, DynamoDB, Terraform, GitHub Actions
+
+## Contact
+
+**Email:** jordandn6@outlook.com
+**GitHub:** [github.com/jordann6](https://github.com/jordann6)
+**LinkedIn:** [linkedin.com/in/jordan-nelson-aa0828165](https://linkedin.com/in/jordan-nelson-aa0828165)
+**Portfolio:** [jordandesigns.io](https://jordandesigns.io)
