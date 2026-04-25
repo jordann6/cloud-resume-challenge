@@ -19,12 +19,16 @@ async function updateVisitorCount() {
     } else if (data.body) {
       const body =
         typeof data.body === "string" ? JSON.parse(data.body) : data.body;
-      visits = body.visits || body.count || "error";
+      visits = body.visits || body.count || 0;
     }
-    countElement.textContent =
-      "Resume Views: " + (visits.toLocaleString() || "Error");
+    if (!visits || visits === 0) {
+      countElement.style.display = "none";
+      return;
+    }
+    countElement.textContent = visits.toLocaleString() + " Views";
   } catch (err) {
-    countElement.textContent = "Views: Error";
+    // Fail silently: hide the badge instead of showing a broken state
+    countElement.style.display = "none";
     console.error("Visitor count error:", err);
   }
 }
