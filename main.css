@@ -1028,6 +1028,9 @@ section {
   padding: 56px;
 }
 
+/* ════════════════════════════════════════════════
+   RESPONSIVE — Tablet
+   ════════════════════════════════════════════════ */
 @media (max-width: 1100px) {
   .stage,
   .footer {
@@ -1039,6 +1042,310 @@ section {
     padding-right: 32px;
   }
   .side-rail {
+    display: none;
+  }
+}
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE — Mobile
+   ════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Restore native cursor on touch devices */
+  body,
+  button,
+  .proj__item,
+  .skills__group .items span {
+    cursor: auto;
+  }
+  .cursor-ring,
+  .cursor-dot,
+  .cursor-coords {
+    display: none !important;
+  }
+
+  /* Hide frame edges and center line on mobile */
+  .frame-edge {
+    display: none;
+  }
+  body::after {
+    display: none;
+  }
+
+  /* Nav: logo left, hamburger-less minimal */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 20px;
+  }
+  .nav__links {
+    display: none;
+  }
+  .nav__time {
+    font-size: 9px;
+  }
+  .nav__time .label {
+    display: none;
+  }
+
+  /* Stage padding */
+  .stage,
+  .footer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  /* Hero */
+  .hero {
+    padding-top: 80px;
+    padding-bottom: 48px;
+    min-height: auto;
+  }
+  .hero__top {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding-bottom: 24px;
+  }
+  .hero__loc {
+    text-align: left;
+  }
+  .hero__name {
+    margin: 32px 0 24px;
+    font-size: clamp(56px, 16vw, 96px);
+  }
+  .hero__name .last {
+    text-indent: 0.3em;
+  }
+  .hero__bottom {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding-top: 24px;
+  }
+  .hero__role .title {
+    font-size: 18px;
+  }
+  .hero__desc {
+    max-width: none;
+  }
+  .hero__cta {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .hero__cta .btn {
+    flex: 1;
+    justify-content: center;
+    padding: 16px 20px;
+    font-size: 10px;
+  }
+
+  /* Marquee */
+  .marquee {
+    margin-top: 48px;
+    padding: 16px 0;
+  }
+  .marquee__track {
+    font-size: 16px;
+    gap: 32px;
+  }
+
+  /* Section headers */
+  .sec-head {
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    padding: 64px 0 32px;
+    margin-bottom: 32px;
+  }
+  .sec-head__meta {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+
+  /* About */
+  .about {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding-bottom: 64px;
+  }
+  .about__lead {
+    font-size: 22px;
+  }
+  .about__body .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .about__body .stat:nth-child(2) {
+    border-right: 0;
+  }
+  .about__body .stat {
+    padding: 16px 0;
+  }
+
+  /* Experience */
+  .exp {
+    padding-bottom: 64px;
+  }
+  .exp__row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 24px 0;
+  }
+  .exp__row .yr {
+    padding-top: 0;
+    font-size: 10px;
+  }
+  .exp__row .co .name {
+    font-size: 18px;
+  }
+  .exp__row .body .role {
+    font-size: 18px;
+    margin-bottom: 12px;
+    margin-top: 8px;
+  }
+  .exp__row .body li {
+    font-size: 13px;
+    padding-left: 18px;
+  }
+  .exp__row .body li::before {
+    width: 8px;
+    top: 10px;
+  }
+
+  /* Projects */
+  .proj {
+    padding-bottom: 64px;
+  }
+  .proj__item {
+    grid-template-columns: 40px 1fr auto;
+    gap: 16px;
+    padding: 20px 0;
+  }
+  .proj__title {
+    font-size: clamp(22px, 6vw, 32px);
+  }
+  .proj__arrow {
+    font-size: 18px;
+  }
+  /* Show tags by default on mobile since no hover */
+  .proj__hover-tags {
+    opacity: 1;
+    max-height: 60px;
+    margin-top: 10px;
+  }
+
+  /* Skills */
+  .skills {
+    padding-bottom: 64px;
+  }
+  .skills__grid {
+    grid-template-columns: 1fr;
+  }
+  .skills__group .label {
+    padding: 20px 0 8px;
+    border-bottom: none;
+  }
+  .skills__group .items {
+    padding: 0 0 20px;
+    gap: 6px 16px;
+  }
+  .skills__group .items span {
+    font-size: 17px;
+  }
+
+  /* Certs */
+  .certs {
+    padding-bottom: 64px;
+  }
+  .certs__grid {
+    grid-template-columns: 1fr;
+  }
+  .cert {
+    padding: 24px;
+    min-height: 160px;
+  }
+  .cert__sigil {
+    font-size: 40px;
+  }
+  .cert__name {
+    font-size: 20px;
+  }
+
+  /* Contact */
+  .contact {
+    padding-bottom: 48px;
+  }
+  .contact__grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .contact__head {
+    font-size: clamp(48px, 12vw, 80px);
+    margin-bottom: 20px;
+  }
+  .contact__sub {
+    max-width: none;
+    margin-bottom: 24px;
+  }
+  .contact__link {
+    grid-template-columns: 70px 1fr auto;
+    gap: 12px;
+    padding: 16px 0;
+  }
+  .contact__link .label {
+    font-size: 9px;
+  }
+  .contact__link .val {
+    font-size: 13px;
+  }
+
+  /* Footer */
+  .footer {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .footer__c,
+  .footer__r {
+    text-align: center;
+  }
+
+  /* Modal */
+  .modal-mask {
+    padding: 20px;
+    align-items: flex-end;
+  }
+  .modal {
+    padding: 28px;
+    max-height: 85vh;
+  }
+  .modal h3 {
+    font-size: 32px !important;
+  }
+}
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE — Small phones
+   ════════════════════════════════════════════════ */
+@media (max-width: 400px) {
+  .hero__name {
+    font-size: clamp(44px, 14vw, 64px);
+  }
+  .hero__cta {
+    flex-direction: column;
+  }
+  .about__body .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+  .contact__head {
+    font-size: 44px;
+  }
+  .proj__item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .proj__num {
+    font-size: 10px;
+  }
+  .proj__arrow {
     display: none;
   }
 }
