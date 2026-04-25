@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  body { padding: 22px 28px; display: flex; flex-direction: column; gap: 12px; }
+  .head { display: flex; justify-content: space-between; align-items: center; }
+  .label { font-size: 10px; }
+  .meta { font-family: "IBM Plex Mono"; font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .row {
+    display: grid;
+    grid-template-columns: 92px 1fr 110px;
+    align-items: center;
+    gap: 16px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .row:last-child { border: 0; }
+  .tok { font-family: "IBM Plex Mono"; font-size: 9.5px; color: var(--text-dim); letter-spacing: 0.04em; }
+  .v { font-family: "IBM Plex Mono"; font-size: 9.5px; color: var(--text-secondary); letter-spacing: 0.02em; text-align: right; }
+  .eyebrow { font-family: "IBM Plex Mono"; font-size: 12px; font-weight: 400; color: var(--text-dim); letter-spacing: 0.06em; }
+  .nav { font-family: "IBM Plex Mono"; font-size: 11px; font-weight: 400; color: var(--text-secondary); letter-spacing: 0.08em; text-transform: uppercase; }
+  .badge { font-family: "IBM Plex Mono"; font-size: 10px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; border: 1px solid var(--border); display: inline-block; }
+  .num { font-family: "IBM Plex Mono"; font-size: 12px; color: var(--text-dim); letter-spacing: 0.04em; }
+</style></head>
+<body>
+  <div class="head"><span class="label">// mono · ibm plex mono</span><span class="meta">metadata system</span></div>
+  <div class="row"><span class="tok">eyebrow</span><span class="eyebrow">// Available for new opportunities</span><span class="v">12 / 400 / 0.06em</span></div>
+  <div class="row"><span class="tok">nav-link</span><span class="nav">Projects</span><span class="v">11 / 400 / 0.08em</span></div>
+  <div class="row"><span class="tok">badge</span><span><span class="badge">AWS SAA-C03</span></span><span class="v">10 / 400 / 0.06em</span></div>
+  <div class="row"><span class="tok">section #</span><span class="num">01</span><span class="v">12 / 400</span></div>
+</body></html>

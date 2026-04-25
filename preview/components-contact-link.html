@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  body { padding: 22px 28px; }
+  .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .label { font-family: 'IBM Plex Mono'; font-size: 10px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .meta { font-family: 'IBM Plex Mono'; font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .links { display: flex; flex-direction: column; border-top: 1px solid #1e1e1e; }
+  .row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; padding-left: 0; border-bottom: 1px solid #1e1e1e; transition: padding-left 0.3s cubic-bezier(0.16,1,0.3,1); }
+  .row:hover { padding-left: 12px; }
+  .row:hover .val { color: #f0f0f0; }
+  .row:hover .arr { color: #f0f0f0; transform: translate(2px, -2px); }
+  .lab { font-family: 'IBM Plex Mono'; font-size: 9px; font-weight: 400; color: #555; letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 3px; }
+  .val { font-family: 'Barlow'; font-weight: 300; font-size: 13px; color: #888; transition: color 0.3s ease; }
+  .arr { font-size: 16px; color: #555; transition: all 0.3s ease; }
+</style></head>
+<body>
+  <div class="head"><span class="label">// contact link</span><span class="meta">slide-right hover</span></div>
+  <div class="links">
+    <div class="row">
+      <div><span class="lab">Email</span><span class="val">jordandn6@outlook.com</span></div>
+      <span class="arr">↗</span>
+    </div>
+    <div class="row">
+      <div><span class="lab">LinkedIn</span><span class="val">linkedin.com/in/jordan-nelson-aa0828165</span></div>
+      <span class="arr">↗</span>
+    </div>
+    <div class="row">
+      <div><span class="lab">GitHub</span><span class="val">github.com/jordann6</span></div>
+      <span class="arr">↗</span>
+    </div>
+  </div>
+</body></html>

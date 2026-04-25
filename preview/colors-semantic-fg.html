@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px 28px; }
+  .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .head .label { font-size: 10px; }
+  .head .meta { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .stack { display: flex; flex-direction: column; gap: 14px; }
+  .row {
+    display: grid;
+    grid-template-columns: 100px 1fr 90px;
+    align-items: center;
+    gap: 18px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .row:last-child { border-bottom: 0; }
+  .tok { font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); letter-spacing: 0.02em; }
+  .specimen { font-family: var(--font-display); font-size: 16px; font-weight: 600; letter-spacing: 0.02em; }
+  .hex { font-family: var(--font-mono); font-size: 9.5px; color: var(--text-dim); letter-spacing: 0.04em; text-align: right; }
+</style></head>
+<body>
+  <div class="head">
+    <span class="label">// semantic foreground</span>
+    <span class="meta">fg-1 → fg-4</span>
+  </div>
+  <div class="stack">
+    <div class="row">
+      <span class="tok">--fg-1</span>
+      <span class="specimen" style="color:#f0f0f0">Reduced MTTR by 40%</span>
+      <span class="hex">#F0F0F0</span>
+    </div>
+    <div class="row">
+      <span class="tok">--fg-2</span>
+      <span class="specimen" style="color:#e8e8e8;font-weight:300;font-family:var(--font-body);font-size:14px">Default body color, paragraph default.</span>
+      <span class="hex">#E8E8E8</span>
+    </div>
+    <div class="row">
+      <span class="tok">--fg-3</span>
+      <span class="specimen" style="color:#888888;font-weight:300;font-family:var(--font-body);font-size:14px">Body copy and link rest state.</span>
+      <span class="hex">#888888</span>
+    </div>
+    <div class="row">
+      <span class="tok">--fg-4</span>
+      <span class="specimen" style="color:#555555;font-family:var(--font-mono);font-size:11px;letter-spacing:0.06em;text-transform:uppercase">// Eyebrow & metadata</span>
+      <span class="hex">#555555</span>
+    </div>
+  </div>
+</body></html>

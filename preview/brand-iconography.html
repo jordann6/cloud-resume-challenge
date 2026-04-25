@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  body { padding: 22px 28px; }
+  .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .label { font-family: 'IBM Plex Mono'; font-size: 10px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .meta { font-family: 'IBM Plex Mono'; font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1px; background: #1e1e1e; border: 1px solid #1e1e1e; }
+  .cell { background: #050505; padding: 18px 14px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .glyph { font-family: 'IBM Plex Mono'; font-weight: 400; font-size: 24px; color: #f0f0f0; }
+  .lbl { font-family: 'IBM Plex Mono'; font-size: 9px; color: #555; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; }
+  .note { font-family: 'IBM Plex Mono'; font-size: 9.5px; color: #888; padding-top: 14px; border-top: 1px solid var(--border); margin-top: 14px; line-height: 1.7; letter-spacing: 0.02em; }
+</style></head>
+<body>
+  <div class="head"><span class="label">// iconography</span><span class="meta">type-only · no icon font</span></div>
+  <div class="grid">
+    <div class="cell"><span class="glyph">↗</span><span class="lbl">Outbound link</span></div>
+    <div class="cell"><span class="glyph">·</span><span class="lbl">Separator</span></div>
+    <div class="cell"><span class="glyph">//</span><span class="lbl">Eyebrow</span></div>
+    <div class="cell"><span class="glyph">—</span><span class="lbl">Date range</span></div>
+  </div>
+  <div class="note">No icon font. No SVG icon set. No emoji. The system uses Unicode arrows, dots, and dashes as its only marks.</div>
+</body></html>

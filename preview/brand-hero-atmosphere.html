@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  body { padding: 0; background: #050505; }
+  .head { display: flex; justify-content: space-between; align-items: center; padding: 16px 26px 14px; }
+  .label { font-family: 'IBM Plex Mono'; font-size: 10px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .meta { font-family: 'IBM Plex Mono'; font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .stage {
+    margin: 0 26px 22px;
+    height: 230px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #1e1e1e;
+    background: #050505;
+  }
+  .grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 36px 36px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 70%);
+            mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 70%);
+  }
+  .glow {
+    position: absolute;
+    top: 30%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .grain {
+    position: absolute; inset: 0;
+    opacity: 0.06; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 128px 128px;
+  }
+  .center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .name { font-family: 'Barlow Condensed'; font-weight: 800; font-size: 80px; line-height: 1; letter-spacing: -0.02em; color: #f0f0f0; text-transform: uppercase; }
+</style></head>
+<body>
+  <div class="head"><span class="label">// hero atmosphere · grid + glow + grain</span><span class="meta">layered FX</span></div>
+  <div class="stage">
+    <div class="grid"></div>
+    <div class="glow"></div>
+    <div class="grain"></div>
+    <div class="center"><span class="name">Jordan</span></div>
+  </div>
+</body></html>

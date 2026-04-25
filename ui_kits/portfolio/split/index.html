@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jordan Nelson — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Barlow:wght@300;400;500&display=swap">
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <!-- Custom cursor -->
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-coords" id="cursorCoords">+000.000 / +000.000</div>
+
+  <!-- Persistent edge frame -->
+  <div class="frame-edge frame-edge--tl">
+    <span class="row lit">JN<span class="dim-dot">.</span></span>
+    <span class="row">VOL. 06 / 2026</span>
+  </div>
+  <div class="frame-edge frame-edge--tr">
+    <span class="row lit" id="ctClock">CT — 00:00:00</span>
+    <span class="row">41.8781°N / 87.6298°W</span>
+  </div>
+  <div class="frame-edge frame-edge--bl">
+    <span class="row">↳ INDEX_OO</span>
+    <span class="row lit">JORDANDESIGNS.IO</span>
+  </div>
+  <div class="frame-edge frame-edge--br">
+    <span class="row">SIGNAL — <span class="lit" id="signal">GREEN</span></span>
+    <span class="row">v2.0 — EDITORIAL</span>
+  </div>
+
+  <!-- Vertical rail -->
+  <div class="side-rail">
+    <span>SCROLL</span>
+    <span class="pip"></span>
+    <span id="railPos">01 / 07</span>
+    <span class="pip"></span>
+    <span>JORDAN NELSON</span>
+  </div>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <a href="#hero" class="nav__logo">Jordan Nelson<span class="dim-dot">.</span></a>
+    <ul class="nav__links" id="navLinks">
+      <li><a href="#about" class="nav__link" data-target="about"><span class="num">01</span>About</a></li>
+      <li><a href="#experience" class="nav__link" data-target="experience"><span class="num">02</span>Work</a></li>
+      <li><a href="#projects" class="nav__link" data-target="projects"><span class="num">03</span>Index</a></li>
+      <li><a href="#skills" class="nav__link" data-target="skills"><span class="num">04</span>Stack</a></li>
+      <li><a href="#contact" class="nav__link" data-target="contact"><span class="num">05</span>Signal</a></li>
+    </ul>
+    <div class="nav__time">
+      <span><span class="label">Status</span>Available</span>
+    </div>
+  </nav>
+
+  <main>
+    <!-- HERO -->
+    <section id="hero" class="hero stage">
+      <div class="hero__top">
+        <span class="hero__eyebrow"><span class="blink"></span> Available — Q1 2026 Onward</span>
+        <span class="hero__loc">
+          <strong>Chicago, IL — USA</strong><br>
+          Currently · Snorkel AI / DevOps
+        </span>
+      </div>
+
+      <h1 class="hero__name">
+        <span class="first">Jordan<span class="punct">,</span></span>
+        <span class="last">Nelson<span class="punct">.</span></span>
+      </h1>
+
+      <div class="hero__bottom">
+        <div class="hero__role">
+          <div class="meta">↳ Discipline</div>
+          <div class="title">DevOps &amp;<br>Cloud<br>Engineer</div>
+        </div>
+        <div class="hero__desc">
+          <span class="meta">↳ Practice</span>
+          Building and operating secure cloud infrastructure across AWS and Azure.
+          AI-integrated platforms, infrastructure automation, cloud security, FinOps,
+          and production observability.
+        </div>
+        <div class="hero__cta">
+          <a href="#projects" class="btn btn--primary">View Index <span class="arrow">→</span></a>
+          <a href="#contact" class="btn btn--ghost">Get in Touch <span class="arrow">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="marquee">
+      <div class="marquee__track" id="mq"></div>
+    </div>
+
+    <!-- ABOUT -->
+    <section id="about" class="stage">
+      <div class="sec-head reveal">
+        <span class="sec-head__num">/01</span>
+        <h2 class="sec-head__title">About</h2>
+        <span class="sec-head__meta">Origin / Practice<br>Scope of Work</span>
+      </div>
+      <div class="about reveal">
+        <p class="about__lead">
+          From help desk to <strong>DevOps Engineer</strong> through deliberate practice — <span class="dim">treating learning as a continuous discipline, not a phase.</span>
+        </p>
+        <div class="about__body">
+          <p>After leaving law school, I redirected toward software engineering and cloud infrastructure. My work emphasizes <strong>reliability, reproducibility, and operational awareness</strong> across the software development lifecycle.</p>
+          <p>Currently at <strong>Snorkel AI</strong>, building DevSecOps pipelines, Kubernetes blue-green deployment strategies, and event-driven remediation systems on AWS and Azure.</p>
+          <div class="stats">
+            <div class="stat"><div class="n">5+</div><div class="l">YRS Cloud</div></div>
+            <div class="stat"><div class="n">02</div><div class="l">Certs</div></div>
+            <div class="stat"><div class="n">3×</div><div class="l">AWS · Azure · GCP</div></div>
+            <div class="stat"><div class="n">AI</div><div class="l">Infra · Integration</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="stage exp">
+      <div class="sec-head reveal">
+        <span class="sec-head__num">/02</span>
+        <h2 class="sec-head__title">Work</h2>
+        <span class="sec-head__meta">Selected positions<br>2024 — Present</span>
+      </div>
+      <div class="reveal">
+        <div class="exp__row">
+          <div class="yr">2025—<br>NOW</div>
+          <div class="co">
+            <div class="label">↳ Employer</div>
+            <div class="name">Snorkel AI</div>
+          </div>
+          <div class="body">
+            <div class="role">DevOps Specialist</div>
+            <ul>
+              <li>Reduced vulnerable build promotion by 90% through a custom DevSecOps pipeline integrating SAST, DAST, and IaC scanning.</li>
+              <li>Implemented Kubernetes blue-green deployment strategies enabling zero-downtime releases — deployment failures down ~70%.</li>
+              <li>Orchestrated an event-driven remediation workflow (AWS Lambda + Boto3), cutting MTTR by ~40%.</li>
+            </ul>
+            <div class="stack">
+              <span class="tag">AWS Lambda</span><span class="tag">Kubernetes</span><span class="tag">Boto3</span>
+              <span class="tag">DevSecOps</span><span class="tag">Bash</span><span class="tag">IAM</span>
+            </div>
+          </div>
+        </div>
+        <div class="exp__row">
+          <div class="yr">2024—<br>2025</div>
+          <div class="co">
+            <div class="label">↳ Employer</div>
+            <div class="name">Wiggs CPA</div>
+          </div>
+          <div class="body">
+            <div class="role">IT Support Specialist</div>
+            <ul>
+              <li>Executed a cloud rehosting migration from AWS to Azure with full service dependency mapping.</li>
+              <li>Provisioned and rightsized Azure infrastructure with IaC, maintaining 99%+ uptime post-migration.</li>
+              <li>Engineered Python &amp; Bash scripts for Entra ID auth remediation — resolution time down ~50%.</li>
+            </ul>
+            <div class="stack">
+              <span class="tag">Azure</span><span class="tag">AWS</span><span class="tag">Terraform</span>
+              <span class="tag">Python</span><span class="tag">Bash</span><span class="tag">Entra ID</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="stage proj">
+      <div class="sec-head reveal">
+        <span class="sec-head__num">/03</span>
+        <h2 class="sec-head__title">Index</h2>
+        <span class="sec-head__meta">Selected works<br>06 of 06</span>
+      </div>
+      <div class="proj__list reveal" id="projList"></div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="stage skills">
+      <div class="sec-head reveal">
+        <span class="sec-head__num">/04</span>
+        <h2 class="sec-head__title">Stack</h2>
+        <span class="sec-head__meta">Tools &amp; languages<br>Daily-use</span>
+      </div>
+      <div class="skills__grid reveal" id="skillsGrid"></div>
+    </section>
+
+    <!-- CERTS -->
+    <section id="certs" class="stage certs">
+      <div class="sec-head reveal">
+        <span class="sec-head__num">/05</span>
+        <h2 class="sec-head__title">Certified</h2>
+        <span class="sec-head__meta">Credentials<br>Active 2026</span>
+      </div>
+      <div class="certs__grid reveal">
+        <div class="cert">
+          <div class="cert__top">
+            <div class="cert__sigil">AWS<span class="sub">SAA—C03</span></div>
+            <span class="cert__status"><span class="dot"></span>Active</span>
+          </div>
+          <div class="cert__bottom">
+            <div class="cert__name">Solutions Architect Associate</div>
+            <div class="cert__provider">Amazon Web Services</div>
+          </div>
+        </div>
+        <div class="cert">
+          <div class="cert__top">
+            <div class="cert__sigil">AZ<span class="sub">—104</span></div>
+            <span class="cert__status"><span class="dot"></span>Active</span>
+          </div>
+          <div class="cert__bottom">
+            <div class="cert__name">Azure Administrator Associate</div>
+            <div class="cert__provider">Microsoft Azure</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="stage contact">
+      <div class="sec-head reveal">
+        <span class="sec-head__num">/06</span>
+        <h2 class="sec-head__title">Signal</h2>
+        <span class="sec-head__meta">Channels<br>Open</span>
+      </div>
+      <div class="contact__grid reveal">
+        <div>
+          <h3 class="contact__head">
+            Let's<br>
+            <span class="out">Build</span><br>
+            Something<span class="punct">.</span>
+          </h3>
+          <p class="contact__sub">
+            Open to Cloud Engineer, DevOps Engineer, and Platform Engineer roles.
+            Remote or hybrid in Chicago preferred.
+          </p>
+          <a href="mailto:jordandn6@outlook.com" class="btn btn--primary">Send a Signal <span class="arrow">→</span></a>
+        </div>
+        <div class="contact__links">
+          <a class="contact__link" href="mailto:jordandn6@outlook.com">
+            <span class="label">/Email</span><span class="val">jordandn6@outlook.com</span><span class="arr">↗</span>
+          </a>
+          <a class="contact__link" href="https://linkedin.com/in/jordan-nelson-aa0828165">
+            <span class="label">/LinkedIn</span><span class="val">jordan-nelson</span><span class="arr">↗</span>
+          </a>
+          <a class="contact__link" href="https://github.com/jordann6">
+            <span class="label">/GitHub</span><span class="val">github.com/jordann6</span><span class="arr">↗</span>
+          </a>
+          <a class="contact__link" href="https://jordandesigns.io">
+            <span class="label">/Site</span><span class="val">jordandesigns.io</span><span class="arr">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© 2026 Jordan Nelson</span>
+    <span class="footer__c">↳ Designed &amp; Operated by JN</span>
+    <span class="footer__r">Built on <span class="lit">AWS</span> · jordandesigns.io</span>
+  </footer>
+
+  <div id="modalRoot"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

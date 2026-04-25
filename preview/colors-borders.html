@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px 28px; }
+  .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .head .label { font-size: 10px; }
+  .head .meta { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+  .demo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .box {
+    height: 64px;
+    background: var(--bg);
+  }
+  .b1 { border: 1px solid #1e1e1e; }
+  .b2 { border: 1px solid #333333; }
+  .b3 { border: 1px solid #252525; }
+  .lbl { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; }
+  .row { display: flex; justify-content: space-between; align-items: baseline; }
+  .hex { font-family: var(--font-mono); font-size: 9px; color: var(--text-secondary); }
+</style></head>
+<body>
+  <div class="head">
+    <span class="label">// border tokens · always 1px · radius 0</span>
+    <span class="meta">hairline system</span>
+  </div>
+  <div class="grid">
+    <div class="demo">
+      <div class="box b1"></div>
+      <div class="row"><span class="lbl">--border</span><span class="hex">#1E1E1E</span></div>
+    </div>
+    <div class="demo">
+      <div class="box b2"></div>
+      <div class="row"><span class="lbl">--border-hover</span><span class="hex">#333333</span></div>
+    </div>
+    <div class="demo">
+      <div class="box b3"></div>
+      <div class="row"><span class="lbl">--tag-border</span><span class="hex">#252525</span></div>
+    </div>
+  </div>
+</body></html>

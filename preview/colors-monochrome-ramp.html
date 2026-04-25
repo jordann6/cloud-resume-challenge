@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 18px 22px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .cell {
+    background: var(--bg);
+    padding: 10px 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .chip {
+    width: 100%;
+    height: 56px;
+  }
+  .name { font-family: var(--font-mono); font-size: 9px; color: var(--white); letter-spacing: 0.04em; }
+  .hex { font-family: var(--font-mono); font-size: 8.5px; color: var(--text-dim); letter-spacing: 0.02em; }
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .head .label { font-size: 10px; }
+  .head .meta { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+</style></head>
+<body>
+  <div class="head">
+    <span class="label">// monochrome ramp · 9 stops</span>
+    <span class="meta">#000 → #fff</span>
+  </div>
+  <div class="grid">
+    <div class="cell"><div class="chip" style="background:#000000"></div><span class="name">BLACK</span><span class="hex">#000000</span></div>
+    <div class="cell"><div class="chip" style="background:#050505"></div><span class="name">BG</span><span class="hex">#050505</span></div>
+    <div class="cell"><div class="chip" style="background:#0c0c0c"></div><span class="name">BG2</span><span class="hex">#0C0C0C</span></div>
+    <div class="cell"><div class="chip" style="background:#111111"></div><span class="name">SURFACE</span><span class="hex">#111111</span></div>
+    <div class="cell"><div class="chip" style="background:#1e1e1e"></div><span class="name">BORDER</span><span class="hex">#1E1E1E</span></div>
+    <div class="cell"><div class="chip" style="background:#333333"></div><span class="name">BORDER+</span><span class="hex">#333333</span></div>
+    <div class="cell"><div class="chip" style="background:#555555"></div><span class="name">DIM</span><span class="hex">#555555</span></div>
+    <div class="cell"><div class="chip" style="background:#888888"></div><span class="name">2NDARY</span><span class="hex">#888888</span></div>
+    <div class="cell"><div class="chip" style="background:#f0f0f0"></div><span class="name">WHITE</span><span class="hex">#F0F0F0</span></div>
+  </div>
+</body></html>

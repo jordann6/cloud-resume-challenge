@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  body { padding: 22px 28px; }
+  .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .label { font-family: 'IBM Plex Mono'; font-size: 10px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .meta { font-family: 'IBM Plex Mono'; font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .row { display: flex; gap: 14px; }
+  .demo { flex: 1; height: 110px; border: 1px solid #1e1e1e; position: relative; overflow: hidden; }
+  .ball { position: absolute; top: 50%; left: 12%; width: 22px; height: 22px; background: #f0f0f0; transform: translateY(-50%); animation: slide 2.4s cubic-bezier(0.16,1,0.3,1) infinite alternate; }
+  @keyframes slide { from { left: 12%; } to { left: 78%; } }
+  .info { padding-top: 10px; display: flex; gap: 22px; }
+  .pair { display: flex; flex-direction: column; gap: 2px; }
+  .k { font-family: 'IBM Plex Mono'; font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .v { font-family: 'IBM Plex Mono'; font-size: 9.5px; color: var(--text-secondary); }
+  .curve { font-family: 'IBM Plex Mono'; font-size: 9.5px; color: #f0f0f0; }
+</style></head>
+<body>
+  <div class="head"><span class="label">// motion</span><span class="meta">single ease curve</span></div>
+  <div class="row">
+    <div class="demo"><div class="ball"></div></div>
+  </div>
+  <div class="info">
+    <div class="pair"><span class="k">Easing</span><span class="curve">cubic-bezier(0.16, 1, 0.3, 1)</span></div>
+    <div class="pair"><span class="k">Hover</span><span class="v">0.3s</span></div>
+    <div class="pair"><span class="k">Card bg</span><span class="v">0.4s</span></div>
+    <div class="pair"><span class="k">Fade-in</span><span class="v">0.6s · stagger 80ms</span></div>
+  </div>
+</body></html>

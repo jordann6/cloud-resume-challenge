@@ -1,0 +1,223 @@
+/* ══════════════════════════════════════════════
+   Jordan Designs — colors_and_type.css
+   Drop-in design tokens for jordandesigns.io
+   Aesthetic: Industrial Monochrome
+   ══════════════════════════════════════════════ */
+
+/* Webfonts (Google Fonts) ----------------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Barlow:wght@300;400;500&display=swap");
+
+:root {
+  /* ─────────────────────────────────────────────
+     COLOR  — 9-step monochrome ramp + utilities
+     ───────────────────────────────────────────── */
+  --black: #000000;
+  --bg: #050505;            /* page background — never pure black */
+  --bg2: #0c0c0c;
+  --surface: #111111;       /* card hover */
+  --surface-hover: #161616;
+  --border: #1e1e1e;        /* hairline + grid gap color */
+  --border-hover: #333333;
+  --text-dim: #555555;      /* tertiary copy */
+  --text-secondary: #888888;/* body copy / link rest */
+  --text: #e8e8e8;          /* default fg */
+  --white: #f0f0f0;         /* headings */
+  --accent-bright: #ffffff; /* active nav, white button */
+
+  --tag-bg: #141414;
+  --tag-border: #252525;
+  --tag-text: #999999;
+
+  --glow: rgba(255, 255, 255, 0.03);
+  --selection-bg: rgba(255, 255, 255, 0.15);
+
+  /* Semantic foreground aliases */
+  --fg-1: var(--white);          /* h1, h2, h3 */
+  --fg-2: var(--text);           /* default body */
+  --fg-3: var(--text-secondary); /* paragraph / supporting */
+  --fg-4: var(--text-dim);       /* metadata / dim */
+
+  /* Semantic background aliases */
+  --bg-1: var(--bg);
+  --bg-2: var(--surface);
+  --bg-3: var(--bg2);
+
+  /* ─────────────────────────────────────────────
+     TYPE — three families, mono dominates metadata
+     ───────────────────────────────────────────── */
+  --font-display: "Barlow Condensed", system-ui, sans-serif;
+  --font-body: "Barlow", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Type scale (px) */
+  --t-hero: clamp(72px, 14vw, 160px); /* hero name */
+  --t-display-1: clamp(48px, 6vw, 72px); /* contact headline */
+  --t-display-2: 28px;  /* section title */
+  --t-h3: 20px;         /* card / role title */
+  --t-h4: 16px;         /* cert name / company */
+  --t-body: 15px;
+  --t-body-sm: 14px;    /* about paragraphs */
+  --t-body-xs: 13px;    /* exp bullets / project desc */
+  --t-meta: 12px;       /* button labels */
+  --t-mono: 11px;       /* tags / footer */
+  --t-mono-sm: 10px;    /* badges / project tags */
+  --t-mono-xs: 9px;     /* project-tag */
+
+  /* Tracking (letter-spacing) */
+  --tr-tight: -0.02em;  /* hero name, contact headline */
+  --tr-display: 0.02em; /* logo, exp-role */
+  --tr-section: 0.1em;  /* SECTION TITLES */
+  --tr-meta-1: 0.04em;  /* small mono uppercase */
+  --tr-meta-2: 0.06em;
+  --tr-meta-3: 0.08em;  /* nav links, project-num */
+  --tr-meta-4: 0.2em;   /* hero subtitle */
+
+  /* Line-height */
+  --lh-tight: 0.9;     /* hero name */
+  --lh-snug: 1.2;      /* card titles */
+  --lh-base: 1.7;      /* body */
+  --lh-relaxed: 1.8;   /* long-form / project desc */
+  --lh-loose: 1.85;    /* about paragraphs */
+
+  /* ─────────────────────────────────────────────
+     SPACING + LAYOUT
+     ───────────────────────────────────────────── */
+  --max-w: 1100px;
+  --section-gap: 140px;
+  --section-pad-x: 48px;
+  --section-pad-x-sm: 24px;
+
+  --gap-xs: 6px;
+  --gap-sm: 12px;
+  --gap-md: 20px;
+  --gap-lg: 36px;
+  --gap-xl: 48px;
+  --gap-2xl: 64px;
+
+  --nav-h: 64px;
+  --radius: 0;          /* always zero — non-negotiable */
+  --hairline: 1px;
+
+  /* ─────────────────────────────────────────────
+     MOTION
+     ───────────────────────────────────────────── */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 0.3s;     /* hover */
+  --dur-med: 0.4s;      /* card bg */
+  --dur-slow: 0.6s;     /* fade-in */
+  --stagger: 80ms;      /* sibling fade-in delay */
+
+  /* ─────────────────────────────────────────────
+     EFFECTS
+     ───────────────────────────────────────────── */
+  --blur-nav: blur(20px) saturate(120%);
+  --noise-opacity: 0.025; /* body grain */
+  --grid-opacity: 0.02;   /* hero grid lines */
+}
+
+/* ══════════════════════════════════════════════
+   SEMANTIC ELEMENT STYLES
+   Apply directly to bare elements when scaffolding
+   ══════════════════════════════════════════════ */
+
+body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: var(--t-body);
+  line-height: var(--lh-base);
+  color: var(--text);
+  background: var(--bg);
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--t-hero);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-tight);
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--t-display-2);
+  letter-spacing: var(--tr-section);
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--t-h3);
+  letter-spacing: var(--tr-display);
+  color: var(--white);
+}
+
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--t-h4);
+  text-transform: uppercase;
+  letter-spacing: var(--tr-meta-1);
+  color: var(--text-secondary);
+}
+
+p {
+  font-family: var(--font-body);
+  font-size: var(--t-body-sm);
+  color: var(--text-secondary);
+  line-height: var(--lh-loose);
+}
+
+strong {
+  font-weight: 500;
+  color: var(--white);
+}
+
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  color: var(--text-secondary);
+}
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--white);
+}
+
+/* Utility: the eyebrow comment ("// Available …") */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--t-meta);
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: var(--tr-meta-2);
+}
+
+/* Utility: section number ("01", "02", …) */
+.section-num {
+  font-family: var(--font-mono);
+  font-size: var(--t-meta);
+  color: var(--text-dim);
+  letter-spacing: var(--tr-meta-1);
+}
+
+/* Utility: outline / stroke-only display text */
+.stroke-only {
+  -webkit-text-stroke: 1px var(--text-dim);
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Utility: mono uppercase metadata label */
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono-sm);
+  font-weight: 500;
+  letter-spacing: var(--tr-meta-3);
+  text-transform: uppercase;
+  color: var(--text-dim);
+}

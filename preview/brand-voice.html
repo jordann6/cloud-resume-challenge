@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  body { padding: 22px 28px; }
+  .head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .label { font-family: 'IBM Plex Mono'; font-size: 10px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .meta { font-family: 'IBM Plex Mono'; font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .stack { display: flex; flex-direction: column; gap: 10px; }
+  .rule { font-family: 'IBM Plex Mono'; font-size: 11px; color: #888; letter-spacing: 0.02em; padding: 10px 14px; border: 1px solid #1e1e1e; background: #0a0a0a; }
+  .rule strong { color: #f0f0f0; font-weight: 500; }
+  .x { color: #555; }
+  .check { color: #f0f0f0; }
+</style></head>
+<body>
+  <div class="head"><span class="label">// content rules</span><span class="meta">voice + tone</span></div>
+  <div class="stack">
+    <div class="rule"><span class="check">✓</span> <strong>First-person, lowercase confidence.</strong> "I transitioned…", not "Highly motivated…"</div>
+    <div class="rule"><span class="check">✓</span> <strong>Outcomes before tools.</strong> "Reduced MTTR by ~40%" then the stack.</div>
+    <div class="rule"><span class="check">✓</span> <strong>Tilde'd metrics.</strong> ~70%, ~40% — honest estimation.</div>
+    <div class="rule"><span class="x">✗</span> <span class="x">No "passionate", "innovative", "synergy", "journey"</span></div>
+    <div class="rule"><span class="x">✗</span> <span class="x">No exclamation points · No emoji · No second-person ("you")</span></div>
+  </div>
+</body></html>

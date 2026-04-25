@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  body { padding: 22px 28px; display: flex; flex-direction: column; gap: 14px; }
+  .head { display: flex; justify-content: space-between; align-items: center; }
+  .label { font-size: 10px; }
+  .meta { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .body { font-family: "Barlow", sans-serif; font-weight: 300; }
+  p {
+    font-family: "Barlow", sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 1.85;
+    color: var(--text-secondary);
+  }
+  strong { color: var(--white); font-weight: 500; }
+  .specs { display: flex; gap: 22px; padding-top: 10px; border-top: 1px solid var(--border); }
+  .specs .k { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .specs .v { font-family: var(--font-mono); font-size: 9.5px; color: var(--text-secondary); letter-spacing: 0.02em; }
+  .specs .pair { display: flex; flex-direction: column; gap: 2px; }
+</style></head>
+<body>
+  <div class="head"><span class="label">// body · barlow 300</span><span class="meta">paragraph default</span></div>
+  <p>I transitioned into technology through hands-on experience, beginning in help desk and progressing into a <strong>DevOps Engineer role</strong> by steadily expanding my development and automation responsibilities.</p>
+  <div class="specs">
+    <div class="pair"><span class="k">Family</span><span class="v">Barlow</span></div>
+    <div class="pair"><span class="k">Weight</span><span class="v">300 / 500 (strong)</span></div>
+    <div class="pair"><span class="k">Size</span><span class="v">14px</span></div>
+    <div class="pair"><span class="k">Leading</span><span class="v">1.85</span></div>
+  </div>
+</body></html>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  body { padding: 24px 30px; display: flex; flex-direction: column; gap: 14px; }
+  .head { display: flex; justify-content: space-between; align-items: center; }
+  .label { font-size: 10px; }
+  .meta { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .specimen {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 800;
+    font-size: 110px;
+    line-height: 0.88;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .specimen .out {
+    -webkit-text-stroke: 1px var(--text-dim);
+    -webkit-text-fill-color: transparent;
+  }
+  .stack-meta { display: flex; gap: 24px; align-items: baseline; }
+  .stack-meta .k { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .stack-meta .v { font-family: var(--font-mono); font-size: 10px; color: var(--text-secondary); letter-spacing: 0.02em; }
+</style></head>
+<body>
+  <div class="head"><span class="label">// display · barlow condensed 800</span><span class="meta">hero name</span></div>
+  <div class="specimen">Jordan<span class="out">.</span></div>
+  <div class="stack-meta">
+    <span class="k">Family</span><span class="v">Barlow Condensed</span>
+    <span class="k">Weight</span><span class="v">800</span>
+    <span class="k">Size</span><span class="v">clamp(72, 14vw, 160)</span>
+    <span class="k">Tracking</span><span class="v">-0.02em</span>
+  </div>
+</body></html>

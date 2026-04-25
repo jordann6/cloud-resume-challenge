@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700&family=IBM+Plex+Mono:wght@300;400;500&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  body { padding: 22px 28px; display: flex; flex-direction: column; gap: 18px; }
+  .head { display: flex; justify-content: space-between; align-items: center; }
+  .label { font-size: 10px; }
+  .meta { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+  .row {
+    display: grid;
+    grid-template-columns: 90px 1fr 130px;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .row:last-child { border: 0; }
+  .tok { font-family: var(--font-mono); font-size: 9.5px; color: var(--text-dim); letter-spacing: 0.04em; }
+  .v { font-family: var(--font-mono); font-size: 9.5px; color: var(--text-secondary); letter-spacing: 0.02em; text-align: right; }
+  .h2 { font-family: "Barlow Condensed"; font-weight: 700; font-size: 28px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); }
+  .h3 { font-family: "Barlow Condensed"; font-weight: 600; font-size: 20px; letter-spacing: 0.02em; color: var(--white); }
+  .h4 { font-family: "Barlow Condensed"; font-weight: 600; font-size: 16px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-secondary); }
+</style></head>
+<body>
+  <div class="head"><span class="label">// display headings</span><span class="meta">section / role / meta</span></div>
+  <div class="row"><span class="tok">h2</span><span class="h2">Experience</span><span class="v">28 / 700 / 0.1em</span></div>
+  <div class="row"><span class="tok">h3</span><span class="h3">DevOps Specialist</span><span class="v">20 / 600 / 0.02em</span></div>
+  <div class="row"><span class="tok">h4</span><span class="h4">Snorkel AI</span><span class="v">16 / 600 / 0.04em up</span></div>
+</body></html>
