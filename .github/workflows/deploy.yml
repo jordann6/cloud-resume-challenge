@@ -1,41 +1,20 @@
 name: Deploy to S3
-
 on:
   push:
     branches: [main]
   workflow_dispatch:
-
 jobs:
   deploy:
-    name: deploy
-    strategy:
-      matrix:
-        node: ["20.x"]
-        os: [ubuntu-latest]
-
-    runs-on: ${{ matrix.os }}
-
+    runs-on: ubuntu-latest
     steps:
-      # Checkout repo
-      - uses: actions/checkout@v4
-
-      # Configure AWS credentials
+      - uses: actions/checkout@v6
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-
-      # Deploy files to S3
       - name: Deploy to S3
         run: aws s3 sync . s3://jordandesigns.io --delete --cache-control "max-age=60,public"
-
-      # Update CloudFront and invalidate cache
-      - name: Update CloudFront distribution
-        uses: chaitanyapotti/cloudfront-update-distribution@v3
-        with:
-          cloudfront-distribution-id: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-          cloudfront-invalidation-required: true
-          cloudfront-invalidation-path: "/*"
-          cloudfront-wait-for-service-update: false
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
