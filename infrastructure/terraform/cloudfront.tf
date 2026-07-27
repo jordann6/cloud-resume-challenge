@@ -73,6 +73,26 @@ resource "aws_cloudfront_function" "rewrite_index" {
   code    = <<-EOT
     function handler(event) {
       var request = event.request;
+      var host = request.headers.host ? request.headers.host.value : '';
+
+      // One canonical hostname: www 301s to the apex, query string intact.
+      if (host.toLowerCase() === 'www.${var.domain_name}') {
+        var qs = '';
+        for (var k in request.querystring) {
+          qs += (qs ? '&' : '?') + k;
+          if (request.querystring[k].value) {
+            qs += '=' + request.querystring[k].value;
+          }
+        }
+        return {
+          statusCode: 301,
+          statusDescription: 'Moved Permanently',
+          headers: {
+            location: { value: 'https://${var.domain_name}' + request.uri + qs }
+          }
+        };
+      }
+
       var uri = request.uri;
       if (uri.endsWith('/')) {
         request.uri += 'index.html';
@@ -88,7 +108,7 @@ resource "aws_cloudfront_distribution" "resume_cdn" {
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
-  aliases             = [var.domain_name]
+  aliases             = [var.domain_name, "www.${var.domain_name}"]
   price_class         = var.price_class
 
   origin {
@@ -142,7 +162,7 @@ resource "aws_cloudfront_distribution" "resume_cdn" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate.resume_cert.arn
+    acm_certificate_arn      = aws_acm_certificate_validation.resume_cert.certificate_arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
