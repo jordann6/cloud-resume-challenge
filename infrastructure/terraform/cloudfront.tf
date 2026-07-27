@@ -1,5 +1,57 @@
-data "aws_cloudfront_response_headers_policy" "security" {
-  name = "Managed-SecurityHeadersPolicy"
+# Replaces the AWS Managed-SecurityHeadersPolicy: same header set, plus a CSP.
+# The static export ships React's inline bootstrap payload and Next injects
+# inline <style>, so 'unsafe-inline' is required on script-src and style-src;
+# a nonce is not available without a request-time render.
+resource "aws_cloudfront_response_headers_policy" "security" {
+  name    = "resume-security-headers"
+  comment = "Managed security headers plus a site-specific CSP"
+
+  security_headers_config {
+    content_security_policy {
+      override = true
+      content_security_policy = join("; ", [
+        "default-src 'self'",
+        "base-uri 'self'",
+        "object-src 'none'",
+        "frame-ancestors 'none'",
+        "form-action 'self'",
+        "script-src 'self' 'unsafe-inline' https://assets.calendly.com",
+        "style-src 'self' 'unsafe-inline' https://assets.calendly.com",
+        "font-src 'self' data:",
+        "img-src 'self' data: https://*.calendly.com",
+        "connect-src 'self' https://673vy98pwa.execute-api.us-east-1.amazonaws.com https://calendly.com",
+        "frame-src https://calendly.com",
+        "upgrade-insecure-requests",
+      ])
+    }
+
+    strict_transport_security {
+      override                   = true
+      access_control_max_age_sec = 31536000
+      include_subdomains         = true
+      preload                    = false
+    }
+
+    content_type_options {
+      override = true
+    }
+
+    frame_options {
+      override     = true
+      frame_option = "DENY"
+    }
+
+    referrer_policy {
+      override        = true
+      referrer_policy = "strict-origin-when-cross-origin"
+    }
+
+    xss_protection {
+      override   = true
+      protection = true
+      mode_block = true
+    }
+  }
 }
 
 resource "aws_cloudfront_origin_access_control" "resume" {
@@ -46,18 +98,41 @@ resource "aws_cloudfront_distribution" "resume_cdn" {
   }
 
   default_cache_behavior {
-    allowed_methods        = ["GET", "HEAD"]
-    cached_methods         = ["GET", "HEAD"]
-    target_origin_id       = "s3-origin"
-    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods            = ["GET", "HEAD"]
+    cached_methods             = ["GET", "HEAD"]
+    target_origin_id           = "s3-origin"
+    viewer_protocol_policy     = "redirect-to-https"
     compress                   = true
     cache_policy_id            = var.cache_policy_id
-    response_headers_policy_id = data.aws_cloudfront_response_headers_policy.security.id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.security.id
 
     function_association {
       event_type   = "viewer-request"
       function_arn = aws_cloudfront_function.rewrite_index.arn
     }
+  }
+
+  # The OAC origin answers a missing key with 403, not 404, so both map to the
+  # static export's 404.html. Without this, bad paths render CloudFront's raw
+  # AccessDenied XML.
+  custom_error_response {
+    error_code            = 403
+    response_code         = 404
+    response_page_path    = "/404.html"
+    error_caching_min_ttl = 60
+  }
+
+  custom_error_response {
+    error_code            = 404
+    response_code         = 404
+    response_page_path    = "/404.html"
+    error_caching_min_ttl = 60
+  }
+
+  logging_config {
+    bucket          = aws_s3_bucket.cdn_logs.bucket_domain_name
+    prefix          = "cloudfront/"
+    include_cookies = false
   }
 
   restrictions {

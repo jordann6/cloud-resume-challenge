@@ -20,9 +20,9 @@
   --accent: #2d6a4f;
   --accent-bright: #52b788;
 
-  --font-display: "Barlow Condensed", system-ui, sans-serif;
-  --font-body: "Barlow", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  /* --font-display / --font-body / --font-mono are defined on <html> by
+     next/font (see app/layout.tsx), which self-hosts the files and supplies
+     size-adjusted fallbacks. Do not redeclare them here. */
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -1571,6 +1571,10 @@ section {
   }
   .side-rail {
     display: none;
+  }
+  /* Seven nav entries need a tighter rhythm before the mobile breakpoint. */
+  .nav__links {
+    gap: 20px;
   }
   .cs {
     padding-left: 32px;

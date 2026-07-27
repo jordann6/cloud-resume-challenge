@@ -5,18 +5,29 @@ import VisitorCount from "./VisitorCount";
 
 const SECTIONS = ["hero", "about", "experience", "projects", "skills", "certs", "contact"];
 
-export default function FrameHud() {
+// Chicago is UTC-6 in CST and UTC-5 in CDT; let the runtime handle the shift
+// rather than hardcoding an offset that goes an hour wrong every summer.
+const chicagoTime = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/Chicago",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  // h23 rather than hour12:false, which renders midnight as 24:00:00.
+  hourCycle: "h23",
+});
+
+export default function FrameHud({
+  vol,
+  version,
+}: {
+  vol: string;
+  version: string;
+}) {
   const [clock, setClock] = useState("CT — 00:00:00");
   const [railPos, setRailPos] = useState("01 / 07");
 
   useEffect(() => {
-    const pad = (n: number) => n.toString().padStart(2, "0");
-    const tick = () => {
-      const d = new Date();
-      const utc = d.getTime() + d.getTimezoneOffset() * 60000;
-      const ct = new Date(utc - 6 * 3600000);
-      setClock(`CT — ${pad(ct.getHours())}:${pad(ct.getMinutes())}:${pad(ct.getSeconds())}`);
-    };
+    const tick = () => setClock(`CT — ${chicagoTime.format(new Date())}`);
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
@@ -52,7 +63,7 @@ export default function FrameHud() {
         <span className="row lit">
           jd<span className="dim-dot">.</span>
         </span>
-        <span className="row">VOL. 06 / 2026</span>
+        <span className="row">VOL. {vol}</span>
       </div>
       <div className="frame-edge frame-edge--tr" aria-hidden>
         <span className="row lit">{clock}</span>
@@ -68,7 +79,7 @@ export default function FrameHud() {
         <span className="row">
           SIGNAL — <span className="lit">GREEN</span>
         </span>
-        <span className="row">v3.0 — EDITORIAL</span>
+        <span className="row">{version} — EDITORIAL</span>
       </div>
 
       <div className="side-rail" aria-hidden>
