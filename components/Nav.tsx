@@ -11,7 +11,8 @@ const LINKS = [
   { num: "03", label: "Work", target: "experience" },
   { num: "04", label: "Index", target: "projects" },
   { num: "05", label: "Stack", target: "skills" },
-  { num: "06", label: "Signal", target: "contact" },
+  { num: "06", label: "Certified", target: "certs" },
+  { num: "07", label: "Signal", target: "contact" },
 ];
 
 export default function Nav() {

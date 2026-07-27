@@ -1,10 +1,35 @@
 import type { Metadata } from "next";
+import { Barlow, Barlow_Condensed, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import { buildVol, siteVersion } from "@/lib/build";
 import Cursor from "@/components/Cursor";
 import FrameHud from "@/components/FrameHud";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import RevealInit from "@/components/RevealInit";
+
+// Self-hosted at build time, so the site serves its own fonts off CloudFront
+// instead of a render-blocking third-party stylesheet.
+const display = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["300", "400", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-display",
+});
+
+const body = Barlow({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  display: "swap",
+  variable: "--font-body",
+});
+
+const mono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  display: "swap",
+  variable: "--font-mono",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://jordandesigns.io"),
@@ -38,18 +63,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Barlow:wght@300;400;500&display=swap"
-        />
-      </head>
+    <html
+      lang="en"
+      className={`${display.variable} ${body.variable} ${mono.variable}`}
+    >
       <body>
         <Cursor />
-        <FrameHud />
+        <FrameHud vol={buildVol} version={siteVersion} />
         <Nav />
         <main>{children}</main>
         <Footer />

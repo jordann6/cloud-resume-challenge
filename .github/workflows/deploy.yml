@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
@@ -33,17 +33,19 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
-      - name: Sync hashed assets (immutable, long cache)
+      # Only /_next/ filenames carry a content hash, so only those are safe to
+      # freeze. Everything else (HTML, og.png, robots.txt, sitemap.xml) keeps a
+      # stable URL and therefore needs a short TTL.
+      - name: Sync hashed build assets (immutable, long cache)
         run: |
-          aws s3 sync out/ s3://jordandesigns.io --delete \
-            --cache-control "max-age=31536000,public,immutable" \
-            --exclude "*.html"
+          aws s3 sync out/_next/ s3://jordandesigns.io/_next/ --delete \
+            --cache-control "max-age=31536000,public,immutable"
 
-      - name: Sync HTML (short cache)
+      - name: Sync stable-URL files (short cache)
         run: |
           aws s3 sync out/ s3://jordandesigns.io --delete \
-            --cache-control "max-age=60,public" \
-            --exclude "*" --include "*.html"
+            --exclude "_next/*" \
+            --cache-control "max-age=300,public"
 
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"

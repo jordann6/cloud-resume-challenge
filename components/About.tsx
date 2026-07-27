@@ -31,12 +31,12 @@ export default function About() {
               <div className="l">YRS Cloud</div>
             </div>
             <div className="stat">
-              <div className="n">02</div>
-              <div className="l">Certs</div>
+              <div className="n">03</div>
+              <div className="l">Certs · SAA Active</div>
             </div>
             <div className="stat">
-              <div className="n">3×</div>
-              <div className="l">AWS · Azure · GCP</div>
+              <div className="n">2×</div>
+              <div className="l">AWS · Azure</div>
             </div>
             <div className="stat">
               <div className="n">AI</div>
