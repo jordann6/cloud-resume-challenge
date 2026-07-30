@@ -96,5 +96,5 @@ python3 diagram.py
 |---|---|
 | Email | jordandn6@outlook.com |
 | GitHub | [github.com/jordann6](https://github.com/jordann6) |
-| LinkedIn | [linkedin.com/in/jordan-nelson-aa0828165](https://linkedin.com/in/jordan-nelson-aa0828165) |
+| LinkedIn | [linkedin.com/in/jordan-nelson-aa0828165](https://www.linkedin.com/in/jordan-nelson-aa0828165/) |
 | Portfolio | [jordandesigns.io](https://jordandesigns.io) |

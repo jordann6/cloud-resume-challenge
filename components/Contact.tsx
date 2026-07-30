@@ -37,7 +37,7 @@ export default function Contact() {
           </a>
           <a
             className="contact__link"
-            href="https://linkedin.com/in/jordan-nelson-aa0828165"
+            href="https://www.linkedin.com/in/jordan-nelson-aa0828165/"
             target="_blank"
             rel="noopener noreferrer"
           >

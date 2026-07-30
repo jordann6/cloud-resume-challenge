@@ -51,7 +51,7 @@ export default function Hero() {
               <a href="mailto:jordandn6@outlook.com">jordandn6@outlook.com</a>
               <span className="sep">·</span>
               <a
-                href="https://linkedin.com/in/jordan-nelson-aa0828165"
+                href="https://www.linkedin.com/in/jordan-nelson-aa0828165/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
