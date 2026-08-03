@@ -666,6 +666,301 @@ export const caseStudies: CaseStudy[] = [
       total: { k: "Cost", v: "under $1 for the full build-demo-destroy session" },
     },
   },
+  {
+    slug: "azure-finops-dashboard",
+    num: "04",
+    title: "Azure FinOps",
+    titleOut: "Dashboard",
+    category: "Azure · FinOps",
+    lede: "Cost visibility that answers the question a bill cannot: not what you spent, but which resource changed behavior and what it will cost you next. Statistical anomaly detection and trend forecasting over the Cost Management API, written in C# and running credential-free.",
+    meta: [
+      { k: "Role", v: "Cloud / FinOps" },
+      { k: "Cloud", v: "Azure" },
+      { k: "Language", v: "C# .NET 8" },
+      { k: "Modules", v: "3 (Terraform)" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "A cloud bill tells you what you spent after you have already spent it, aggregated to a level where nothing is actionable. By the time a runaway resource shows up as a line item, it has been running for most of a billing cycle, and the person who could have caught it has no signal that anything changed.",
+          "The three questions worth answering are earlier and more specific: which resources are behaving differently than they did last month, where is spend heading if nothing changes, and which resources cannot even be attributed to an owner because nobody tagged them.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "Approach",
+        bullets: [
+          "A timer-triggered Function ingests the previous seven days of actual cost from the Cost Management REST API each morning, grouped by resource, resource type, and resource group, upserting into Cosmos DB keyed by resource ID so re-runs are idempotent.",
+          "Anomaly detection runs half an hour later against the stored history: a rolling 30-day mean and standard deviation per resource, flagging any resource whose latest daily cost exceeds two sigma, tiered Low at 2.0, Medium at 2.5, and High at 3.0.",
+          "Forecasting runs after that, projecting 14 days on a linear trend over the trailing 30-day window with confidence intervals derived from historical variance, and refuses to project at all on fewer than seven days of data rather than emitting a number nobody should trust.",
+          "A tag hygiene pass evaluates every subscription resource against a required-tag policy and reports both a compliance percentage and the specific resources missing specific tags, because a percentage alone is not something anyone can act on.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "Architecture",
+        paragraphs: [
+          "Five HTTP-triggered Functions expose the stored results as a REST API to a React single-page app on Static Web Apps, so the read path never touches the Cost Management API and page loads are not gated on an upstream call. The four Cosmos containers separate daily costs, anomalies, forecasts, and budgets, which keeps the analysis jobs from contending with the read path.",
+          "The whole thing runs without a stored credential. The Function App uses a system-assigned managed identity with exactly three role assignments: Cost Management Reader and Reader at subscription scope for cost and resource metadata, and Cosmos DB Built-in Data Contributor at database scope for the data plane. Key-based access to Cosmos is disabled at the account level, so even a leaked connection string would be inert. Three reusable Terraform modules compose into a dev environment with remote state in Azure Storage.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "Outcome",
+        paragraphs: [
+          "A cost pipeline where every number on the dashboard is traceable to a stored record and a stated method: the anomaly tiers are a sigma threshold rather than a heuristic, and the forecast declares its own confidence bounds and refuses to run on thin data.",
+          "The FinOps counterpart on the AWS side is the Cost Intelligence Dashboard, which applies the same z-score and regression approach to Cost Explorer. Running the same method across both clouds is what makes the practice portable rather than a single-provider trick.",
+        ],
+      },
+    ],
+    stack: ["Azure Functions", "C# .NET 8", "Cosmos DB", "Cost Management API", "Static Web Apps", "React", "Application Insights", "Terraform"],
+    repo: "https://github.com/jordann6/azure-finops-dashboard",
+  },
+  {
+    slug: "aws-landing-zone-automator",
+    num: "32",
+    title: "AWS Landing Zone",
+    titleOut: "Automator",
+    category: "AWS · Platform · Governance",
+    lede: "An account vending machine for the gap between one shared account with a root login and a platform team running Control Tower. One apply stands up a SOC 2 ready multi-account foundation; after that a new account is one block in a tfvars file and it arrives with guardrails, logging, budgets, and SSO already applied.",
+    meta: [
+      { k: "Role", v: "Cloud / Platform" },
+      { k: "Cloud", v: "AWS" },
+      { k: "Scope", v: "Organization-wide" },
+      { k: "Resources", v: "58 (Terraform)" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "Multi-account AWS is the recommendation everyone gives and almost nobody implements, because the first account separation is where the work actually is: organizational units, service control policies, centralized immutable audit logging, and single sign-on all have to exist before the second account is worth having.",
+          "The target was the middle of that gap. Startups getting SOC 2 ready need account separation, immutable audit logs, least-privilege SSO, and root controls, which is most of what an auditor asks about first. SaaS teams need dev, staging, and prod per product. MSPs need a client to land inside guardrails on day one. All three are the same recurring workflow, not a one-time script.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "Approach",
+        bullets: [
+          "Organizations with all features enabled, and an OU tree of Security, Workloads/Prod, Workloads/NonProd, and Sandbox, so policy attaches to a boundary rather than to individual accounts.",
+          "Four service control policies as the guardrail layer: deny root user actions, deny leaving the organization, a region allowlist, and CloudTrail tamper protection.",
+          "An organization CloudTrail encrypted with SSE-KMS writing into a versioned, object-locked bucket in a dedicated log-archive account, so the audit trail is outside the accounts it is auditing and cannot be rewritten by them.",
+          "Vending itself is an `account_requests` map: each entry creates an account in the right OU with tags, a monthly budget alarm at 80 percent, and an in-account baseline that sets an IAM alias, a strict password policy, a smoke-test role, and removes the default VPC.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "Architecture",
+        paragraphs: [
+          "The apply runs in two stages, and the reason is a real Terraform constraint rather than a workaround. Provider configurations are static and must resolve at plan time, but the aliased providers that assume roles into the log-archive and vended accounts need account IDs that do not exist until the first stage finishes. A helper script copies those IDs from stage one outputs into a gitignored tfvars file, and the second apply completes the cross-account wiring.",
+          "Nothing sensitive reaches the repository. Account emails, notification addresses, and account IDs live only in gitignored tfvars and remote state, outputs carrying account IDs are marked sensitive, the state bucket name is passed through a gitignored backend config, and CI authenticates with GitHub OIDC against the committed example file only.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "Outcome",
+        paragraphs: [
+          "Deployed live against a real organization and validated on six independent checks: an SCP explicitly denying a disallowed region, per-account organization CloudTrail delivery, least-privilege SSO assignment, budget alarms, tag and OU placement, and zero default VPCs in the vended accounts.",
+          "Teardown taught more than the build. Closed accounts block OU deletion until they are moved back to the root, the account-close waiter finishes a minute or so before AWS actually settles, and the SSO assignment loop needs the account request map emptied before the final destroy pass will complete. All three are documented in the repo, because the teardown path is the part of a landing zone nobody writes down.",
+        ],
+      },
+    ],
+    stack: ["AWS Organizations", "Service Control Policies", "IAM Identity Center", "CloudTrail", "KMS", "S3 Object Lock", "AWS Budgets", "Terraform"],
+    repo: "https://github.com/jordann6/landing-zone-automator",
+    receipt: {
+      rows: [
+        { k: "Provision", v: "58 resources against a real organization: OUs, 4 SCPs, Identity Center, org CloudTrail, vended accounts" },
+        { k: "Validate", v: "6 of 6 checks passed, including an SCP-denied region and zero default VPCs in vended accounts" },
+        { k: "Destroy", v: "Torn down the same night, state at zero, only the default FullAWSAccess SCP remaining" },
+        { k: "Residual", v: "Trail KMS key in its mandatory 7-day deletion window, unbilled" },
+      ],
+      total: { k: "Cost", v: "a few cents for the full deploy-demo-destroy cycle" },
+    },
+  },
+  {
+    slug: "azure-landing-zone",
+    num: "23",
+    title: "Azure Landing",
+    titleOut: "Zone",
+    category: "Azure · Platform · Governance",
+    lede: "The governance foundation a workload subscription inherits before anyone deploys into it: a management group hierarchy, policy as code, and a hub-spoke network whose spokes are vended by a single module call.",
+    meta: [
+      { k: "Role", v: "Cloud / Platform" },
+      { k: "Cloud", v: "Azure" },
+      { k: "Hierarchy", v: "4 levels" },
+      { k: "Resources", v: "24 (Terraform)" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "Governance applied after workloads exist is negotiation. Governance applied to a management group before the first subscription lands there is just the environment. The distinction decides whether a policy is a guardrail or a ticket.",
+          "The goal was the smallest complete Azure foundation that a workload subscription could be dropped into and immediately inherit: a hierarchy that policy can attach to, a network with room for the services it will eventually need, and a repeatable way to add the next spoke.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "Approach",
+        bullets: [
+          "A four-level management group tree under the tenant root, splitting Platform, Workloads, and Sandbox, with the subscription moved into Workloads so all policy assignments apply to everything in it automatically.",
+          "Three custom Azure Policy definitions authored and assigned at the Workloads scope: require an owner tag, deny public IP creation, and restrict resources to allowed locations.",
+          "A hub VNet at 10.0.0.0/16 carrying reserved subnets for Firewall, Gateway, and Bastion alongside an active management subnet whose NSG blocks inbound internet.",
+          "Two spokes, Platform and Sandbox, each peered bidirectionally with the hub, provisioned through a reusable module so a third spoke is one block.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "Architecture",
+        paragraphs: [
+          "The reserved subnets are the detail that matters most and costs nothing. Azure Firewall, VPN and ExpressRoute Gateway, and Bastion each require an exactly-named subnet at a minimum prefix size, so those subnets are carved and named correctly up front even though none of the services are deployed. Activating any of them later is a resource addition rather than a re-addressing exercise across every peered network, which is the expensive version of that mistake.",
+          "Policy effects are set to Audit for the demo deployment rather than Deny. That is a deliberate choice worth stating plainly: in a production pipeline these become Deny and run as a separate governance stage ahead of workload provisioning, but a Deny effect in a demo environment blocks the very resources the demo needs to create.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "Outcome",
+        paragraphs: [
+          "Deployed against a real Azure tenant and verified through the control plane rather than the plan file: the management group hierarchy, the subscription's placement under Workloads, the policy assignments at that scope, and both peering directions reporting Connected.",
+          "Then destroyed clean, with the subscription automatically re-associating to the tenant root group. The whole environment carries no VMs, no Firewall, no Bastion, and no Gateway, so the cost of standing it up and tearing it down repeatedly is effectively nothing, which is what makes it usable as a reference rather than a one-time demo.",
+        ],
+      },
+    ],
+    stack: ["Azure Management Groups", "Azure Policy", "Hub-Spoke VNet", "VNet Peering", "NSG", "Terraform"],
+    repo: "https://github.com/jordann6/azure-landing-zone",
+    receipt: {
+      rows: [
+        { k: "Provision", v: "24 Terraform resources: 4-level management group tree, 3 policy definitions and assignments, hub plus 2 peered spokes" },
+        { k: "Verify", v: "Hierarchy, subscription placement, policy assignments, and both peering directions confirmed via the Azure control plane" },
+        { k: "Destroy", v: "Torn down clean; subscription auto-reassociated to the tenant root group" },
+      ],
+      total: { k: "Cost", v: "effectively zero, no VMs, Firewall, Bastion, or Gateway" },
+    },
+  },
+  {
+    slug: "aws-serverless-lakehouse",
+    num: "37",
+    title: "Serverless",
+    titleOut: "Lakehouse",
+    category: "AWS · Data Platform",
+    lede: "A CSV lands in a raw zone, a crawler infers its schema, and Athena rewrites it as columnar Parquet in a curated zone. The interesting part is not the pipeline, it is the measurement: the same query against curated data scans 156 bytes where the raw version scans 2.09 megabytes.",
+    meta: [
+      { k: "Role", v: "Data Platform" },
+      { k: "Cloud", v: "AWS" },
+      { k: "Dataset", v: "50k rows" },
+      { k: "Resources", v: "12 (Terraform)" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "The argument for a curated zone is usually made in the abstract. Columnar storage is cheaper to scan, compression helps, everyone agrees, and nobody measures it on their own data, so the curated layer gets justified as a best practice rather than as a number.",
+          "The goal here was to build the smallest honest version of the pattern and then instrument the claim, so the economic case for the curated zone is a measurement the validator reproduces rather than an assertion in a README.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "Approach",
+        bullets: [
+          "One S3 bucket split by prefix into three zones: raw for CSV exactly as produced upstream, curated for Snappy-compressed Parquet, and a scratch prefix for Athena query output expired after seven days by a lifecycle rule so it cannot quietly accumulate cost.",
+          "A Glue crawler infers the raw schema into the Data Catalog, so there is no hand-written DDL tracking a shape the crawler can discover.",
+          "Athena reads the raw table and writes the curated table with a CTAS statement, which makes the curated schema an explicit contract rather than an inferred one.",
+          "A deterministic 50,000-row synthetic orders generator seeded at 42, so the demo produces the same dataset and therefore the same measured numbers on every run.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "Architecture",
+        paragraphs: [
+          "The design rule is crawl what you do not control, declare what you do. The raw zone changes shape whenever an upstream system changes, so letting a crawler own its schema means the catalog tracks reality instead of drifting from a hand-maintained definition. The curated zone is the opposite case: its schema is a contract the transform defines, so CTAS states it explicitly.",
+          "Splitting the zones by prefix rather than by bucket is a deliberate call for demo infrastructure: one lifecycle policy, one thing to empty at teardown, and a destroy that actually completes because the bucket empties itself.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "Outcome",
+        paragraphs: [
+          "The validator runs five checks covering catalog registration, Parquet output, row reconciliation between zones, and the scan-cost claim itself. The same count and sum query scans 156 bytes against curated Parquet versus 2.09 megabytes against raw CSV, which is the entire economic argument for the curated zone expressed as a measurement rather than a principle.",
+          "Nothing runs between demos. There is no NAT gateway, no cluster, and no warehouse endpoint, so the idle cost is storage for a small dataset and the full deploy-demo-destroy session lands well under a quarter.",
+        ],
+      },
+    ],
+    stack: ["S3", "Glue Data Catalog", "Glue Crawler", "Athena CTAS", "Parquet", "IAM", "Terraform"],
+    repo: "https://github.com/jordann6/aws-serverless-lakehouse",
+    receipt: {
+      rows: [
+        { k: "Provision", v: "12 Terraform resources: 3-zone S3 lake, Glue catalog and crawler, Athena workgroup, scoped IAM" },
+        { k: "Demo", v: "50,000-row deterministic CSV landed, crawled, and rewritten to Snappy Parquet via CTAS" },
+        { k: "Prove", v: "Same query scans 156 B curated vs 2.09 MB raw; 5 of 5 validator checks passed" },
+        { k: "Destroy", v: "Bucket force-emptied, catalog, crawler, and workgroup removed, nothing left running" },
+      ],
+      total: { k: "Cost", v: "well under $0.25 for the full session" },
+    },
+  },
+  {
+    slug: "dbt-analytics-athena",
+    num: "38",
+    title: "dbt Analytics",
+    titleOut: "Engineering",
+    category: "AWS · Data Platform",
+    lede: "The analytics engineering layer on top of a serverless lake: transformations are versioned code, twelve tests gate every build, and one command reconciles the warehouse to them. Including a test that fails the build if gold revenue stops matching silver to the cent.",
+    meta: [
+      { k: "Role", v: "Analytics Engineering" },
+      { k: "Cloud", v: "AWS" },
+      { k: "Tests", v: "12, gating every build" },
+      { k: "Resources", v: "7 (Terraform)" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "Ad-hoc SQL against a lake produces numbers nobody can reproduce and nobody can defend. The transformation lives in someone's query history, its correctness is assumed, and a change that silently drops or double-counts rows surfaces as a dashboard that looks plausible and is wrong.",
+          "The alternative worth demonstrating is that both the transformations and their correctness checks are versioned code, and that a single command brings the warehouse to that state or fails loudly.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "Approach",
+        bullets: [
+          "A dbt project on the dbt-athena adapter over bronze, silver, and gold layers, with Terraform provisioning the S3 lake, the Glue schema dbt materializes into, and the Athena workgroup.",
+          "Bronze is a raw orders seed loaded into the catalog as-is. Silver is a view that types and cleans it: order dates cast to real dates, rows with non-positive quantity or price dropped, and a computed line total the marts can rely on.",
+          "Gold is two Parquet marts a dashboard reads directly, revenue and counts by category and country, and one row per day with average order value.",
+          "Twelve tests run on every build: uniqueness and not-null on the keys, accepted values on category and country, not-null on the gold revenue and count columns, and a singular reconciliation test.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "Architecture",
+        paragraphs: [
+          "Staging is a cheap view over raw while the marts are materialized as Snappy Parquet, so downstream queries scan compressed columnar data instead of re-reading the seed on every dashboard load. That split is the whole reason to have a silver layer that is not itself materialized.",
+          "The test that earns its place is the singular one: it asserts that total revenue in the gold category mart reconciles to total line total in silver to the cent. Schema tests catch a column going null; only a reconciliation test catches a join that silently duplicates rows, which is the failure mode that actually reaches dashboards. CI compiles the model DAG on every push, so a broken reference fails before it reaches a warehouse.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "Outcome",
+        paragraphs: [
+          "A warehouse where the transformations are reviewable in a pull request and the correctness checks run as a gate rather than as a follow-up. A transform that drops or double-counts rows fails the build instead of shipping bad numbers.",
+          "Deployed and demoed against real AWS on a deterministic seed, validated straight against Athena without dbt in the loop as an independent check, then destroyed. No warehouse endpoint, no cluster, no NAT, so nothing accrues while idle.",
+        ],
+      },
+    ],
+    stack: ["dbt", "dbt-athena", "Athena", "Glue Data Catalog", "S3", "Parquet", "GitHub Actions", "Terraform"],
+    repo: "https://github.com/jordann6/aws-lakehouse-dbt",
+    receipt: {
+      rows: [
+        { k: "Provision", v: "7 Terraform resources: S3 lake, Glue database, Athena workgroup" },
+        { k: "Build", v: "Deterministic 5,000-row seed through bronze, silver view, and two Parquet gold marts" },
+        { k: "Prove", v: "12 of 12 data tests passed, including silver-to-gold revenue reconciliation to the cent" },
+        { k: "Destroy", v: "Bucket force-emptied, Glue schema and workgroup removed, nothing left running" },
+      ],
+      total: { k: "Cost", v: "well under $0.25 for the full session" },
+    },
+  },
 ];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
