@@ -153,6 +153,144 @@ export const diagrams: Record<string, Diagram> = {
       },
     ],
   },
+  "gpu-index-api": {
+    caption: "A read-through cache in front of index-only plans: the hot path went from 166.6ms to 23.8ms",
+    cols: [
+      { nodes: [{ label: "Client", sub: "1,114 req/s · p95 8.3ms" }] },
+      { nodes: [{ label: "ALB", sub: "ECS Fargate · no NAT" }] },
+      {
+        nodes: [
+          { label: "FastAPI", sub: "async · Pydantic v2", accent: true },
+          { label: "Rate Limit", sub: "token bucket · fails open" },
+        ],
+      },
+      { nodes: [{ label: "Redis", sub: "read-through · 99.7% hit", accent: true }] },
+      { nodes: [{ label: "PostgreSQL", sub: "index-only · 23.8ms", accent: true }] },
+    ],
+  },
+  "secrets-lifecycle": {
+    caption: "Consumer maps from CloudTrail turn a stale secret into an ordered rotation runbook, with auditor evidence on the way out",
+    cols: [
+      { nodes: [{ label: "EventBridge", sub: "scheduled sweep" }] },
+      {
+        nodes: [
+          { label: "Go Scanner λ", sub: "worker pool · metadata only", accent: true },
+          { label: "Explicit Deny", sub: "GetSecretValue · kms:ViaService" },
+        ],
+      },
+      { nodes: [{ label: "DynamoDB", sub: "normalized inventory" }] },
+      {
+        nodes: [
+          { label: "Analyzer λ", sub: "Athena · 90d CloudTrail", accent: true },
+          { label: "Bedrock", sub: "runbook · strict JSON" },
+        ],
+      },
+      {
+        nodes: [
+          { label: "Security Hub", sub: "ASFF findings", accent: true },
+          { label: "S3 Evidence", sub: "Object Lock · governance" },
+          { label: "Dashboard", sub: "static · S3" },
+        ],
+      },
+    ],
+  },
+  "azure-finops-dashboard": {
+    caption: "Daily ingest, then statistics: sigma-tiered anomalies and a 14-day projection, all under one managed identity",
+    cols: [
+      { nodes: [{ label: "Timer Triggers", sub: "06:00 · 06:30 · 07:00 UTC" }] },
+      { nodes: [{ label: "Cost Mgmt API", sub: "7-day actuals by resource" }] },
+      {
+        nodes: [
+          { label: "Ingest Fn", sub: "C# .NET 8 · upsert" },
+          { label: "Anomaly Fn", sub: "30d rolling · 2σ", accent: true },
+          { label: "Forecast Fn", sub: "14d linear trend" },
+        ],
+      },
+      { nodes: [{ label: "Cosmos DB", sub: "RBAC only · key auth off", accent: true }] },
+      {
+        nodes: [
+          { label: "HTTP API", sub: "5 endpoints" },
+          { label: "React SPA", sub: "Static Web Apps", accent: true },
+        ],
+      },
+    ],
+  },
+  "aws-landing-zone-automator": {
+    caption: "One block in a tfvars file, and the account arrives inside guardrails with logging, budgets, and SSO already applied",
+    cols: [
+      { nodes: [{ label: "tfvars", sub: "account_requests" }] },
+      { nodes: [{ label: "Organizations", sub: "OU tree · all features" }] },
+      {
+        nodes: [
+          { label: "SCPs", sub: "deny root · region allowlist", accent: true },
+          { label: "Identity Center", sub: "3 groups · per-account" },
+          { label: "Budgets", sub: "80% alarm" },
+        ],
+      },
+      { nodes: [{ label: "Vended Account", sub: "baseline · no default VPC", accent: true }] },
+      { nodes: [{ label: "Log Archive", sub: "org trail · SSE-KMS · locked", accent: true }] },
+    ],
+  },
+  "azure-landing-zone": {
+    caption: "Governance attaches to the management group before the first subscription lands, so policy is the environment rather than a ticket",
+    cols: [
+      { nodes: [{ label: "Tenant Root", sub: "mg-jordann6" }] },
+      {
+        nodes: [
+          { label: "Workloads MG", sub: "subscription placed", accent: true },
+          { label: "Azure Policy", sub: "owner tag · no public IP" },
+        ],
+      },
+      { nodes: [{ label: "Hub VNet", sub: "10.0.0.0/16", accent: true }] },
+      {
+        nodes: [
+          { label: "Reserved", sub: "Firewall · Gateway · Bastion" },
+          { label: "snet-management", sub: "NSG denies inbound" },
+        ],
+      },
+      {
+        nodes: [
+          { label: "Platform Spoke", sub: "10.1.0.0/16 · peered", accent: true },
+          { label: "Sandbox Spoke", sub: "10.2.0.0/16 · peered" },
+        ],
+      },
+    ],
+  },
+  "aws-serverless-lakehouse": {
+    caption: "Crawl what you do not control, declare what you do: the same query scans 156 B curated against 2.09 MB raw",
+    cols: [
+      { nodes: [{ label: "Orders CSV", sub: "50k rows · seed 42" }] },
+      { nodes: [{ label: "S3 raw/", sub: "as produced upstream" }] },
+      { nodes: [{ label: "Glue Crawler", sub: "infers schema · no DDL", accent: true }] },
+      { nodes: [{ label: "Athena CTAS", sub: "declared contract", accent: true }] },
+      {
+        nodes: [
+          { label: "S3 curated/", sub: "Snappy Parquet · 156 B", accent: true },
+          { label: "athena-results/", sub: "7-day expiry" },
+        ],
+      },
+    ],
+  },
+  "dbt-analytics-athena": {
+    caption: "Transformations and their correctness checks are both versioned code, and one command reconciles the warehouse or fails the build",
+    cols: [
+      { nodes: [{ label: "dbt seed", sub: "5k rows · seed 42" }] },
+      { nodes: [{ label: "Bronze", sub: "raw_orders · as-is" }] },
+      { nodes: [{ label: "Silver", sub: "stg_orders view · typed", accent: true }] },
+      {
+        nodes: [
+          { label: "category_revenue", sub: "by category · country", accent: true },
+          { label: "daily_revenue", sub: "one row per day · AOV", accent: true },
+        ],
+      },
+      {
+        nodes: [
+          { label: "12 Tests", sub: "gate every build", accent: true },
+          { label: "Reconciliation", sub: "gold to silver, to the cent" },
+        ],
+      },
+    ],
+  },
 };
 
 export function getDiagram(slug: string): Diagram | undefined {
