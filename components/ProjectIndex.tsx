@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import {
   projects,
+  featuredProjects,
   CATEGORIES,
   categoryMeta,
   caseStudyMeta,
@@ -52,7 +53,7 @@ export default function ProjectIndex({
   }, []);
 
   const visible = useMemo(() => {
-    if (featuredOnly) return projects.filter((p) => p.featured);
+    if (featuredOnly) return featuredProjects();
     if (active === "All") return projects;
     if (active === CASE_STUDY_FILTER) return projects.filter((p) => p.caseStudy);
     return projects.filter((p) => p.categories.includes(active as Category));

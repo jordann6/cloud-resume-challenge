@@ -12,6 +12,11 @@ export interface Project {
   caseStudy?: string;
   /** curated into the homepage Selected Work tier */
   featured?: boolean;
+  /**
+   * Display order within the Selected Work tier, independent of `num` and of
+   * catalog position. Lower ranks first. Only meaningful when `featured`.
+   */
+  featuredRank?: number;
 }
 
 export const CATEGORIES: Category[] = ["AWS", "Azure", "AI", "Platform", "Data"];
@@ -75,7 +80,9 @@ export function caseStudyProjects(): Project[] {
 }
 
 export function featuredProjects(): Project[] {
-  return projects.filter((p) => p.featured);
+  return projects
+    .filter((p) => p.featured)
+    .sort((a, b) => (a.featuredRank ?? Infinity) - (b.featuredRank ?? Infinity));
 }
 
 export const projects: Project[] = [
@@ -88,6 +95,7 @@ export const projects: Project[] = [
     categories: ["AWS"],
     link: "https://github.com/jordann6/aws-cost-intelligence-dashboard",
     featured: true,
+    featuredRank: 7,
     caseStudy: "cost-intelligence-dashboard",
   },
   {
@@ -99,6 +107,7 @@ export const projects: Project[] = [
     categories: ["AWS", "AI"],
     link: "https://github.com/jordann6/multi-agent-coding-orchestrator",
     featured: true,
+    featuredRank: 8,
     caseStudy: "multi-agent-coding-orchestrator",
   },
   {
@@ -111,6 +120,7 @@ export const projects: Project[] = [
     caseStudy: "multi-region-failover",
     link: "https://github.com/jordann6/multi-region-failover-manager",
     featured: true,
+    featuredRank: 4,
   },
   {
     num: "04",
@@ -121,6 +131,7 @@ export const projects: Project[] = [
     categories: ["Azure"],
     link: "https://github.com/jordann6/azure-finops-dashboard",
     featured: true,
+    featuredRank: 3,
   },
   {
     num: "05",
@@ -149,6 +160,7 @@ export const projects: Project[] = [
     categories: ["AWS", "Platform"],
     link: "https://github.com/jordann6/cloud-security-lab",
     featured: true,
+    featuredRank: 10,
     caseStudy: "cloud-security-lab",
   },
   {
@@ -277,6 +289,7 @@ export const projects: Project[] = [
     categories: ["AWS", "Platform"],
     link: "https://github.com/jordann6/aws-developer-platform",
     featured: true,
+    featuredRank: 6,
     caseStudy: "aws-developer-platform",
   },
   {
@@ -298,6 +311,7 @@ export const projects: Project[] = [
     categories: ["Azure", "Platform"],
     link: "https://github.com/jordann6/azure-landing-zone",
     featured: true,
+    featuredRank: 11,
   },
   {
     num: "24",
@@ -381,6 +395,7 @@ export const projects: Project[] = [
     categories: ["AWS", "Platform"],
     link: "https://github.com/jordann6/landing-zone-automator",
     featured: true,
+    featuredRank: 9,
   },
   {
     num: "33",
@@ -391,6 +406,7 @@ export const projects: Project[] = [
     categories: ["Azure", "Platform"],
     link: "https://github.com/jordann6/azure-aks-runtime-security",
     featured: true,
+    featuredRank: 5,
     caseStudy: "azure-aks-runtime-security",
   },
   {
@@ -429,6 +445,7 @@ export const projects: Project[] = [
     categories: ["AWS", "Data"],
     link: "https://github.com/jordann6/aws-serverless-lakehouse",
     featured: true,
+    featuredRank: 12,
   },
   {
     num: "38",
@@ -439,6 +456,7 @@ export const projects: Project[] = [
     categories: ["AWS", "Data"],
     link: "https://github.com/jordann6/aws-lakehouse-dbt",
     featured: true,
+    featuredRank: 13,
   },
   {
     num: "39",
@@ -459,6 +477,7 @@ export const projects: Project[] = [
     link: "https://github.com/jordann6/gpu-index-api",
     caseStudy: "gpu-index-api",
     featured: true,
+    featuredRank: 2,
   },
   {
     num: "41",
@@ -470,5 +489,6 @@ export const projects: Project[] = [
     link: "https://github.com/jordann6/aws-secrets-lifecycle",
     caseStudy: "secrets-lifecycle",
     featured: true,
+    featuredRank: 1,
   },
 ];
