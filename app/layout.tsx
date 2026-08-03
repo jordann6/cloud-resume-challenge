@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Barlow, Barlow_Condensed, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { buildVol, siteVersion } from "@/lib/build";
-import Cursor from "@/components/Cursor";
 import FrameHud from "@/components/FrameHud";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -68,7 +67,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${display.variable} ${body.variable} ${mono.variable}`}
     >
       <body>
-        <Cursor />
         <FrameHud vol={buildVol} version={siteVersion} />
         <Nav />
         <main>{children}</main>

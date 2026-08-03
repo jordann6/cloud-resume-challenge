@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import VisitorCount from "./VisitorCount";
 
-const SECTIONS = ["hero", "about", "experience", "projects", "skills", "certs", "contact"];
+const SECTIONS = ["hero", "about", "capabilities", "projects", "skills", "certs", "contact"];
 
 // Chicago is UTC-6 in CST and UTC-5 in CDT; let the runtime handle the shift
 // rather than hardcoding an offset that goes an hour wrong every summer.

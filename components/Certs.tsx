@@ -4,7 +4,7 @@ export default function Certs() {
   return (
     <section id="certs" className="stage certs">
       <div className="sec-head reveal">
-        <span className="sec-head__num">/06</span>
+        <span className="sec-head__num">/05</span>
         <h2 className="sec-head__title">Certified</h2>
         <span className="sec-head__meta">
           Credentials

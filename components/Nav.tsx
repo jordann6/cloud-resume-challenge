@@ -8,11 +8,10 @@ import Logo from "./Logo";
 const LINKS = [
   { num: "01", label: "About", target: "about" },
   { num: "02", label: "Focus", target: "capabilities" },
-  { num: "03", label: "Work", target: "experience" },
-  { num: "04", label: "Index", target: "projects" },
-  { num: "05", label: "Stack", target: "skills" },
-  { num: "06", label: "Certified", target: "certs" },
-  { num: "07", label: "Signal", target: "contact" },
+  { num: "03", label: "Index", target: "projects" },
+  { num: "04", label: "Stack", target: "skills" },
+  { num: "05", label: "Certified", target: "certs" },
+  { num: "06", label: "Signal", target: "contact" },
 ];
 
 export default function Nav() {

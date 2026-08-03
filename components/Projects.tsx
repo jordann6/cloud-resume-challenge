@@ -6,7 +6,7 @@ export default function Projects() {
   return (
     <section id="projects" className="stage proj">
       <div className="sec-head reveal">
-        <span className="sec-head__num">/04</span>
+        <span className="sec-head__num">/03</span>
         <h2 className="sec-head__title">Selected Work</h2>
         <span className="sec-head__meta">
           Curated builds

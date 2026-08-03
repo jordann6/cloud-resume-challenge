@@ -4,7 +4,7 @@ export default function Skills() {
   return (
     <section id="skills" className="stage skills">
       <div className="sec-head reveal">
-        <span className="sec-head__num">/05</span>
+        <span className="sec-head__num">/04</span>
         <h2 className="sec-head__title">Stack</h2>
         <span className="sec-head__meta">
           Tools &amp; languages

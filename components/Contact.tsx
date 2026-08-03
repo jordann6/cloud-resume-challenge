@@ -4,7 +4,7 @@ export default function Contact() {
   return (
     <section id="contact" className="stage contact">
       <div className="sec-head reveal">
-        <span className="sec-head__num">/07</span>
+        <span className="sec-head__num">/06</span>
         <h2 className="sec-head__title">Signal</h2>
         <span className="sec-head__meta">
           Channels

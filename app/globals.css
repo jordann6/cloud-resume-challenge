@@ -46,7 +46,7 @@ body {
   font-weight: 300;
   font-size: 15px;
   line-height: 1.7;
-  cursor: none;
+  cursor: auto;
 }
 a {
   color: inherit;
@@ -54,7 +54,7 @@ a {
 }
 button {
   font: inherit;
-  cursor: none;
+  cursor: pointer;
   border: 0;
   background: none;
   color: inherit;
@@ -85,51 +85,6 @@ body::after {
   margin: 0 auto;
   left: 50%;
   transform: translateX(-50%);
-}
-
-/* Cursor */
-.cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10000;
-  width: 28px;
-  height: 28px;
-  border: 1px solid var(--text-secondary);
-  border-radius: 50%;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  transition:
-    width 0.25s var(--ease),
-    height 0.25s var(--ease),
-    border-color 0.25s var(--ease);
-}
-.cursor-dot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10001;
-  width: 4px;
-  height: 4px;
-  background: var(--white);
-  border-radius: 50%;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-}
-.cursor-ring.cursor-active {
-  width: 56px;
-  height: 56px;
-  border-color: var(--white);
-}
-.cursor-coords {
-  position: fixed;
-  z-index: 10001;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  color: var(--text-secondary);
-  letter-spacing: 0.08em;
-  pointer-events: none;
-  transform: translate(20px, 20px);
 }
 
 /* Frame edges */
@@ -474,7 +429,7 @@ section {
   gap: 14px;
   position: relative;
   overflow: hidden;
-  cursor: none;
+  cursor: auto;
 }
 .btn--primary {
   background: var(--black);
@@ -734,7 +689,7 @@ section {
   padding: 32px 0;
   align-items: center;
   border-bottom: 1px solid var(--border);
-  cursor: none;
+  cursor: pointer;
   transition: padding 0.5s var(--ease);
   position: relative;
   width: 100%;
@@ -827,7 +782,7 @@ section {
   text-transform: uppercase;
   color: var(--text-secondary);
   transition: color 0.3s var(--ease);
-  cursor: none;
+  cursor: pointer;
 }
 .work__cats a:hover {
   color: var(--accent);
@@ -930,7 +885,7 @@ section {
   letter-spacing: -0.005em;
   color: var(--white);
   transition: color 0.3s var(--ease);
-  cursor: none;
+  cursor: auto;
 }
 .skills__group .items span:hover {
   color: var(--text-dim);
@@ -1275,7 +1230,7 @@ section {
   color: var(--text-dim);
 }
 .modal__close {
-  cursor: none;
+  cursor: pointer;
 }
 .modal h3 {
   font-family: var(--font-display);

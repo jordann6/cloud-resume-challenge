@@ -13,17 +13,18 @@ export default function About() {
       <div className="about reveal">
         <div className="about__body">
           <p>
-            After leaving law school, I redirected toward software engineering
-            and cloud infrastructure. My work emphasizes{" "}
+            I build cloud platforms and the automation around them: AWS and
+            Azure infrastructure, security tooling, and AI-integrated systems,
+            all defined as code. My work emphasizes{" "}
             <strong>reliability, reproducibility, and operational awareness</strong>{" "}
             across the software development lifecycle.
           </p>
           <p>
-            Currently at <strong>Snorkel AI</strong> as a DevOps Engineer,
-            running DevSecOps pipelines, Kubernetes blue-green deployments on
-            AKS, and event-driven AWS remediation. Independently building Azure
-            FinOps tooling, production monitoring, and Zero Trust identity
-            infrastructure.
+            Every project here was <strong>deployed against real cloud
+            accounts, demonstrated live, and torn down clean</strong>, with the
+            receipts written up. The case studies cover the architecture
+            decisions, the trade-offs, and the bugs that only show up in
+            production.
           </p>
           <div className="stats">
             <div className="stat">

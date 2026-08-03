@@ -1,5 +1,4 @@
 import Link from "next/link";
-import VisitorCount from "./VisitorCount";
 
 export default function Hero() {
   return (
@@ -11,9 +10,7 @@ export default function Hero() {
         <span className="hero__loc">
           <strong>Chicago, IL — USA</strong>
           <br />
-          Currently · Snorkel AI / DevOps Eng.
-          <br />
-          <VisitorCount /> Views
+          Remote-first · AWS + Azure
         </span>
       </div>
 
