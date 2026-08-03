@@ -605,6 +605,67 @@ export const caseStudies: CaseStudy[] = [
       total: { k: "Cost", v: "~$0.20 for the demo window" },
     },
   },
+  {
+    slug: "secrets-lifecycle",
+    num: "41",
+    title: "Secrets Lifecycle",
+    titleOut: "& Rotation Readiness",
+    category: "AWS · Security · Platform",
+    lede: "Governance tooling that answers the question AWS Config cannot: not whether a secret is stale, but why nobody rotated it. Dependency analysis over CloudTrail turns rotation from an outage gamble into an ordered runbook, with auditor-ready evidence produced on the way out.",
+    meta: [
+      { k: "Role", v: "Cloud Security / Platform" },
+      { k: "Cloud", v: "AWS" },
+      { k: "Languages", v: "Go + Python" },
+      { k: "Resources", v: "40 (Terraform)" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "Staleness detection is a solved problem: AWS Config will happily tell you a secret is 400 days old. What it cannot tell you is which workloads read that secret, which is the only question that matters when someone proposes rotating it. Without a consumer map, every rotation is an outage gamble, so the rational move for every individual team is to not rotate, and the fleet ages indefinitely.",
+          "The goal was a platform that identifies the consumers of every secret from observed access rather than assumptions, scores how safely each secret could be rotated today, and hands the operator an ordered runbook instead of a finding.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "Approach",
+        bullets: [
+          "A Go scanner Lambda sweeps Secrets Manager, SSM SecureString parameters, and IAM access keys through a bounded goroutine worker pool, multi-account capable via assumed roles, writing normalized records to DynamoDB.",
+          "A Python analyzer queries 90 days of CloudTrail through Athena (partition projection, no MSCK repair) for GetSecretValue and GetParameter events, building a consumer map per secret: which principals read it, how often, and how recently.",
+          "The consumer map drives a rotation readiness score combining age, consumer count, consumer identifiability, and rotation configuration, and Claude on Bedrock synthesizes an ordered runbook with rollback path and confidence level for the highest-risk secrets, prompted for strict JSON and validated on parse, with a deterministic rule-based fallback when the model is unavailable.",
+          "Every finding maps to HIPAA 164.308(a)(5)(ii)(D), SOC 2 CC6.1, NIST 800-53 IA-5, and CIS 1.14 from a versioned config file, lands in a versioned S3 bucket with Object Lock in governance mode, and imports to Security Hub as ASFF findings.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "Architecture",
+        paragraphs: [
+          "The defining constraint is that a tool inspecting every secret in the account must be provably unable to read any of them. The scanner and analyzer roles carry an explicit IAM deny on GetSecretValue and GetParameter, so metadata access cannot escalate even if a broader policy is ever attached. The first version denied kms:Decrypt outright, which broke Lambda's own environment variable decryption at cold start; the fix scopes the deny with kms:ViaService to Secrets Manager and SSM, keeping the guarantee without breaking the runtime. A redaction layer scrubs anything resembling key material before data reaches logs, DynamoDB, or Bedrock, as defense in depth on top of never fetching values.",
+          "The pipeline is chained with Lambda on-success destinations rather than Step Functions: EventBridge fires the scanner asynchronously, and scanner, analyzer, and reporter pass the scan ID through their response payloads. Each function gets its own least-privilege role, and the evidence bucket accepts writes only from the analyzer.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "Outcome",
+        paragraphs: [
+          "Verified live end to end against a seeded environment of 15 test secrets with real consumer Lambdas and a working rotation function: 17 resources scanned in about a second, consumers identified for 53 percent of secrets down to the exact Lambda execution roles and read counts, 5 rotation runbooks generated, and 31 control-mapped findings imported to Security Hub with evidence artifacts locked in S3.",
+          "All 40 Terraform resources were destroyed the same day, including a governance-retention bypass sweep of the evidence bucket, with the account verified clean of every secops-prefixed resource and Security Hub returned to its unsubscribed state.",
+        ],
+      },
+    ],
+    stack: ["Go", "Python", "Lambda", "CloudTrail", "Athena", "DynamoDB", "Amazon Bedrock", "Security Hub", "S3 Object Lock", "EventBridge", "Terraform"],
+    repo: "https://github.com/jordann6/aws-secrets-lifecycle",
+    receipt: {
+      rows: [
+        { k: "Provision", v: "40 Terraform resources across 8 modules, plus a seeded test environment of 15 secrets with live consumers" },
+        { k: "Demo", v: "17 resources scanned in ~1s; consumer maps resolved from CloudTrail to exact execution roles and read counts" },
+        { k: "Proof", v: "5 runbooks generated, 31 ASFF findings in Security Hub, evidence artifact under governance-mode Object Lock" },
+        { k: "Destroy", v: "Governance bypass sweep, then full teardown same day; account verified clean, Security Hub unsubscribed" },
+      ],
+      total: { k: "Cost", v: "under $1 for the full build-demo-destroy session" },
+    },
+  },
 ];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {

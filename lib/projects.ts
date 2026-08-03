@@ -460,4 +460,15 @@ export const projects: Project[] = [
     caseStudy: "gpu-index-api",
     featured: true,
   },
+  {
+    num: "41",
+    title: "Secrets Lifecycle",
+    titleOut: "& Rotation Readiness",
+    desc: "Governance tooling built on the observation that secrets age out not because nobody notices but because nobody knows which workloads consume them, so rotation carries outage risk. A Go scanner Lambda sweeps Secrets Manager, SSM SecureString parameters, and IAM access keys through a bounded goroutine worker pool, multi-account capable via assumed roles, capturing metadata only: the scanner and analyzer roles carry an explicit IAM deny on GetSecretValue and GetParameter plus a kms:ViaService-scoped deny on Decrypt, so secret values cannot be read anywhere in the pipeline even if a broader policy were ever attached. A Python analyzer queries 90 days of CloudTrail through Athena with partition projection to build a consumer map per secret: which principals actually read it and how often. That map drives a rotation readiness score combining age, consumer count, consumer identifiability, and rotation configuration, and Claude on Bedrock synthesizes an ordered rotation runbook with rollback path and confidence level for the highest-risk secrets, prompted for strict JSON and validated on parse, degrading to a deterministic rule-based runbook when the model is unavailable. Every finding maps to HIPAA 164.308(a)(5)(ii)(D), SOC 2 CC6.1, NIST 800-53 IA-5, and CIS 1.14 from a versioned config file, lands as an evidence artifact in a versioned S3 bucket with Object Lock in governance mode, and imports to Security Hub as ASFF findings. EventBridge schedules the scan and Lambda on-success destinations chain scanner to analyzer to reporter, which serves a self-contained dashboard from S3. Verified live end to end: 17 resources scanned, consumers identified for 53 percent of secrets down to the exact Lambda execution roles and read counts, 5 runbooks generated, 31 control-mapped findings imported to Security Hub, then all 40 Terraform resources destroyed the same day with the account verified clean.",
+    tags: ["Go", "Lambda", "CloudTrail", "Athena", "DynamoDB", "Amazon Bedrock", "Security Hub", "S3 Object Lock", "EventBridge", "Terraform"],
+    categories: ["AWS", "Platform"],
+    link: "https://github.com/jordann6/aws-secrets-lifecycle",
+    caseStudy: "secrets-lifecycle",
+    featured: true,
+  },
 ];
