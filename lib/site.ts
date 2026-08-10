@@ -38,7 +38,7 @@ export interface SkillGroup {
 }
 
 export const skills: SkillGroup[] = [
-  { label: "/Languages", tags: ["Python", "JavaScript", "Bash", "Go", "C#", "SQL"] },
+  { label: "/Languages", tags: ["Python", "JavaScript", "Bash", "Go", "C#", "Ruby", "SQL"] },
   { label: "/Cloud", tags: ["AWS", "Azure", "GCP"] },
   { label: "/Infra", tags: ["Docker", "Kubernetes", "Linux", "Terraform"] },
   { label: "/Pipelines", tags: ["GitHub Actions", "CI/CD"] },
