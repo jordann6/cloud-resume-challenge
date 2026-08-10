@@ -1,4 +1,4 @@
-export type Category = "AWS" | "Azure" | "AI" | "Platform" | "Data";
+export type Category = "AWS" | "Azure" | "GCP" | "AI" | "Platform" | "Data";
 
 export interface Project {
   num: string;
@@ -19,7 +19,7 @@ export interface Project {
   featuredRank?: number;
 }
 
-export const CATEGORIES: Category[] = ["AWS", "Azure", "AI", "Platform", "Data"];
+export const CATEGORIES: Category[] = ["AWS", "Azure", "GCP", "AI", "Platform", "Data"];
 
 export const categoryMeta: Record<
   Category,
@@ -36,6 +36,12 @@ export const categoryMeta: Record<
     title: "Azure",
     blurb:
       "Azure builds across identity, governance, FinOps, and AKS platforms, credential-free with managed identity and Workload Identity.",
+  },
+  GCP: {
+    slug: "gcp",
+    title: "GCP",
+    blurb:
+      "Google Cloud work centered on the parts that do not transfer from AWS or Azure: workload identity federation, principal sets and resource hierarchy inheritance, and org policy constraints that make a control structural rather than procedural.",
   },
   AI: {
     slug: "ai",
@@ -507,5 +513,14 @@ export const projects: Project[] = [
     caseStudy: "azure-secrets-lifecycle",
     featured: true,
     featuredRank: 3,
+  },
+  {
+    num: "43",
+    title: "Workload Identity",
+    titleOut: "Federation (GCP)",
+    desc: "CI that authenticates to Google Cloud with no service account key anywhere, and an org policy that makes creating one impossible even for a project owner. Four federation paths are built side by side so the trade-offs are visible rather than asserted: GitHub Actions to GCP through direct resource access, where a principalSet holds IAM roles on the bucket, registry, and secret and no service account exists at all; the same token exchanged for a service account through roles/iam.workloadIdentityUser, built only for comparison; AWS to GCP through a pool that verifies a signed GetCallerIdentity request against AWS STS; and GCP to AWS through web identity federation, where AWS treats accounts.google.com as a built-in provider so trust pins to the service account numeric unique ID rather than its email, because an email is reusable after deletion and a unique ID is not. The security control is the provider attribute condition, not the attribute mapping: mapping renames claims while the condition decides who gets in, and a pool without one trusts every token GitHub's issuer signs, which is every workflow run in every repository on GitHub. Authority splits across two attributes of one pool so read binds on attribute.repository and write binds on attribute.ref, which is what lets a fork pull request read without being able to write. iam.disableServiceAccountKeyCreation and disableServiceAccountKeyUpload turn the keyless claim from a convention into a control, and Secret Manager and Artifact Registry share one CMEK key so disabling a single key version revokes both at once. Verified live: the deployed attribute condition, both constraints enforcing, zero default networks, CMEK binding confirmed through the API, and a service account key creation attempt refused as project owner with the constraint named in the violation. Four failures during the first apply are documented rather than smoothed over, including that organizationAdmin grants neither folder creation nor org policy administration, and that user credentials with no quota project bill orgpolicy calls to Google's shared OAuth client project. Deployed and destroyed the same day for under five cents, with the pool soft-delete window and the permanence of KMS key rings written into the teardown.",
+    tags: ["Workload Identity Federation", "Org Policy", "Secret Manager", "Cloud KMS", "Artifact Registry", "GitHub OIDC", "Terraform"],
+    categories: ["GCP", "Platform"],
+    link: "https://github.com/jordann6/gcp-workload-identity-federation",
   },
 ];
