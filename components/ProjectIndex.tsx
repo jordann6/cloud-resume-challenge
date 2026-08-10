@@ -154,15 +154,26 @@ export default function ProjectIndex({
               ))}
             </div>
             <div className="modal__actions">
-              <a
-                className="btn btn--primary"
-                href={modal.link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {modal.link.includes("github") ? "View on GitHub" : "Read on Substack"}{" "}
-                <span className="arrow">↗</span>
-              </a>
+              {(
+                modal.links ?? [
+                  {
+                    label: modal.link.includes("github")
+                      ? "View on GitHub"
+                      : "Read on Substack",
+                    href: modal.link,
+                  },
+                ]
+              ).map((l) => (
+                <a
+                  className="btn btn--primary"
+                  key={l.href}
+                  href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {l.label} <span className="arrow">↗</span>
+                </a>
+              ))}
             </div>
           </div>
         </div>

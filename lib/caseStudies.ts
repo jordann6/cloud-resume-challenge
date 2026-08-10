@@ -25,7 +25,7 @@ export const caseStudies: CaseStudy[] = [
     slug: "multi-region-failover",
     num: "03",
     title: "Multi-Region",
-    titleOut: "Failover Manager",
+    titleOut: "Failover Manager (AWS)",
     category: "AWS · Platform · SRE",
     lede: "Automated regional disaster recovery that treats failover as two problems on two clocks: DNS shifts traffic in about a minute while orchestration promotes the database behind it, demonstrated live against real AWS and torn down the same night.",
     meta: [
@@ -84,7 +84,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "aws-developer-platform",
-    num: "21",
+    num: "13",
     title: "AWS Developer",
     titleOut: "Platform",
     category: "AWS · Platform",
@@ -146,7 +146,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "azure-developer-platform",
-    num: "22",
+    num: "14",
     title: "Azure Developer",
     titleOut: "Platform",
     category: "Azure · Platform",
@@ -206,9 +206,9 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "aws-incident-responder",
-    num: "24",
-    title: "AWS Incident",
-    titleOut: "Responder",
+    num: "16",
+    title: "Incident",
+    titleOut: "Responder (AWS)",
     category: "AWS · Platform · AI",
     lede: "Automated incident response where the runbook is a visual, version-controlled n8n workflow rather than glue code, with an LLM summarizing the incident in plain English.",
     meta: [
@@ -398,7 +398,7 @@ export const caseStudies: CaseStudy[] = [
     slug: "multi-agent-coding-orchestrator",
     num: "02",
     title: "Multi-Agent AI",
-    titleOut: "Orchestrator",
+    titleOut: "Coding Orchestrator",
     category: "AWS · AI",
     lede: "A fully asynchronous multi-agent system that routes natural-language coding tasks to specialist agents, designed around API Gateway's timeout instead of against it.",
     meta: [
@@ -454,7 +454,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "azure-aks-runtime-security",
-    num: "33",
+    num: "20",
     title: "Azure AKS",
     titleOut: "Runtime Security",
     category: "Azure · Platform · Security",
@@ -525,9 +525,9 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "gpu-index-api",
-    num: "40",
+    num: "26",
     title: "GPU Index",
-    titleOut: "API",
+    titleOut: "API (FastAPI)",
     category: "AWS · Backend · Performance",
     lede: "An async FastAPI service where the query plan is the product: two million price observations, a hot path cut 85 percent by making an index match the sort it feeds, and every claim backed by an EXPLAIN plan rather than an assertion.",
     meta: [
@@ -607,7 +607,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "secrets-lifecycle",
-    num: "41",
+    num: "27",
     title: "Secrets Lifecycle",
     titleOut: "& Rotation Readiness",
     category: "AWS · Security · Platform",
@@ -720,7 +720,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "aws-landing-zone-automator",
-    num: "32",
+    num: "19",
     title: "AWS Landing Zone",
     titleOut: "Automator",
     category: "AWS · Platform · Governance",
@@ -781,7 +781,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "azure-landing-zone",
-    num: "23",
+    num: "15",
     title: "Azure Landing",
     titleOut: "Zone",
     category: "Azure · Platform · Governance",
@@ -841,7 +841,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "aws-serverless-lakehouse",
-    num: "37",
+    num: "23",
     title: "Serverless",
     titleOut: "Lakehouse",
     category: "AWS · Data Platform",
@@ -902,7 +902,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "dbt-analytics-athena",
-    num: "38",
+    num: "24",
     title: "dbt Analytics",
     titleOut: "Engineering",
     category: "AWS · Data Platform",
@@ -963,7 +963,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "azure-secrets-lifecycle",
-    num: "42",
+    num: "28",
     title: "Azure Secrets",
     titleOut: "Lifecycle & Rotation",
     category: "Azure \u00b7 Security \u00b7 Platform",
@@ -1055,7 +1055,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "gcp-workload-identity-federation",
-    num: "43",
+    num: "29",
     title: "Workload Identity",
     titleOut: "Federation (GCP)",
     category: "GCP · Platform · Security",
@@ -1134,7 +1134,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "gcp-landing-zone",
-    num: "44",
+    num: "30",
     title: "GCP",
     titleOut: "Landing Zone",
     category: "GCP · Platform · Governance",
