@@ -961,6 +961,98 @@ export const caseStudies: CaseStudy[] = [
       total: { k: "Cost", v: "well under $0.25 for the full session" },
     },
   },
+  {
+    slug: "azure-secrets-lifecycle",
+    num: "42",
+    title: "Azure Secrets",
+    titleOut: "Lifecycle & Rotation",
+    category: "Azure \u00b7 Security \u00b7 Platform",
+    lede: "The same problem solved a second time on a different cloud, in Ruby on Rails, where the interesting part is not the port but the places Azure refuses to work the way AWS does. The platform proves its own least-privilege claim against the live cloud instead of asserting it in a README.",
+    meta: [
+      { k: "Role", v: "Cloud Security / Platform" },
+      { k: "Cloud", v: "Azure" },
+      { k: "Language", v: "Ruby on Rails 8" },
+      { k: "Resources", v: "45 (Terraform)" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "Azure Policy and Defender for Cloud will both tell you a Key Vault secret has no expiry date. Neither tells you which workloads read it, which is the only question that matters when someone proposes rotating it. Without a consumer map the rational move for every individual team is to not rotate, and the fleet ages indefinitely.",
+          "The second goal was harder than the first: port the idea, not the code, and refuse to paper over the places the two clouds genuinely differ. A find-and-replace of Secrets Manager for Key Vault would have produced something that looked finished and taught nothing.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "Where Azure is better, and where it is worse",
+        paragraphs: [
+          "The consumer map is the clear win. On AWS the same question needs CloudTrail delivering to S3, a Glue table with partition projection, and an Athena workgroup before a single row is readable. Azure diagnostic settings put Key Vault audit events into a workspace that is already queryable, so the entire dependency analysis collapses to one KQL query against a typed table.",
+          "The security model is the clear loss. AWS can express an explicit IAM deny on GetSecretValue; Azure has no equivalent outside deny assignments, which are only creatable through managed applications and Blueprints. The honest Azure answer is a role that never granted the permission: Key Vault Reader carries secrets/readMetadata/action and vaults/*/read but not getSecret/action. A custom Azure Policy then audits any role assignment that would widen it, because the control is now the absence of a grant rather than the presence of a deny.",
+          "App Configuration is the weak spot and it is stated as one. App Configuration Data Reader is the narrowest built-in role and it does return values, so the guarantee there downgrades from the role making it impossible to the request never asking, enforced with $select and a redaction layer. The structural fix is the Key Vault reference pattern, and the seeded estate includes one so the difference is visible on the dashboard rather than buried in a README.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "Readiness is not risk",
+        paragraphs: [
+          "A secret that is nine months old and read by nothing is dangerous to keep and trivial to rotate. A secret that is thirty days old and read by eleven principals nobody can name is the opposite. Collapsing both into one risk number is what produces backlogs nobody works, so readiness answers a single question: how safely could this be rotated today.",
+          "The Azure scoring adds two dimensions the AWS version had no analogue for. Expiry state, because Key Vault objects carry an exp attribute that near-expiry automation keys off and CIS requires. And the vault authorization model, because on an access policy vault the resource names its own readers, while on an RBAC vault it does not, so if the audit log is silent too there is no evidence of the consumer set from either direction. That case is scored down explicitly rather than being allowed to look safe.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "No stored credential, anywhere",
+        paragraphs: [
+          "A platform that reports on static credentials should not be holding one. Azure OpenAI runs with local authentication disabled, the storage account with shared key access disabled, and the container registry with the admin account off, so no API key exists in the deployment at all.",
+          "The database was the interesting case. Keeping a Postgres password in Key Vault would have meant granting the application the exact data plane read permission the rest of the design spends its effort avoiding. Instead password authentication is disabled outright and the app authenticates with an Entra access token minted per connection, hooked into the adapter's client construction so a reconnect after a pool reap gets a fresh one.",
+        ],
+      },
+      {
+        num: "/05",
+        heading: "Proving it instead of claiming it",
+        paragraphs: [
+          "A role definition in Terraform is evidence of intent, not of outcome. Roles get widened by someone debugging at 2am, inherited from a management group, or shadowed by a second assignment, and the README goes on claiming a guarantee that stopped being true.",
+          "So the platform verifies itself. A dedicated job runs ten checks against the live cloud from inside the platform identity and asserts both directions: that metadata reads work, and that the things that must fail actually fail. It exits non-zero on any regression, so a widened role assignment fails the build rather than quietly invalidating the security story.",
+        ],
+        bullets: [
+          "key_vault.list_secrets \u2014 PASS, 13 secrets listed, values absent from the payload",
+          "key_vault.certificate_policy \u2014 PASS, the read that certificate auto-renew detection depends on",
+          "key_vault.get_secret_value \u2014 PASS, DENIED with 403: Key Vault Reader carries no getSecret action",
+          "app_config.list_no_value \u2014 PASS, 5 key values listed with the value field withheld by $select",
+          "evidence.overwrite_denied \u2014 PASS, blocked with 409 by the time based immutability policy",
+        ],
+      },
+      {
+        num: "/06",
+        heading: "What broke on contact with the cloud",
+        paragraphs: [
+          "Roughly a dozen things worked locally and failed in Azure, which is the point of deploying rather than declaring done. Listing an OpenAI model does not mean it can be deployed: the API returns models in a Deprecating lifecycle state that the deployment endpoint refuses, and quota can be batch-only, so the check is lifecycle status and GlobalStandard quota together.",
+          "An IP allow list cannot gate a Container Apps consumption workload at all. The environment static IP is not the address Key Vault sees, and real egress comes from a shared regional pool that is neither exposed nor stable, so RBAC is the only control that holds without a VNet and a NAT gateway. The platform consequently reports its own vault as failing CIS Azure 8.7 on every scan, which is left visible rather than suppressed.",
+          "The rest were the kind of thing no amount of local testing finds: the Logs Ingestion API authorizes against the data collection rule rather than the workspace and needs Monitoring Metrics Publisher scoped to it; bulk insert writes NULL rather than applying column defaults when a row omits a key, which took down a whole scan; diagnostic settings take minutes to become effective and audit events generated before that are lost permanently; and a bare if key inside jsonencode breaks the HCL2 parser so Checkov silently skipped an entire module rather than reporting anything.",
+        ],
+      },
+      {
+        num: "/07",
+        heading: "Verified, then destroyed",
+        paragraphs: [
+          "Two full deploy, demo, destroy cycles against a live subscription. The scan swept 25 resources in 4.4 seconds with zero sweep errors across all four kinds, built consumer maps from real Key Vault audit rows, produced 71 findings across 8 control frameworks, and generated 5 rotation runbooks from the model rather than the deterministic fallback.",
+          "Deleting an evidence artifact fails with BlobImmutableDueToPolicy, and all 71 findings are queryable in the Sentinel custom table by control. Everything was then torn down, with the subscription verified clean of every secops-prefixed resource, the Entra app registration removed, and the policy definition and assignment gone. The only survivor is the soft-deleted Key Vault that purge protection keeps by design, which bills nothing and expires on its own.",
+        ],
+      },
+    ],
+    stack: ["Ruby on Rails 8", "Container Apps", "Key Vault", "App Configuration", "Entra ID", "Log Analytics KQL", "Azure OpenAI", "Microsoft Sentinel", "PostgreSQL Flexible Server", "Blob immutability", "Terraform"],
+    repo: "https://github.com/jordann6/azure-secrets-lifecycle",
+    receipt: {
+      rows: [
+        { k: "Provision", v: "45 Terraform resources across 8 modules, plus a seeded estate of 13 secrets, 3 certificates, 5 App Configuration keys, and an Entra app credential" },
+        { k: "Demo", v: "25 resources swept in 4.4s with zero sweep errors; consumer maps built from real Key Vault audit rows" },
+        { k: "Proof", v: "10/10 posture checks including secret read DENIED 403 and evidence overwrite DENIED 409; 71 findings across 8 controls; 5 model-generated runbooks; 71 rows in Sentinel" },
+        { k: "Destroy", v: "Full teardown across two cycles; subscription verified clean, Entra app and policy definition removed" },
+      ],
+      total: { k: "Cost", v: "about $3 for the full build-demo-destroy session" },
+    },
+  },
 ];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {

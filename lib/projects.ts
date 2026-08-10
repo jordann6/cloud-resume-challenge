@@ -496,4 +496,16 @@ export const projects: Project[] = [
     featured: true,
     featuredRank: 1,
   },
+  {
+    num: "42",
+    title: "Azure Secrets",
+    titleOut: "Lifecycle & Rotation",
+    desc: "The Azure counterpart to the AWS secrets platform, rebuilt as a single Ruby on Rails 8 application on Container Apps rather than three Lambdas, ported as an idea rather than as code so the places Azure genuinely works differently stay visible. The scanner sweeps Key Vault secrets and certificates, App Configuration key values, and Entra ID app registration credentials through a bounded worker pool, metadata only: the managed identity holds Key Vault Reader, which carries secrets/readMetadata/action and vaults/*/read but not getSecret/action, so reading a value is structurally impossible rather than merely unimplemented. Azure has no equivalent of an IAM explicit deny, so a custom Azure Policy audits any role assignment that would widen that grant. The analyzer replaces CloudTrail, Glue, and Athena with one KQL query against Log Analytics, resolves caller object IDs to display names through Microsoft Graph, and scores rotation readiness on two dimensions the AWS version had no analogue for: expiry state, and whether the vault uses RBAC, where the resource does not name its own readers and the audit log is the only evidence there is. Azure OpenAI synthesizes runbooks pinned to json_object with a validated parse and a deterministic fallback. Findings map to HIPAA, SOC 2, NIST 800-53 IA-5 and AC-2, Microsoft cloud security benchmark IM-3 and IM-8, and CIS Azure 8.3, 8.5, and 8.7, landing as immutable Blob evidence and streaming into Microsoft Sentinel through the Logs Ingestion API. There is no stored credential anywhere: Postgres has password authentication disabled and the app authenticates with an Entra token minted per connection, because a platform that reports on static credentials should not hold one. A make verify job proves all of this against the live cloud in both directions, including that reading a secret value is denied with 403 and that the evidence container rejects an overwrite with 409, and exits non-zero on regression so a widened role fails the build.",
+    tags: ["Ruby on Rails", "Container Apps", "Key Vault", "Log Analytics KQL", "Entra ID", "Azure OpenAI", "Microsoft Sentinel", "PostgreSQL", "Terraform"],
+    categories: ["Azure", "Platform"],
+    link: "https://github.com/jordann6/azure-secrets-lifecycle",
+    caseStudy: "azure-secrets-lifecycle",
+    featured: true,
+    featuredRank: 3,
+  },
 ];
