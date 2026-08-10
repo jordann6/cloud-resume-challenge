@@ -1053,6 +1053,183 @@ export const caseStudies: CaseStudy[] = [
       total: { k: "Cost", v: "about $3 for the full build-demo-destroy session" },
     },
   },
+  {
+    slug: "gcp-workload-identity-federation",
+    num: "43",
+    title: "Workload Identity",
+    titleOut: "Federation (GCP)",
+    category: "GCP · Platform · Security",
+    lede: "CI that authenticates to Google Cloud with no service account key anywhere, and an org policy that makes creating one impossible even for a project owner. Four federation paths built side by side so the trade-offs are visible rather than asserted, deployed against a live organization and destroyed the same day.",
+    meta: [
+      { k: "Role", v: "Cloud / Platform Security" },
+      { k: "Cloud", v: "GCP" },
+      { k: "Paths", v: "4 (GitHub ×2, AWS ↔ GCP)" },
+      { k: "Resources", v: "41 (Terraform)" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "A service account key is a JSON file holding a private key that does not expire. It authenticates as its service account from anywhere on the internet, forever, until someone notices and revokes it. Leaked keys are found in public repositories within minutes and are a routine root cause of cloud incidents.",
+          "The usual mitigations are procedural: do not commit keys, rotate them, scan for them. Every one of them depends on nobody making a mistake. Federation removes the key entirely, but it introduces a subtler failure: a federation pool configured without constraints is worse than a key, because it trusts every token its issuer signs, and GitHub's issuer signs one for every workflow run in every repository on GitHub.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "Approach",
+        bullets: [
+          "GitHub Actions to GCP through direct resource access, where a principalSet holds IAM roles on the bucket, registry, and secret and no service account exists at all.",
+          "The same token exchanged for a service account through roles/iam.workloadIdentityUser, built only so the two can be compared and the choice defended.",
+          "AWS to GCP through a pool that verifies a signed GetCallerIdentity request against AWS STS, which is why that provider takes an account ID rather than an issuer URL.",
+          "GCP to AWS through web identity federation, where AWS treats accounts.google.com as a built-in provider, so trust pins to the service account's numeric unique ID rather than its email.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "The control is the attribute condition",
+        paragraphs: [
+          "Attribute mapping renames claims. It does not decide who gets in. The provider pins both repository and owner, so a token from any other repository is refused at the pool before any IAM binding is evaluated. Deny at the door, then scope inside it.",
+          "Authority then splits across two attributes of the same pool: read binds on attribute.repository, write binds on attribute.ref. That is what lets a pull request from a fork read without being able to write, and it is why pinning the sub claim to a single value, which is what one Checkov rule wants, would have been a downgrade rather than a hardening. The waiver is written into both the code and the README with that reasoning.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "Making the claim enforceable",
+        paragraphs: [
+          "Two org policy constraints, disableServiceAccountKeyCreation and disableServiceAccountKeyUpload, are applied to the workload project. With both enforced, nobody can create or upload a key there, including a project owner. That is the difference between \"we do not use keys\" and \"keys cannot exist here.\"",
+          "Secret Manager and Artifact Registry share one customer-managed key, so disabling a single key version revokes both at once with no IAM edit and nothing deleted. State lives in a separate project no federated identity can reach, because state describes the shape of everything and CI never needs to read it.",
+        ],
+      },
+      {
+        num: "/05",
+        heading: "What the first apply taught",
+        bullets: [
+          "resourcemanager.organizationAdmin does not include folders.create. It administers IAM policy; it does not create hierarchy.",
+          "Org policy administration is a separate role again, orgpolicy.policyAdmin, and is also absent from organizationAdmin.",
+          "User credentials with no quota project bill orgpolicy calls to Google's shared OAuth client project, failing with SERVICE_DISABLED on a project ID that looks alarming and is not yours. Fixed with billing_project and user_project_override on the provider.",
+          "The Secret Manager service agent does not exist at the moment the KMS grant references it. It resolves on retry; the lag is real and undocumented in the obvious places.",
+        ],
+      },
+      {
+        num: "/06",
+        heading: "Verified, then destroyed",
+        paragraphs: [
+          "The deployed provider's attribute condition was read back from the API and matched what was written. Both constraints reported enforce = True. Both projects had zero default networks. The secret was confirmed bound to the customer-managed key.",
+          "The check that matters ran last: creating a service account key as project owner was refused with constraints/iam.disableServiceAccountKeyCreation named in the violation. Everything was then destroyed, leaving both projects in DELETE_REQUESTED with billing unlinked, the folder gone, and no residual buckets.",
+        ],
+      },
+    ],
+    stack: ["Workload Identity Federation", "Org Policy", "Secret Manager", "Cloud KMS", "Artifact Registry", "GitHub OIDC", "AWS STS", "Terraform"],
+    repo: "https://github.com/jordann6/gcp-workload-identity-federation",
+    receipt: {
+      rows: [
+        { k: "Provision", v: "19 bootstrap resources (folder, two projects, state and log buckets, audit configs), then 22 federation resources" },
+        { k: "Proof", v: "Attribute condition confirmed on the live provider; both org policy constraints enforcing; zero default networks; CMEK binding confirmed via API" },
+        { k: "Denied", v: "Service account key creation refused as project owner, constraint named in the violation" },
+        { k: "Destroy", v: "22 then 20 resources destroyed; folder and buckets gone, both projects DELETE_REQUESTED with billing unlinked" },
+      ],
+      total: { k: "Cost", v: "under $0.05 for the full deploy-demo-destroy cycle" },
+    },
+  },
+  {
+    slug: "gcp-landing-zone",
+    num: "44",
+    title: "GCP",
+    titleOut: "Landing Zone",
+    category: "GCP · Platform · Governance",
+    lede: "An organization built as code: resource hierarchy, nine org policy constraints enforced at the org root with a deliberate folder-level override, a Shared VPC with no public SSH path, and an audit sink that covers projects created after it exists.",
+    meta: [
+      { k: "Role", v: "Cloud / Platform" },
+      { k: "Cloud", v: "GCP" },
+      { k: "Constraints", v: "9 at the org root" },
+      { k: "Resources", v: "52 (Terraform)" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "A cloud organization decays in a predictable direction. Projects get created outside any hierarchy, each with a default VPC nobody chose and firewall rules nobody reviewed. Service account keys accumulate. Audit logs exist per project and nowhere centrally, so the question \"who read that\" has no answer. Spend is discovered monthly.",
+          "None of this is caused by bad engineers. It is caused by the defaults being wrong and by every correct decision needing to be remade by each person who creates a project. A landing zone moves those decisions into the hierarchy, where inheritance does the enforcing.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "The third version of the same idea",
+        paragraphs: [
+          "This is the same problem already solved with AWS Organizations and SCPs, and with an Azure Landing Zone and Azure Policy. The differences are the reason to build it a third time rather than the reason not to.",
+          "An SCP is a deny boundary evaluated against IAM at request time: the call is authorized or it is not. Azure Policy evaluates resources and can deny, audit, or mutate through effects. GCP org policy constrains the shape of the configuration itself, so the API rejects a violating resource. The violation cannot exist rather than being disallowed to whoever asked.",
+          "Exceptions run the opposite way too. An SCP deny cannot be un-denied further down the tree, so AWS exceptions mean moving an account to a different OU. GCP list constraints let a child policy widen an inherited one, which this build demonstrates on purpose: resource locations allow US at the org, and nonprod adds EU for a residency test without weakening anything elsewhere.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "Placement is the policy",
+        paragraphs: [
+          "core holds platform-owned projects for network and logging. workloads splits into nonprod and prod. The two workload projects are byte-for-byte identical except for which folder they land in, which is the entire demonstration: they are governed differently without either one carrying policy code.",
+          "Constraints attach at the organization rather than a folder, because a policy attached to a folder is bypassed by creating a project somewhere else. IAM inherits the same way, which makes folder design a security decision rather than an org-chart decision.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "The constraint that ships disabled",
+        paragraphs: [
+          "iam.allowedPolicyMemberDomains is written and defaults to off, and the default is the point. It blocks binding allUsers, which breaks any public Cloud Run service. Enabling it without knowing that is how a landing zone quietly blocks a workload the organization intends to run, and the surprise surfaces weeks later as an unexplained permission error.",
+          "Naming that trade-off in code is worth more than silently enforcing one side of it.",
+        ],
+      },
+      {
+        num: "/05",
+        heading: "Network, telemetry, spend",
+        bullets: [
+          "One Shared VPC host project owns the network; workload projects attach as service projects and consume a subnet they do not own. Access is granted per subnet, not per project, which is the least-privilege form of the pattern.",
+          "Firewall is explicit default-deny plus SSH from the IAP forwarding range only, so there is no public SSH path and no VM carries an external IP.",
+          "An organization sink with include_children ships admin activity, data access, system event, and policy denial logs to a partitioned BigQuery dataset, covering projects created after the sink exists. Partition expiry bounds retention and cost together.",
+          "Security Command Center Standard, which is free, streams active unmuted findings to Pub/Sub, and a budget alerts on actual spend at 50, 90, and 100 percent plus a forecast rule.",
+          "One CMEK key covers the audit dataset and both topics, so a single disable revokes the org's entire audit trail and finding stream at once.",
+        ],
+      },
+      {
+        num: "/06",
+        heading: "What a real organization taught",
+        bullets: [
+          "A new GCP organization is not greenfield. Google pre-applies a secure-by-default policy set, so three of the nine constraints already existed and the apply failed with 409 POLICY_ALREADY_EXISTS on each.",
+          "organizationAdmin grants almost none of the operational org permissions. Four more roles were needed, each found by an apply failing on exactly one resource: folderAdmin, orgpolicy.policyAdmin, compute.xpnAdmin, and logging.configWriter.",
+          "A self-serve billing account caps how many projects can be linked at once, and projects in DELETE_REQUESTED keep counting for 30 days, so the ceiling arrives sooner than a project list suggests.",
+          "A resource's arguments may be unknown at plan time; its count may not. The Shared VPC attachment had to key off a boolean rather than a host project ID generated in the same apply.",
+        ],
+      },
+      {
+        num: "/07",
+        heading: "Two corrections worth more than the build",
+        paragraphs: [
+          "The first was a test that proved nothing. Creating a network named default and expecting a denial is the obvious check for compute.skipDefaultNetworkCreation, and it succeeds. The constraint suppresses the default VPC at project creation; it says nothing about the name default afterwards. The check was passing by creating a network rather than by being denied, and the validation step was rewritten to confirm a freshly vended project has zero networks instead.",
+          "The second was worse and more instructive. Importing the three pre-existing Google policies to resolve the 409s handed Terraform ownership of policies it never created, and destroy duly deleted them, leaving the organization less protected than before the landing zone was ever applied, with service account key creation newly permitted org-wide. They were restored by hand and the trap is documented in the teardown section. Adopting existing infrastructure is a two-way door only if you know which side you came in on.",
+        ],
+      },
+      {
+        num: "/08",
+        heading: "Verified, then destroyed",
+        paragraphs: [
+          "Inheritance was proven the only way that counts: an effective-policy query returned US value groups only at prod, and US plus europe and EU at nonprod, from a child policy widening the inherited one rather than replacing it. The Shared VPC attachment resolved, and the org sink reported delivery to BigQuery with includeChildren true.",
+          "Two controls proved themselves by refusing: a service account key creation denied with the constraint named, and a bucket in asia-northeast1 refused with a 412 naming gcp.resourceLocations. Everything was then destroyed, leaving zero folders, the seed project in DELETE_REQUESTED with billing unlinked, and the three borrowed org policies put back.",
+        ],
+      },
+    ],
+    stack: ["Org Policy", "Resource Manager", "Shared VPC", "Cloud Logging", "BigQuery", "Security Command Center", "Cloud KMS", "Pub/Sub", "Terraform"],
+    repo: "https://github.com/jordann6/gcp-landing-zone",
+    receipt: {
+      rows: [
+        { k: "Provision", v: "52 resources: 4 folders, 9 org policy constraints, 3 vended projects, Shared VPC with 2 firewall rules, org sink, BigQuery dataset, CMEK key, 2 topics, budget" },
+        { k: "Proof", v: "Effective policy at prod resolves US only, at nonprod US plus EU; Shared VPC attachment resolved; org sink delivering with includeChildren true" },
+        { k: "Denied", v: "Service account key creation refused; bucket in asia-northeast1 refused with 412 naming gcp.resourceLocations" },
+        { k: "Not deployed", v: "SCC notification config, blocked on org permissions beyond notificationConfigEditor" },
+        { k: "Destroy", v: "52 then 18 resources destroyed; zero folders, seed project DELETE_REQUESTED with billing unlinked, three pre-existing org policies restored by hand" },
+      ],
+      total: { k: "Cost", v: "under $0.20 for the full deploy-demo-destroy cycle" },
+    },
+  },
 ];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {

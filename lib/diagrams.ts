@@ -291,6 +291,62 @@ export const diagrams: Record<string, Diagram> = {
       },
     ],
   },
+  "gcp-workload-identity-federation": {
+    caption: "A signed token becomes an hour-long credential, and the pool refuses everything else at the door",
+    cols: [
+      {
+        nodes: [
+          { label: "GitHub Actions", sub: "OIDC token · repo + ref" },
+          { label: "AWS IAM Role", sub: "signed GetCallerIdentity" },
+        ],
+      },
+      { nodes: [{ label: "Pool Provider", sub: "attribute condition", accent: true }] },
+      {
+        nodes: [
+          { label: "principalSet", sub: "read by repo · write by ref", accent: true },
+          { label: "gh-deployer", sub: "impersonation, for contrast" },
+        ],
+      },
+      {
+        nodes: [
+          { label: "Secret Manager", sub: "CMEK encrypted" },
+          { label: "Artifact Registry", sub: "same key" },
+          { label: "GCS", sub: "write on main only" },
+        ],
+      },
+      { nodes: [{ label: "Org Policy", sub: "key creation impossible", accent: true }] },
+    ],
+  },
+  "gcp-landing-zone": {
+    caption: "Placement is the policy — one factory vends every project, and inheritance does the enforcing",
+    cols: [
+      { nodes: [{ label: "Organization", sub: "9 constraints enforced", accent: true }] },
+      {
+        nodes: [
+          { label: "core", sub: "network · logging" },
+          { label: "workloads", sub: "nonprod · prod" },
+        ],
+      },
+      {
+        nodes: [
+          { label: "Project Factory", sub: "folder + billing + audit", accent: true },
+          { label: "nonprod override", sub: "locations widened to EU" },
+        ],
+      },
+      {
+        nodes: [
+          { label: "Shared VPC", sub: "deny ingress · IAP SSH only" },
+          { label: "Org Sink", sub: "include_children" },
+        ],
+      },
+      {
+        nodes: [
+          { label: "BigQuery", sub: "30d partitions · CMEK", accent: true },
+          { label: "SCC + Budget", sub: "findings to Pub/Sub" },
+        ],
+      },
+    ],
+  },
 };
 
 export function getDiagram(slug: string): Diagram | undefined {

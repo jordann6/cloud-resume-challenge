@@ -522,5 +522,16 @@ export const projects: Project[] = [
     tags: ["Workload Identity Federation", "Org Policy", "Secret Manager", "Cloud KMS", "Artifact Registry", "GitHub OIDC", "Terraform"],
     categories: ["GCP", "Platform"],
     link: "https://github.com/jordann6/gcp-workload-identity-federation",
+    caseStudy: "gcp-workload-identity-federation",
+  },
+  {
+    num: "44",
+    title: "GCP",
+    titleOut: "Landing Zone",
+    desc: "An organization built as code, and the third version of a problem already solved with AWS Organizations and SCPs and with an Azure Landing Zone and Azure Policy, built again because the mechanism genuinely differs. An SCP is a deny boundary evaluated against IAM at request time and Azure Policy evaluates resources through effects, while GCP org policy constrains the shape of the configuration itself, so the API rejects a violating resource and the violation cannot exist rather than being disallowed to whoever asked. Exceptions invert too: an SCP deny cannot be un-denied lower in the tree, so AWS exceptions mean moving an account to another OU, while a GCP list constraint lets a child policy widen an inherited one, demonstrated here by allowing US locations at the org and adding EU for nonprod alone without weakening anything elsewhere. Nine constraints attach at the organization root rather than a folder, since a folder-scoped policy is bypassed by creating a project somewhere else: no service account keys, no default network, no serial port access, OS Login required, no public Cloud SQL, uniform bucket access, no external IPs on VMs, and approved locations only. A tenth, domain restricted sharing, ships deliberately disabled because it blocks binding allUsers and would break any public Cloud Run service, and naming that trade-off in code is worth more than silently enforcing one side of it. Every project is vended through one factory, so no project can exist without a folder, a billing link, data access audit logs, and the default network suppressed; the two workload projects are identical except for placement, which is the whole demonstration. A Shared VPC host project owns the network while workload projects attach as service projects and receive access per subnet rather than per project, with explicit default-deny ingress and SSH permitted only from the IAP forwarding range, so there is no public SSH path and no VM carries an external IP. An organization sink with include_children ships admin activity, data access, system event, and policy denial logs to a partitioned BigQuery dataset and covers projects created after the sink exists, with partition expiry bounding retention and cost together. Security Command Center Standard streams active unmuted findings to Pub/Sub and a billing budget alerts on both actual and forecast spend, and one CMEK key covers the audit dataset and both topics so a single disable revokes the entire audit trail and finding stream at once.",
+    tags: ["Org Policy", "Resource Manager", "Shared VPC", "Cloud Logging", "BigQuery", "Security Command Center", "Cloud KMS", "Terraform"],
+    categories: ["GCP", "Platform"],
+    link: "https://github.com/jordann6/gcp-landing-zone",
+    caseStudy: "gcp-landing-zone",
   },
 ];
