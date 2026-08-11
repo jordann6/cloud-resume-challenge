@@ -347,6 +347,36 @@ export const diagrams: Record<string, Diagram> = {
       },
     ],
   },
+  "gcp-supply-chain-security": {
+    caption: "The signing key and the policy that checks it never share a project, so bypassing the gate takes two compromises",
+    cols: [
+      { nodes: [{ label: "Cloud Build", sub: "dedicated identity" }] },
+      {
+        nodes: [
+          { label: "Artifact Registry", sub: "resolved to a digest" },
+          { label: "Packer bake", sub: "hardened image family" },
+        ],
+      },
+      {
+        nodes: [
+          { label: "Artifact Analysis", sub: "synchronous scan" },
+          { label: "KMS asymmetric key", sub: "signs only if clean", accent: true },
+        ],
+      },
+      {
+        nodes: [
+          { label: "Binary Authorization", sub: "verify only, cannot sign", accent: true },
+          { label: "trustedImageProjects", sub: "one project allowed" },
+        ],
+      },
+      {
+        nodes: [
+          { label: "Cloud Run", sub: "attested digest admitted" },
+          { label: "Unsigned digest", sub: "refused at deploy" },
+        ],
+      },
+    ],
+  },
 };
 
 export function getDiagram(slug: string): Diagram | undefined {

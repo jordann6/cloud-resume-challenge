@@ -426,5 +426,6 @@ export const projects: Project[] = [
     tags: ["Binary Authorization", "Cloud Build", "Artifact Analysis", "Cloud KMS", "Artifact Registry", "Cloud Run", "Packer", "Org Policy", "Terraform"],
     categories: ["GCP", "Platform"],
     link: "https://github.com/jordann6/gcp-supply-chain-security",
+    caseStudy: "gcp-supply-chain-security",
   },
 ];

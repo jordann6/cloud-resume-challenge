@@ -1230,6 +1230,100 @@ export const caseStudies: CaseStudy[] = [
       total: { k: "Cost", v: "under $0.20 for the full deploy-demo-destroy cycle" },
     },
   },
+  {
+    slug: "gcp-supply-chain-security",
+    num: "31",
+    title: "Supply Chain",
+    titleOut: "Security (GCP)",
+    category: "GCP · Platform · Security",
+    lede: "A signature over a digest, not a check on where an image came from. Binary Authorization refuses any container Cloud Build did not sign after a clean scan, an org policy makes one project's images the only bootable ones, and both refusals were demonstrated live before the whole thing was destroyed.",
+    meta: [
+      { k: "Role", v: "Cloud / Platform Security" },
+      { k: "Cloud", v: "GCP" },
+      { k: "Projects", v: "2, split on the trust boundary" },
+      { k: "Resources", v: "56 (Terraform)" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "Most artifact controls check the wrong thing. They check where an image came from: this registry, that repository path, a tag matching a pattern. Every one of those is a string, and every one of them is satisfied by an attacker who can push to the registry, which is a much lower bar than compromising a build.",
+          "The question worth answering is not whether an image came from the right place but whether the checks actually ran on these exact bytes. That is a question about a specific digest, and the only durable answer is a signature over it, made by something that could not have signed unless the checks passed.",
+          "The same argument runs one layer down. A golden VM image is not a control. Baking a hardened image and leaving stock images bootable next to it means the hardening applies to the instances that opted into it, which is the instances that were never the problem.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "The split is the control",
+        paragraphs: [
+          "Two projects, divided on the boundary the control actually runs across. The build project owns everything that produces evidence: the registry, the scanner, the Cloud KMS signing key, the attestor. The runtime project owns the thing that consumes it: the Binary Authorization policy and Cloud Run.",
+          "If the signing key lived in the same project as the deployment policy, anyone who could edit the policy could also mint the signature that satisfies it, and the control would degrade into a label. Split, the runtime project's Binary Authorization service agent holds attestorsVerifier on the attestor and nothing more. Verifying and signing are different permissions, on different resources, in different projects, so bypassing the gate means compromising both.",
+          "The key is asymmetric for the same reason. The private half never leaves KMS and the verifier only ever holds the public half, so the thing checking a signature cannot produce one. A symmetric secret would mean the verifier could forge exactly what it verifies.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "Build, scan, sign, admit",
+        bullets: [
+          "Cloud Build builds the container, pushes it, resolves the tag to a digest, and works only on the digest from then on. A tag can be moved after a signature is made, so an attestation over a tag says nothing about what runs.",
+          "The scan is on-demand rather than the automatic registry scan, because automatic scanning is asynchronous: a pipeline gating on it has to poll and guess how long \"not found yet\" means clean. On-demand is synchronous, so a clean result is a result rather than the absence of one.",
+          "Signing happens only if nothing blocking came back. The gate is the step ordering, not a conditional: Cloud Build stops on the first failing step, so the signing step is unreachable when the scan fails and there is nothing inside it to bypass.",
+          "Binary Authorization on Cloud Run then refuses any digest that signature does not cover. Enforcement sits in the platform's admission path, not in the pipeline, so it also refuses a deploy typed by hand at a terminal.",
+          "Cloud Build runs as a dedicated service account rather than the legacy default, which carries roles/editor on its own project and would let a compromised build step rewrite the policy meant to constrain it.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "Image trust as a project, not a name",
+        paragraphs: [
+          "Packer bakes a CIS-informed Ubuntu 22.04 image into an image family, and a second provisioner verifies the hardening separately from applying it, because a script that both applies and checks its own work tends to check the variable it just set. The bake also strips the SSH host keys and machine ID so every instance generates its own, since an image that ships one host key to a fleet defeats host verification for the entire fleet.",
+          "Enforcement is compute.trustedImageProjects, which takes a list of projects whose images may be booted. AWS has no direct equivalent: restricting AMIs means an IAM condition on ec2:RunInstances matching owner or tags, a policy you write and can get wrong. On GCP the unit of trust is the container the images live in, so there is no naming rule to work around and nothing to tag correctly.",
+          "The constraint is scoped to the runtime project rather than the organization, and that placement is a design decision rather than caution. At the org it would also cover the build project, where Packer has to boot a stock Canonical image in order to harden it, and the bake would deadlock on the policy it exists to satisfy.",
+        ],
+      },
+      {
+        num: "/05",
+        heading: "Four acts, two of them refusals",
+        paragraphs: [
+          "An unsigned image was pushed to the trusted registry, by the same Cloud Build, in the same project, under a plausible tag. Every registry-name or repository-path check would have let it through. The deploy was refused: denied by attestor vulnerability-scan-passed, no attestations found that were valid and signed by a key trusted by the attestor.",
+          "The same source then went through the pipeline, was scanned, signed, deployed, and answered on its URL. An instance created from debian-cloud was refused with the constraint named in the violation, and an instance from the hardened family booted.",
+          "Two of the four acts expect a non-zero exit, so the demo script checks that the failure was the predicted one. A broken image, a missing permission, and an enforced policy all produce a failed deploy, and only one of them is the thing being demonstrated. Reporting the other two as a passing control would be the easiest possible way to ship a demo that proves nothing.",
+        ],
+      },
+      {
+        num: "/06",
+        heading: "What the live run found",
+        paragraphs: [
+          "The scan gate blocked the project's own container on its first run. Two CRITICALs, both in the Go toolchain rather than in the application or the base image, fixed upstream in 1.24.13 and 1.25.9 while the build was on 1.23.12. Bumping the compiler was the correct response and lowering the threshold was the tempting one. That is also the argument for starting at CRITICAL only: the gate fired once, on something real, and was actionable in one line.",
+          "One design intent did not survive contact. Requiring Google's built-by-cloud-build provenance attestor cannot work in a pipeline that deploys its own image, because Cloud Build writes that attestation when the build completes, so at the moment the deploy step runs it does not exist yet. That is an ordering property, not a misconfiguration, and closing it means splitting build and deploy into separate pipelines. The option is left wired up and switched off with the reason written down, rather than quietly deleted.",
+          "Several failures were permission errors wearing a disguise. The build could attach an attestation to its note but not read one back, so its own verification poll returned an empty list forever and looked like a propagation delay that never resolved. A cross-project image read that lacks compute.imageUser reports the image as not found rather than forbidden, because the API will not confirm the existence of something the caller cannot see. And a Terraform init failed with \"bucket doesn't exist\" for a bucket that plainly existed, because application default credentials still billed the call to a project deleted by an earlier build.",
+          "The image verification gate also caught a conflict between two of its own steps: the first bake failed because sshd -t needs a host key and the cleanup had already removed them. It refused to publish an image whose config had not been parsed, which is precisely the behavior the gate exists for.",
+        ],
+      },
+      {
+        num: "/07",
+        heading: "Verified, then destroyed",
+        paragraphs: [
+          "terraform destroy does not fully clean this build, and each gap is a property of GCP rather than a bug in the config. Packer publishes images through the Compute API, so destroy has never heard of them. A KMS key cannot be deleted, only scheduled for destruction with a 24 hour minimum, so destroy drops it from state and leaves it standing. The Binary Authorization policy is a per-project singleton with no delete, only a reset to a permissive default, so a surviving project is left accepting anything. Cloud Run services created by the pipeline are not in state either.",
+          "The teardown script handles all four in order and then deletes the projects, which resolves them together. All three projects finished in DELETE_REQUESTED with nothing billable left, for under a dollar across the whole deploy, demonstrate, and destroy cycle.",
+        ],
+      },
+    ],
+    stack: ["Binary Authorization", "Cloud Build", "Artifact Analysis", "Cloud KMS", "Artifact Registry", "Cloud Run", "Packer", "Org Policy", "Terraform"],
+    repo: "https://github.com/jordann6/gcp-supply-chain-security",
+    receipt: {
+      rows: [
+        { k: "Provision", v: "56 resources across 2 projects: Artifact Registry, KMS asymmetric signing key, Container Analysis note, attestor, Binary Authorization policy, dedicated build identity, 2 VPCs, hardened image family" },
+        { k: "Proof", v: "Attested image scanned clean, signed, deployed to Cloud Run, and answering; hardened image booted from the trusted family" },
+        { k: "Denied", v: "Unsigned image in the trusted registry refused at deploy with the attestor named; debian-cloud instance refused by compute.trustedImageProjects" },
+        { k: "Gate fired", v: "Pipeline blocked its own container on 2 CRITICALs in the Go toolchain; fixed by bumping the compiler, not the threshold" },
+        { k: "Not enabled", v: "built-by-cloud-build provenance attestor, which a self-deploying build cannot satisfy by construction" },
+        { k: "Destroy", v: "Pipeline services, demo instances, Packer images, and container images removed, KMS versions scheduled for destruction, all 3 projects DELETE_REQUESTED" },
+      ],
+      total: { k: "Cost", v: "under $1 for the full deploy-demo-destroy cycle" },
+    },
+  },
 ];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
