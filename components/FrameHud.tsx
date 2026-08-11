@@ -67,7 +67,6 @@ export default function FrameHud({
       </div>
       <div className="frame-edge frame-edge--tr" aria-hidden>
         <span className="row lit">{clock}</span>
-        <span className="row">41.8781°N / 87.6298°W</span>
       </div>
       <div className="frame-edge frame-edge--bl" aria-hidden>
         <span className="row">

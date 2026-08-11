@@ -10,7 +10,7 @@ export default function Hero() {
         <span className="hero__loc">
           <strong>Chicago, IL — USA</strong>
           <br />
-          Remote-first · AWS + Azure
+          Remote-first
         </span>
       </div>
 

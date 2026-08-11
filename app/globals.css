@@ -102,8 +102,10 @@ body::after {
   top: 24px;
   left: 24px;
 }
+/* Sits below the nav band rather than inside it; at top: 24px the clock
+   ran underneath the "Let's Talk" CTA. */
 .frame-edge--tr {
-  top: 24px;
+  top: 82px;
   right: 24px;
   text-align: right;
 }
