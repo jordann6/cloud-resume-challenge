@@ -377,6 +377,41 @@ export const diagrams: Record<string, Diagram> = {
       },
     ],
   },
+  "gcp-zero-trust-access": {
+    caption: "One identity, one role, one object: the answer changes with which side of the perimeter the request came from",
+    cols: [
+      {
+        nodes: [
+          { label: "Administrator", sub: "identity + network" },
+          { label: "Analyst SA", sub: "impersonated, no key" },
+        ],
+      },
+      {
+        nodes: [
+          { label: "Trusted level", sub: "identity AND ip" },
+          { label: "Management level", sub: "identity only, break glass" },
+        ],
+      },
+      {
+        nodes: [
+          { label: "IAP", sub: "IAM condition per request", accent: true },
+          { label: "IAP TCP tunnel", sub: "ssh, no public IP" },
+        ],
+      },
+      {
+        nodes: [
+          { label: "Service perimeter", sub: "storage + bigquery", accent: true },
+          { label: "Cloud Run", sub: "iap_enabled" },
+        ],
+      },
+      {
+        nodes: [
+          { label: "Read from inside", sub: "admitted" },
+          { label: "Same role, outside", sub: "refused, VPC-SC" },
+        ],
+      },
+    ],
+  },
 };
 
 export function getDiagram(slug: string): Diagram | undefined {

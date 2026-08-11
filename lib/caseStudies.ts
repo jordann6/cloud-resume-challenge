@@ -1324,6 +1324,91 @@ export const caseStudies: CaseStudy[] = [
       total: { k: "Cost", v: "under $1 for the full deploy-demo-destroy cycle" },
     },
   },
+  {
+    slug: "gcp-zero-trust-access",
+    num: "32",
+    title: "Zero Trust",
+    titleOut: "Access (GCP)",
+    category: "GCP · Platform · Security",
+    lede: "A valid credential is not access. A service account holding a real roles/storage.objectViewer on exactly one bucket reads the object from inside the perimeter and is refused from outside it, with IAM identical in both cases, demonstrated live before the whole thing was destroyed.",
+    meta: [
+      { k: "Role", v: "Cloud / Platform Security" },
+      { k: "Cloud", v: "GCP" },
+      { k: "Perimeter", v: "1 project in, state deliberately out" },
+      { k: "Mode", v: "Dry run first, then enforced" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "IAM answers one question: may this principal perform this action on this resource. It answers it well, and it is not sufficient, because the question it cannot ask is whether the request should be happening at all.",
+          "A stolen credential is a valid credential. That is the whole difficulty. Every control reasoning only about who is asking will approve it, because by construction the answer to who is asking is someone entitled to ask. The credential was scoped correctly and the role was granted deliberately, and none of that helps.",
+          "The network perimeter used to be the second question. It stopped working when the resources became APIs on the public internet, because the boundary no longer corresponds to anything: a Cloud Storage bucket has no inside. So the second question has to be rebuilt at the API.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "Three controls, three layers",
+        bullets: [
+          "Access Context Manager defines what a trusted request looks like, as a named object rather than as policy text. An IAM condition references the access level by name, so changing the definition of trusted is one edit instead of an audit of every policy that inlined the equivalent condition.",
+          "Identity-Aware Proxy evaluates it at the front door, per request, before the application is reached. It is enabled directly on the Cloud Run service, which protects the run.app endpoint without provisioning a load balancer, a certificate, and a domain in front of a container that scales to zero.",
+          "VPC Service Controls evaluates it at the data, and refuses to let bytes cross the boundary regardless of what IAM says. The perimeter is an object that contains projects, so a resource created inside one is protected from the moment it exists.",
+          "The instance inside the perimeter has no external IP, no NAT, and no SSH key. The only inbound path is the IAP TCP tunnel, gated on a separate role, with OS Login binding SSH to IAM and project-wide keys blocked so there is no alternate path.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "Why the perimeter is the part worth building on GCP",
+        paragraphs: [
+          "AWS has pieces that overlap: aws:SourceIp and aws:SourceVpce conditions on a bucket policy, VPC endpoint policies, and SCPs with a data perimeter condition set. Assembled carefully they approximate it. The difference is where the rule lives and what it defaults to. On AWS the boundary is conditions written into each resource's policy, so a bucket created without them sits outside the perimeter and nothing announces that. On GCP the default for a new resource is protected rather than exposed, and that inversion is most of the value.",
+          "Azure has no comparable construct. Private Link and service endpoints restrict network paths to a resource, which is a different and weaker claim than restricting data movement across a boundary.",
+          "Worth stating plainly: VPC Service Controls is hard to operate at scale, and the parts this does not exercise are the parts that make it hard, including perimeter bridges, ingress and egress rules for real cross-project traffic, and the long dry-run period a large organization needs. What is here is correct and it is small.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "Two access levels, because they fail differently",
+        paragraphs: [
+          "The trusted level combines identity AND network and gates the application. The demo revokes it deliberately by pointing the trusted range at TEST-NET-1, which produces a refusal without touching the IAM binding: the role is still held, the condition on it simply stops being satisfied.",
+          "A second management level, identity only with no network condition, gates perimeter ingress. That is a deliberate weakening and it is documented as one. If perimeter ingress depended on the trusted level too, revoking it mid-demo would cut Terraform off from the state describing the perimeter, and the apply meant to restore it could not run. It is the standard break-glass shape, on the reasoning that the ability to remove a control has to survive that control being wrong.",
+          "State lives in a seed project outside the perimeter for the same reason. The general rule: the control plane that can remove a control must never sit inside it.",
+          "The honest limitation is the device policy. The half of an access level that matters most in production depends on endpoint verification reporting posture from enrolled managed devices, which needs Cloud Identity Premium. It is written out and commented rather than deleted, because an IP range standing in for a trusted device is the weakest link here and naming it beats letting the config imply otherwise.",
+        ],
+      },
+      {
+        num: "/05",
+        heading: "What the live run found",
+        paragraphs: [
+          "Dry run first, and it paid immediately. Within minutes of the instance booting it logged the VM guest agent calling an API absent from the VPC allowlist, something nothing in the design suggested existed. Enforcing straight away would have half-broken the guest environment, and the symptom would have surfaced later, somewhere else, looking nothing like a perimeter problem.",
+          "Enforcement is not atomic, and the deny path lands first. The exfiltration attempt was correctly refused within a minute, while the read from inside, which should have been allowed, failed for another four with VPC network mapping unavailable. Nothing was misconfigured: the association between the perimeter and the VPC network propagates behind the restriction itself.",
+          "The subtler one took a while to read correctly. Under enforcement Terraform could not manage the bucket while plain gcloud as the same user could, which points straight at the ingress rule. It was not the ingress rule. The violation reason was RESOURCES_NOT_IN_SAME_SERVICE_PERIMETER rather than NO_MATCHING_ACCESS_LEVEL, and those are different refusals. user_project_override attaches a quota project to every provider call, that project was the seed, and the seed sits outside the perimeter by design. A call naming a resource inside and a project outside is refused no matter who is asking, and no ingress rule can admit it. The fix is a second provider whose quota project is inside the perimeter, used only by the restricted resources.",
+          "Two refusals that look identical from outside, both a 403 reading Request is prohibited by organization's policy, distinguished only by one line in the audit log. Debugging a perimeter by guessing at the policy is slower than reading the violation reason.",
+        ],
+      },
+      {
+        num: "/06",
+        heading: "Outcome",
+        paragraphs: [
+          "Demonstrated live. An anonymous request to the Cloud Run URL was terminated at IAP with a redirect to Google sign-in, so the container was never invoked. The analyst service account, impersonated rather than keyed, was refused on both Cloud Storage and BigQuery with VPC Service Controls violation identifiers that correlate to the audit log. The same identity then read the same object cleanly from the in-perimeter instance over the IAP tunnel. IAM was identical in both directions; only the origin differed.",
+          "Torn down the same night. The organization-scoped objects are the trap: a perimeter survives the deletion of every project inside it, access levels survive the perimeter, and an access policy cannot be deleted while it holds either, so the teardown removes them in that order and verifies each is gone. Both projects reached DELETE_REQUESTED, the access policy was deleted, and the temporary organization role the build required was revoked.",
+        ],
+      },
+    ],
+    stack: ["VPC Service Controls", "Access Context Manager", "Identity-Aware Proxy", "Cloud Run", "Compute Engine", "OS Login", "Private Google Access", "IAM Conditions", "Cloud DNS", "Terraform"],
+    repo: "https://github.com/jordann6/gcp-zero-trust-access",
+    receipt: {
+      rows: [
+        { k: "Provision", v: "2 projects: service perimeter over Cloud Storage and BigQuery, 2 access levels, IAP on Cloud Run, VPC with no external IP and no NAT, restricted VIP DNS, instance reachable only by IAP tunnel" },
+        { k: "Proof", v: "Analyst service account read the protected object from inside the perimeter over the IAP tunnel, with OS Login and no SSH key on the instance" },
+        { k: "Denied", v: "Same service account, same roles/storage.objectViewer, refused from outside on both Cloud Storage and BigQuery with VPC-SC violation IDs; anonymous request terminated at IAP before the container" },
+        { k: "Dry run caught", v: "VM guest agent calling an API missing from the VPC allowlist, which enforcement would have broken silently" },
+        { k: "Live fix", v: "Quota project outside the perimeter refused calls to resources inside it; resolved with a second provider, not a looser policy" },
+        { k: "Destroy", v: "Perimeter, then access levels, then projects, then the access policy; both projects DELETE_REQUESTED and the temporary org role revoked" },
+      ],
+      total: { k: "Cost", v: "under $1 for the full deploy-demo-destroy cycle" },
+    },
+  },
 ];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
