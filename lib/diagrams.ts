@@ -377,6 +377,26 @@ export const diagrams: Record<string, Diagram> = {
       },
     ],
   },
+  "gcp-gke-config-sync": {
+    caption: "Two paths to cluster state: one loop that reconciles, one gate that refuses",
+    cols: [
+      { nodes: [{ label: "GitHub", sub: "config/ on main" }] },
+      { nodes: [{ label: "Config Sync", sub: "polls every 15s" }] },
+      {
+        nodes: [
+          { label: "Reconciler", sub: "applies · reverts drift", accent: true },
+          { label: "Policy Controller", sub: "admission webhook", accent: true },
+        ],
+      },
+      {
+        nodes: [
+          { label: "team-a", sub: "quota · RBAC · NetworkPolicy" },
+          { label: "Refused", sub: "unapproved registry" },
+        ],
+      },
+      { nodes: [{ label: "Cloud NAT", sub: "only egress path" }] },
+    ],
+  },
   "gcp-zero-trust-access": {
     caption: "One identity, one role, one object: the answer changes with which side of the perimeter the request came from",
     cols: [

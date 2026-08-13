@@ -1409,6 +1409,106 @@ export const caseStudies: CaseStudy[] = [
       total: { k: "Cost", v: "under $1 for the full deploy-demo-destroy cycle" },
     },
   },
+  {
+    slug: "gcp-gke-config-sync",
+    num: "33",
+    title: "GKE with",
+    titleOut: "Config Sync (GCP)",
+    category: "GCP · Platform · Kubernetes",
+    lede: "A GitOps reconciler and an admission controller both claim to enforce configuration, and they promise different things. The same deletion of the same object is corrected after the fact by one and refused outright by the other, and the difference between them is a single boolean.",
+    meta: [
+      { k: "Role", v: "Platform / Kubernetes" },
+      { k: "Cloud", v: "GCP" },
+      { k: "Cluster", v: "Zonal GKE, private nodes, 2 x e2-standard-2" },
+      { k: "Resources", v: "33 (Terraform)" },
+      { k: "Cost", v: "About $1 for build, demo, and teardown" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "Every cluster accumulates configuration nobody can account for. Not through carelessness, but because kubectl apply is how a cluster is operated, and a command run at 6pm to unblock a deploy leaves nothing behind that says it happened. Six months later there is a RoleBinding matching no file, and the only way to learn whether it is load bearing is to delete it and see who complains.",
+          "Putting the manifests in Git is necessary and not sufficient. Git being the intended source of truth does nothing to stop the API server accepting writes from somewhere else. A repository describing what the cluster should look like, sitting next to a cluster that does not look like it, is worse than no repository, because now there is a document people trust.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "Two guarantees, not one",
+        paragraphs: [
+          "Two mechanisms close that gap and they are not the same mechanism. Reconciliation runs a controller that polls the repository, diffs it against live state, and corrects the difference: drift is possible and temporary, the guarantee is eventual, and there is a window. Admission control runs a webhook in front of the API server that refuses writes: drift is not corrected because it never happens, and the cost is that the webhook now sits in the path of every write, including the ones needed during an incident.",
+          "The demonstration is the same kubectl delete run twice. With drift prevention off, the ResourceQuota is genuinely gone and returns about five seconds later. With it on, the identical command from the identical account is rejected by the Config Sync admission webhook and never reaches etcd. Nothing changed but one boolean.",
+          "The five seconds is the honest part. For that interval the quota did not exist, and any pod admitted in the gap was admitted without it. That is acceptable for a quota and unacceptable for some other things, and knowing which guarantee is in force is the point.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "What Terraform owns, and what it does not",
+        bullets: [
+          "Terraform builds the project, network, cluster, node pool, and registry, and enables Config Sync and Policy Controller as fleet features. It manages no object inside the cluster.",
+          "Everything under config/ is reconciled from Git: namespaces with Pod Security labels, tenant RBAC scoped with a Role rather than a ClusterRole, a ResourceQuota paired with the LimitRange that keeps it from breaking the namespace, and default-deny NetworkPolicies with DNS allowed back immediately.",
+          "That split is the reason a bad namespace change is a git revert and one sync interval rather than a terraform apply. Two lifecycles, two blast radii.",
+          "There is no credential anywhere. The repository is public over HTTPS with secret_type set to none, so the reconciler holds nothing and rotates nothing, and Workload Identity covers the other direction so pods reach Google APIs by token exchange rather than a mounted key.",
+          "Cloud NAT is the one resource that looks removable and is not. Private nodes reach Google APIs through Private Google Access, but they cannot reach github.com, and the whole build is a reconciler polling github.com. Removing it does not slow the sync, it stops it.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "Constraints, and the ratchet that makes them safe",
+        paragraphs: [
+          "Policy Controller installs roughly seventy maintained ConstraintTemplates. Installing the library enforces nothing: a template is a CRD definition plus Rego, and nothing applies until a constraint instantiates it. Three do here, and one of them is deliberately not enforcing.",
+          "Two are set to deny. The third, a hand-written ConstraintTemplate requiring image digests rather than tags, is set to dryrun so it admits everything and records violations. Reading those violations answers the question that cannot be answered any other way, which is what turning the rule on would actually break. It finds the sample app, which is running right now on a tagged image and would stop being schedulable the moment the rule moved to deny.",
+          "Every constraint scopes by an explicit include list rather than by excluding system namespaces. Exclusion looks like the safe direction and is not: a namespace appearing next month is silently in scope, and a constraint that blocks a GKE-managed system pod on a cluster where the webhook is what prevents you from fixing it is a bad afternoon.",
+        ],
+      },
+      {
+        num: "/05",
+        heading: "What the live run found",
+        bullets: [
+          "The privileged-pod test was refused by Pod Security Admission, not by the constraint it named. PSA is built into the API server and runs ahead of every validating webhook, so the namespace label answered and Gatekeeper was never consulted. The consequence matters more than the fix: deleting that constraint entirely would not change the output, so that test could never have proven Policy Controller works. A separate test on image registries does, because PSA has no vocabulary for registries.",
+          "Reconciliation took about five seconds rather than the fifteen-second poll interval. Config Sync holds a watch on the objects it manages, so a deletion is observed rather than waited for, and the poll interval bounds noticing a change in Git rather than a change in the cluster.",
+          "The apply failed fifteen minutes in, after the cluster was already built, because anthosconfigmanagement and anthospolicycontroller are separate APIs from gkehub and were missing from the enable list. They still carry the anthos name even though the tier they were named for no longer exists.",
+          "A missing gke-gcloud-auth-plugin presented as a broken cluster. Every kubectl call failed with an exec error that a deliberately tolerant wait loop swallowed, producing ten minutes of waiting and then a report that Config Sync never synced, against a cluster that was entirely healthy.",
+          "terraform init reported that the state bucket did not exist. The bucket was fine; Application Default Credentials were still pointing their quota project at a project deleted in an earlier build, so the call 404d on the wrong object. gcloud storage ls succeeded throughout, because the CLI uses different credentials than ADC.",
+        ],
+      },
+      {
+        num: "/06",
+        heading: "Outcome",
+        paragraphs: [
+          "Six acts passed live against a real cluster: the reported commit matching the branch head exactly, drift reverted, the same drift refused, the admission ordering made explicit, an unapproved registry rejected at write time rather than as an ImagePullBackOff two minutes later, and the dry-run constraint reporting what enforcing it would break. Then thirty-three resources destroyed with billing detached and no orphaned fleet membership.",
+          "Both features are included in base GKE at no cost since September 2025, when Google dissolved the GKE Enterprise tier. That inverted the usual advice: the open source install is now the worse option rather than the cheaper one, because kpt-config-sync publishes no release assets and the manifest bucket its own documentation points at no longer serves ordinary callers.",
+        ],
+      },
+    ],
+    stack: [
+      "GKE",
+      "Config Sync",
+      "Policy Controller",
+      "Gatekeeper",
+      "OPA Rego",
+      "Workload Identity",
+      "Cloud NAT",
+      "NetworkPolicy",
+      "Pod Security Admission",
+      "Artifact Registry",
+      "Terraform",
+    ],
+    repo: "https://github.com/jordann6/gcp-gke-config-sync",
+    receipt: {
+      rows: [
+        { k: "Provision", v: "33 resources: zonal GKE with private nodes and Workload Identity, 2 x e2-standard-2 node pool, VPC with Cloud NAT, Artifact Registry, fleet membership with Config Sync and Policy Controller enabled" },
+        { k: "Reconciled", v: "14 objects applied from Git, with the cluster reporting the exact commit SHA of the branch head" },
+        { k: "Corrected", v: "ResourceQuota deleted by hand and restored in about 5 seconds with drift prevention off" },
+        { k: "Refused", v: "The identical delete rejected by the Config Sync admission webhook with drift prevention on, and a Docker Hub image rejected at write time by the registry constraint" },
+        { k: "Dry run caught", v: "The running sample app pulling an image by tag, which promoting the digest constraint to deny would have made unschedulable" },
+        { k: "Live fix", v: "anthosconfigmanagement and anthospolicycontroller missing from the API list, failing the apply 15 minutes in after the cluster was already built" },
+        { k: "Corrected claim", v: "The privileged-pod test is answered by Pod Security Admission, not by the constraint it named, so it could never have proven Policy Controller works" },
+        { k: "Teardown", v: "33 destroyed, project DELETE_REQUESTED with billing detached, no orphaned fleet membership" },
+      ],
+      total: { k: "Total cost", v: "About $1" },
+    },
+  },
 ];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
