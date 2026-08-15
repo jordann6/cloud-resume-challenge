@@ -432,6 +432,26 @@ export const diagrams: Record<string, Diagram> = {
       },
     ],
   },
+  "hpc-slurm-cluster": {
+    caption: "One binary, one grid, two fabrics: the only thing that changes is what the halo exchange runs over",
+    cols: [
+      { nodes: [{ label: "SSM send-command", sub: "no key, no port 22" }] },
+      { nodes: [{ label: "Head node", sub: "slurmctld · private" }] },
+      {
+        nodes: [
+          { label: "compute queue", sub: "c6i.large · ENA" },
+          { label: "efa queue", sub: "c5n.9xlarge · EFA", accent: true },
+        ],
+      },
+      {
+        nodes: [
+          { label: "17.5% comm", sub: "3.290s blocked" },
+          { label: "0.8% comm", sub: "0.176s blocked", accent: true },
+        ],
+      },
+      { nodes: [{ label: "FSx Lustre", sub: "S3 association · /scratch" }] },
+    ],
+  },
 };
 
 export function getDiagram(slug: string): Diagram | undefined {

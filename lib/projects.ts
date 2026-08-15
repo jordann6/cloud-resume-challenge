@@ -448,4 +448,14 @@ export const projects: Project[] = [
     link: "https://github.com/jordann6/gcp-gke-config-sync",
     caseStudy: "gcp-gke-config-sync",
   },
+  {
+    num: "34",
+    title: "HPC Slurm",
+    titleOut: "Cluster (AWS)",
+    desc: "A scheduler, a fabric, and a parallel filesystem, built to answer what an interconnect is actually worth rather than to assert it. The measurement only means something if the two runs are the same computation, so the same binary solves the same 2D heat equation over the same 8192 grid for the same 500 iterations at the same four ranks, and the checksum comes back 1.073498e+07 on both fabrics. Over ordinary ENA the job spends 17.5 percent of its time blocked on halo exchange; over EFA it spends 0.8 percent, which is communication time falling by roughly nineteen times. Wall clock went up rather than down, from 18.8 to 21.0 seconds, because a c5n core is older and slower than a c6i core, and reporting the speedup on wall time would have been reporting the CPU rather than the fabric. That is the entire reason the job prints a communication fraction. The workload is a real stencil with a 1D row decomposition where every rank trades boundary rows with its neighbours before it can compute, using MPI_Sendrecv rather than paired blocking sends that deadlock the moment a message outgrows the eager threshold, and the test that guards it asserts the invariant that a domain-decomposed stencil must produce an identical checksum at 1, 2, 4, and 8 ranks, because a broken halo exchange computes against stale boundary rows while every job still exits zero. Terraform owns the VPC, FSx for Lustre, S3, IAM, and the accounting database while ParallelCluster owns only the cluster, since letting the scheduler create its own network and filesystem puts a NAT gateway and 1.2 TiB of Lustre outside state, which is exactly how they survive a teardown and keep billing. Both queues sit at MinCount zero, so an idle cluster is a head node and nothing else, and the EFA nodes at $1.94 an hour each exist only while a job holds them. Nothing carries a public IP or an open port 22: the head node is private and driven over SSM, and the demo uses send-command rather than an interactive session, so it needs no TTY, no key material, and no session-manager-plugin. Nothing in the repository had ever been run against AWS before this deploy, and the first real run found eleven defects, which is the part worth reading.",
+    tags: ["ParallelCluster", "Slurm", "EFA", "FSx for Lustre", "MPI", "Open MPI", "SSM", "RDS", "Terraform"],
+    categories: ["AWS", "Platform"],
+    link: "https://github.com/jordann6/hpc-slurm-cluster",
+    caseStudy: "hpc-slurm-cluster",
+  },
 ];

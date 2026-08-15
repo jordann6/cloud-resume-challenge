@@ -1509,6 +1509,111 @@ export const caseStudies: CaseStudy[] = [
       total: { k: "Total cost", v: "About $1" },
     },
   },
+  {
+    slug: "hpc-slurm-cluster",
+    num: "34",
+    title: "HPC Slurm",
+    titleOut: "Cluster (AWS)",
+    category: "AWS · HPC · Platform",
+    lede: "The same binary, the same grid, the same rank count, run over two interconnects. Time blocked on halo exchange fell from 17.5 percent to 0.8 percent while wall clock got worse, and the checksums matched bit for bit, which is what makes the comparison a measurement rather than a claim.",
+    meta: [
+      { k: "Role", v: "Platform / HPC" },
+      { k: "Cloud", v: "AWS" },
+      { k: "Cluster", v: "ParallelCluster 3.15.1, two queues, MinCount 0" },
+      { k: "Resources", v: "40 (Terraform) + cluster stack" },
+      { k: "Cost", v: "About $5 for build, demo, and teardown" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "Every HPC vendor page asserts that a low-latency fabric is faster, and almost none of them show the comparison in a form that survives inspection. The usual demonstration times a bandwidth benchmark on the fast hardware and reports the number, which measures the hardware rather than the effect of the fabric on work anyone would run.",
+          "A comparison that means something has to hold everything else still. Same source, same compiler flags, same grid, same iteration count, same number of ranks and the same layout of ranks across nodes, with the only difference being the transport underneath. Anything else and the result is a statement about instance types.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "Why a stencil, and why the checksum matters",
+        paragraphs: [
+          "The workload solves the 2D heat equation by Jacobi iteration with a 1D row decomposition. Every iteration, each rank exchanges boundary rows with its neighbours before it can compute the next step, and that halo exchange is what puts interconnect latency into wall clock time. An MPI_Bcast benchmark never touches it, which is why hello-world MPI proves nothing about a fabric.",
+          "It uses MPI_Sendrecv rather than a send followed by a receive. With blocking sends in lockstep, every rank posts its send at the same moment and the program deadlocks as soon as the message exceeds the eager threshold and the transport stops buffering it for you. That is a real bug this shape of code invites, and it only appears at scale or at size.",
+          "The gate that guards all of it runs on a laptop with no cluster: a domain-decomposed stencil must produce the same checksum regardless of rank count. If the halo exchange is wrong, ranks compute against stale boundary rows and the answer drifts with rank count while every job still exits zero. Verified identical at 1, 2, 4, and 8 ranks, compiled with -Werror.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "What Terraform owns, and what it does not",
+        bullets: [
+          "Terraform owns the VPC, FSx for Lustre and its S3 data repository associations, IAM, the slurmdbd accounting database, and flow logs. ParallelCluster owns only the cluster.",
+          "Letting ParallelCluster create its own network and filesystem would put them outside Terraform state, which is exactly how an orphaned NAT gateway and 1.2 TiB of Lustre survive a teardown and keep billing.",
+          "Teardown therefore has a strict order. The cluster owns compute instances and ENIs inside the VPC that Terraform created, so destroying the VPC first strands them and the destroy hangs on dependencies Terraform cannot see. The Makefile deletes the cluster, waits for it to actually be gone, and only then destroys the substrate.",
+          "Both queues sit at MinCount 0. An idle cluster is a head node and nothing else, and the EFA nodes bill only while a job holds them.",
+          "Nothing has a public IP or an open port 22. The head node is private and reached over SSM, and the demo drives it with send-command rather than an interactive session, so it needs no TTY, no key material, and no separately installed session-manager-plugin.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "The measurement",
+        paragraphs: [
+          "Over ordinary ENA on c6i.large, the job spent 3.290 seconds of an 18.768 second run blocked on halo exchange, a communication fraction of 17.5 percent. Over EFA on c5n.9xlarge, the same binary spent 0.176 seconds of a 21.023 second run, a communication fraction of 0.8 percent. Communication time fell by roughly nineteen times.",
+          "Wall clock got worse, from 18.8 to 21.0 seconds, because a c5n core is older and slower than a c6i core. Reporting a speedup on wall time here would have reported the CPU and called it the fabric, and reporting it as a slowdown would be just as wrong. The share of time spent waiting on the network is the only figure that isolates what changed.",
+          "Both runs returned a checksum of 1.073498e+07, identical to the digit, so the two are demonstrably the same computation rather than two different jobs that happen to be named the same thing. The EFA job also refuses to start if fi_info finds no EFA device, because libfabric will otherwise fall back to TCP silently and the run merely looks disappointing instead of broken.",
+        ],
+      },
+      {
+        num: "/05",
+        heading: "What the first real run found",
+        paragraphs: [
+          "Nothing in the repository had ever run against AWS. The first deploy found eleven defects, and the useful ones are the defects that a review pass cannot produce, because they only exist where the code meets the service.",
+        ],
+        bullets: [
+          "Jobs died with WTERMSIG 53 before executing a single line. Slurm could not create the batch output file: the submit directory inherited from the SSM agent is not writable by ec2-user, and /scratch/results arrives root-owned 0755 from the data repository association while jobs run as ec2-user. The signal number says nothing about either.",
+          "FI_EFA_USE_DEVICE_RDMA=1 is widely repeated advice and it aborts the process on c5n, whose first-generation EFA has no rdma-read capability. Only p4d and later support it. Left unset, libfabric picks the best protocol the hardware actually has.",
+          "AccountingStorageEnforce defaults to none. Accounting still records everything and sacct returns full history, so a QoS ceiling configured under that default looks correct and enforces nothing. The oversized job ran.",
+          "Enforcement alone still is not refusal. With limits on but no DenyOnLimit flag, Slurm accepts a job that violates the ceiling and parks it PENDING on QOSMaxWallDurationPerJobLimit indefinitely, which is worse than rejecting it because the submitter gets no error and waits on a job that can never start.",
+          "The accounting hierarchy the demo narrated was never created by anything. The script existed, said run once after the cluster is up, and was referenced by no Makefile target, no script, and no config, so every job landed in pcdefault and the fair-share split did not exist.",
+          "FSx creates data repository associations one at a time per filesystem, so the second one does not start its clock until the first finishes. The pair took 19 minutes against a provider default timeout of 10, which failed the apply after the filesystem was already built.",
+          "The association path was written without the trailing slash that FSx normalizes to and returns, so every single apply saw drift and force-replaced both associations.",
+          "demo.sh was committed non-executable, so make demo failed on a clean clone with Permission denied before any of the above could be discovered.",
+        ],
+      },
+      {
+        num: "/06",
+        heading: "Outcome",
+        paragraphs: [
+          "All six acts passed live: an idle cluster holding only a head node, a queued job provisioning real EC2 capacity and giving it back, the Lustre association making S3 a POSIX directory whose HSM state flips from released to exists on first read, the fabric comparison, accounting with a fair-share split and a ceiling that now refuses rather than parks, and idle compute reclaimed automatically five minutes after the queue drained.",
+          "Then 40 resources destroyed, verified empty rather than assumed: no Terraform state, no instances, no filesystem, no database, no CloudFormation stack, no leftover elastic IP. The eleven fixes are one commit, and the README, the Makefile timings, and the architecture diagram were corrected afterward from what the run actually did rather than from what the design intended.",
+        ],
+      },
+    ],
+    stack: [
+      "AWS ParallelCluster",
+      "Slurm",
+      "EFA",
+      "FSx for Lustre",
+      "Open MPI",
+      "libfabric",
+      "Systems Manager",
+      "RDS",
+      "S3",
+      "Terraform",
+    ],
+    repo: "https://github.com/jordann6/hpc-slurm-cluster",
+    receipt: {
+      rows: [
+        { k: "Provision", v: "40 Terraform resources plus the cluster stack: VPC, 1.2 TiB FSx Lustre with two S3 data repository associations, slurmdbd on RDS, private head node reached over SSM" },
+        { k: "Scaled", v: "Both queues at MinCount 0, compute provisioned on demand and reclaimed 5 minutes after the queue drained" },
+        { k: "Measured", v: "Communication fraction 17.5% over ENA against 0.8% over EFA, same binary and grid and rank count, checksum 1.073498e+07 on both" },
+        { k: "Honest result", v: "Wall clock got worse, 18.8s to 21.0s, because c5n cores are slower than c6i, which is why the comparison is reported on communication fraction" },
+        { k: "Refused", v: "An oversized job rejected at submit with QOSMaxWallDurationPerJobLimit, after the QoS was given DenyOnLimit" },
+        { k: "Live fixes", v: "11 defects found on first contact with AWS, including jobs dying on WTERMSIG 53 from an unwritable output path and EFA aborting on FI_EFA_USE_DEVICE_RDMA" },
+        { k: "Corrected claim", v: "AccountingStorageEnforce defaults to none, so the QoS ceiling was decoration and the demo's own narration was wrong until it was enforced" },
+        { k: "Teardown", v: "40 destroyed, then state, instances, FSx, RDS, CloudFormation, and EIPs each verified empty" },
+      ],
+      total: { k: "Total cost", v: "About $5" },
+    },
+  },
 ];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
