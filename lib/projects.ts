@@ -458,4 +458,14 @@ export const projects: Project[] = [
     link: "https://github.com/jordann6/hpc-slurm-cluster",
     caseStudy: "hpc-slurm-cluster",
   },
+  {
+    num: "35",
+    title: "GPU Scheduling",
+    titleOut: "and FinOps (AWS)",
+    desc: "Multi-tenant GPU scheduling on EKS, built to answer a question the usual dashboard cannot: not whether the cards are busy, but whether the money bought any computation. Karpenter provisions a spot GPU node from nothing in 47 seconds and hands it back when the queue drains, Kueue admits work against a per-tenant quota and lets a high-priority job evict a low-priority one that requeues rather than dying, and the device plugin will advertise one physical T4 as four schedulable replicas on a label change. The part worth reading is the measurement. DCGM_FI_DEV_GPU_UTIL, the gauge on every GPU dashboard, reports the fraction of time at least one kernel was resident on the device, not how much of the device was working, so a single small kernel looping on one streaming multiprocessor pins it at 100 percent while the rest of the card idles. On a g6e.xlarge running a real CUDA load that gauge read 100 percent while SM occupancy read 45.82 percent, and of the $0.031017 that interval cost, $0.016805 bought nothing. The collector prices every sample that way, per GPU per interval, from Pricing API rates and observed instance-seconds rather than Cost Explorer, which reports daily and lags up to a day and therefore cannot see a three-hour GPU demo at all. An idle-GPU reaper keys on occupancy rather than the gauge, holds on four independent checks, and ships in dry-run because an autonomous terminator of expensive hardware that has never been watched is a liability. Nothing here had ever run against AWS before this deploy, and the first real run found twenty defects, about half of which made the project impossible to deploy and the rest of which let the demo report success while proving nothing.",
+    tags: ["EKS", "Karpenter", "Kueue", "GPU Operator", "DCGM", "Spot", "FIS", "DynamoDB", "Terraform"],
+    categories: ["AWS", "Platform"],
+    link: "https://github.com/jordann6/gpu-platform",
+    caseStudy: "gpu-platform",
+  },
 ];

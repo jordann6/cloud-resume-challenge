@@ -452,6 +452,26 @@ export const diagrams: Record<string, Diagram> = {
       { nodes: [{ label: "FSx Lustre", sub: "S3 association · /scratch" }] },
     ],
   },
+  "gpu-platform": {
+    caption: "The gauge everyone graphs says the card is full; occupancy says a little over half of it, and the difference has a price",
+    cols: [
+      { nodes: [{ label: "Kueue", sub: "tenant quota \u00b7 preemption" }] },
+      { nodes: [{ label: "Karpenter", sub: "spot GPU node in 47s" }] },
+      {
+        nodes: [
+          { label: "GPU Operator", sub: "device plugin \u00b7 time-slicing" },
+          { label: "DCGM exporter", sub: "SM_ACTIVE, not GPU_UTIL", accent: true },
+        ],
+      },
+      {
+        nodes: [
+          { label: "GPU_UTIL 100%", sub: "the card looks full" },
+          { label: "SM_ACTIVE 45.82%", sub: "$0.0168 of $0.0310 idle", accent: true },
+        ],
+      },
+      { nodes: [{ label: "Collector", sub: "DynamoDB \u00b7 reaper in dry-run" }] },
+    ],
+  },
 };
 
 export function getDiagram(slug: string): Diagram | undefined {

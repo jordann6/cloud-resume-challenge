@@ -1614,6 +1614,103 @@ export const caseStudies: CaseStudy[] = [
       total: { k: "Total cost", v: "About $5" },
     },
   },
+  {
+    slug: "gpu-platform",
+    num: "35",
+    title: "GPU Scheduling",
+    titleOut: "and FinOps (AWS)",
+    category: "AWS \u00b7 GPU \u00b7 Platform \u00b7 FinOps",
+    lede: "The gauge on every GPU dashboard reported a card 100 percent utilized. Occupancy on the same card at the same moment was 45.82 percent, and of the $0.031017 that interval cost, $0.016805 bought no computation. Measuring that gap is the whole point of the project, and it had never once worked, because the metric it depends on is not one the exporter ships by default.",
+    meta: [
+      { k: "Role", v: "Platform / FinOps" },
+      { k: "Cloud", v: "AWS" },
+      { k: "Cluster", v: "EKS 1.31, Karpenter GPU NodePool, spot" },
+      { k: "Resources", v: "111 across three apply stages" },
+      { k: "Cost", v: "About $8 for build, demo, and teardown" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "GPU fleets are the most expensive compute most organizations rent, and the standard measure of whether that money is working is a utilization percentage that does not mean what its name suggests. DCGM_FI_DEV_GPU_UTIL reports the fraction of time at least one kernel was resident on the device. It says nothing about how much of the device was working.",
+          "A single small kernel looping on one streaming multiprocessor pins that gauge at 100 percent while the rest of the card sits idle. Fleets therefore look saturated and are mostly wasted, and every dashboard built on that number agrees with itself. The question worth answering is not whether the cards are busy, it is whether the spend bought any computation.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "Why the scheduling half has to exist first",
+        paragraphs: [
+          "Cost attribution on an idle cluster is arithmetic. To measure anything you need real multi-tenant contention, so Karpenter provisions GPU nodes from zero on demand and gives them back, and Kueue admits work against a per-tenant nominal quota rather than letting the scheduler oversubscribe hardware that cannot be oversubscribed.",
+          "The quota has to agree with the hardware or the whole thing is theatre. G and VT service quotas are counted in vCPUs and are zero by default on a fresh account in every region. The granted eight vCPUs buy either two g4dn.xlarge at one card each or one g4dn.2xlarge at one card, so the NodePool pins vCPU size as well as GPU count. Without that pin Karpenter is free to take the larger instance on price, spend the entire budget on a single GPU, and leave Kueue admitting two workloads for hardware that can only ever run one.",
+          "Preemption is the part that separates a queue from a list. A high-priority job evicts a low-priority one and the victim returns to the queue rather than dying, which is only observable against a queue that is actually full, and is the reason the demo refills the queue itself rather than assuming the previous act left work running.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "The metric that was never there",
+        paragraphs: [
+          "The collector queries DCGM_FI_PROF_SM_ACTIVE, the profiling counter for the fraction of streaming multiprocessors with at least one warp resident. That is the number that distinguishes a genuinely loaded card from one holding a single trivial kernel, and choosing it over the driver gauge is the central design decision of the project.",
+          "It is not in dcgm-exporter's default metric set. The exporter ships GR_ENGINE_ACTIVE, DRAM_ACTIVE and PIPE_TENSOR_ACTIVE, and not SM_ACTIVE. So the collector queried a series that did not exist, logged that it had no samples yet once a minute, wrote no cost records, and left the reaper with nothing to decide on. Nothing errored. The log line reads exactly like a node that has not finished starting, which is what makes it survive a casual look at a running cluster.",
+          "The fix is a metrics ConfigMap supplied by Terraform rather than a change to what the collector measures, because the collector was right. The first attempt at that file failed loudly on a comma inside a description field, which is the failure mode you want: the original defect was invisible for as long as anyone cared to watch, and the replacement crashed the pod in seconds.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "The measurement",
+        paragraphs: [
+          "One sample of a g6e.xlarge spot node running a real CUDA load, taken from the cost table rather than from a dashboard: DCGM_FI_DEV_GPU_UTIL 100 percent, DCGM_FI_PROF_SM_ACTIVE 45.82 percent, interval cost $0.031017, of which $0.016805 is attributed to idle silicon. Both numbers are recorded on every sample so the gap is visible in the data rather than asserted here.",
+          "Rates come from the Pricing API for on-demand and spot price history for spot, and quantity from observed instance-seconds. Cost Explorer cannot do this job: it reports at daily granularity and lags 8 to 24 hours, so a three-hour GPU demo never appears in it while the demo is running, and accelerators go idle for minutes at a time, which is far below the smallest unit it can see.",
+          "The wasted figure is deliberately a linear function of occupancy, and it is a ranking, not an accounting figure. You rent the whole card either way; fractional occupancy does not map to fractional dollars in any rigorous sense. It orders nodes by how much of their cost is not doing work, which is the decision the reaper needs and the one a finance report cannot make.",
+        ],
+      },
+      {
+        num: "/05",
+        heading: "Twenty defects, and the half that mattered more",
+        paragraphs: [
+          "Nothing in the repository had ever run against AWS. Ten defects made deployment outright impossible: the kubectl provider validates its configuration at plan time rather than deferring like the kubernetes and helm providers, so a fresh apply died before creating anything; a for_each iterated one resource to build another, which requires keys that cannot be known until apply; the Kueue chart pinned a version registry.k8s.io has since pruned; and every GPU workload ran a profiling tool that refuses to start unless its build CUDA version matches the driver's, exiting 253 on the current NVIDIA AMI without doing any work.",
+          "Two were quiet in a way worth naming. Targeting the EKS module in a staged apply does not pull in the NAT gateway or the private route tables, because the cluster does not depend on them, so nodes booted with no egress, never registered, and the node group sat in CREATING for the full timeout with an empty health issues list. And AWSServiceRoleForEC2Spot does not exist on a fresh account, where Karpenter does not raise an error but silently launches on-demand instead, which voids both the spot savings the project measures and the interruption demo entirely.",
+          "The other half were worse, because they were the tests. Every demo act asserted something adjacent to its claim rather than the claim itself. Act one waited for a node to reach Ready and never looked at the workload, so it passed against a cluster where the node came up, advertised its card, and every job on it died instantly. Act three filtered events for a reason string Kueue no longer emits, so its table was always empty. Act four compared a node that had no GPU and passed in one second with an after state identical to its before. Act six printed twenty lines of a collector saying it had no data and called that a demonstration.",
+          "The last one is the one that would have cost money. make destroy never passed a required variable, so it deleted the GPU node claims, died, and left an EKS cluster and its GPU nodes running while printing what looks like an ordinary teardown hiccup.",
+        ],
+      },
+      {
+        num: "/06",
+        heading: "Outcome",
+        paragraphs: [
+          "All six acts pass against real hardware, and each now fails if the thing it claims is not happening. Cold start to a Ready spot GPU node in 47 seconds with the workload running 41 seconds later, quota admitting two of twelve with both running concurrently across tenants and the rest queued, a real preemption with the victim requeued, time-slicing taking one physical card to four schedulable replicas, and a FIS-driven spot interruption that Karpenter cordoned in 14 seconds through the interruption queue rather than a hard kill.",
+          "Then destroyed and verified empty rather than assumed: no clusters, instances, VPCs, NAT gateways, elastic IPs, queues or experiment templates. A leaked VPC-CNI interface from a terminated node held the subnet and had to be removed by hand, which is now documented along with a resume path for a teardown that dies partway, since the Kubernetes providers cannot configure themselves once the cluster has left state.",
+        ],
+      },
+    ],
+    stack: [
+      "Amazon EKS",
+      "Karpenter",
+      "Kueue",
+      "NVIDIA GPU Operator",
+      "DCGM",
+      "Prometheus",
+      "EC2 Spot",
+      "Fault Injection Simulator",
+      "DynamoDB",
+      "Terraform",
+    ],
+    repo: "https://github.com/jordann6/gpu-platform",
+    receipt: {
+      rows: [
+        { k: "Provisioned", v: "111 resources across three apply stages: VPC with NAT, EKS 1.31, Karpenter GPU NodePool on spot, GPU Operator, Kueue, Prometheus, FinOps collector on DynamoDB" },
+        { k: "Scaled", v: "Spot GPU node from zero to Ready in 47s, workload running 41s later, reclaimed automatically when the queue drained" },
+        { k: "Measured", v: "GPU_UTIL 100% against SM_ACTIVE 45.82% on the same card at the same moment, $0.016805 of $0.031017 attributed to idle silicon" },
+        { k: "Queued", v: "2 of 12 admitted to quota with both running concurrently across two tenants, the rest queued rather than oversubscribed" },
+        { k: "Preempted", v: "A high-priority job evicted a low-priority one, which requeued rather than dying" },
+        { k: "Interrupted", v: "A real FIS spot interruption cordoned in 14s via CordonAndDrain through Karpenter's interruption queue, not a TerminateInstances call" },
+        { k: "Live fixes", v: "20 defects on first contact with AWS: 10 blocked deployment, 10 were demo acts passing while proving nothing" },
+        { k: "Corrected claim", v: "SM_ACTIVE is not in dcgm-exporter's default metric set, so the cost attribution this project is built on had never recorded a single sample" },
+        { k: "Teardown", v: "Destroyed and verified empty; a leaked VPC-CNI ENI held the subnet and is now documented with a resume path" },
+      ],
+      total: { k: "Total cost", v: "About $8" },
+    },
+  },
 ];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
