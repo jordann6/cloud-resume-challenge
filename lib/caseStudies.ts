@@ -22,6 +22,77 @@ export interface CaseStudy {
 
 export const caseStudies: CaseStudy[] = [
   {
+    slug: "golden-path-finops-copilot",
+    num: "36",
+    title: "Golden-Path FinOps",
+    titleOut: "Copilot (AWS + Bedrock)",
+    category: "AWS · AI · Platform",
+    lede: "A self-service provisioning copilot where a plain-language request becomes a right-sized, budget-checked, policy-gated pull request. The language model translates intent onto vetted modules; every consequential decision stays in code, and the output is a diff a human reviews, never a direct apply.",
+    meta: [
+      { k: "Role", v: "Platform Eng / FinOps" },
+      { k: "Cloud", v: "AWS" },
+      { k: "Model", v: "Claude on Bedrock" },
+      { k: "Gate", v: "OPA / Rego" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Problem",
+        paragraphs: [
+          "Self-service infrastructure has two failure modes. A Backstage-style form makes the developer already know which module and which instance family they need before they can fill it out. An LLM that freeform-generates and applies Terraform is a gimmick no platform team would ship, because the moment a model invents HCL and runs it, nothing is reviewable and nothing is bounded.",
+          "The goal was the version that is actually defensible: let a model turn fuzzy human intent into a selection against vetted modules, keep every real decision deterministic and in code, and make the output a pull request a human reviews rather than a live change.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "Approach",
+        bullets: [
+          "The model is a translation and advisory layer only. Claude on Bedrock calls a fixed set of deterministic tools (list_golden_paths, right_size, estimate_cost, check_budget, submit_for_review); it never authors Terraform or invents an instance type or a price.",
+          "A right-sizing engine picks the cheapest option that still fits the stated workload: Graviton over x86, burstable for bursty non-latency-critical workloads, Fargate Spot for non-prod stateless services, nightly auto-stop for non-prod, gp3 and KMS encryption always.",
+          "A cost tool prices the plan from Infracost when the binary is present and a static price table otherwise, so an estimate is produced with no network call and no credentials. A budget gate checks that estimate against the team's monthly envelope and returns ok, warn, or over.",
+          "An OPA/Rego policy denies missing tags, unencrypted storage, un-approved GPUs, over-budget requests, and un-hardened production databases. Over-budget and GPU requests are flagged, not silently approved, and clear only with an explicit approval label.",
+          "The output is a pull request carrying the rendered tfvars, the cost delta, the right-sizing rationale, and the policy result. It is never a direct apply; a human merges, then Terraform runs.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "Why it holds up",
+        paragraphs: [
+          "The obvious challenge is why an LLM instead of a form. The answer is that the form is still there underneath, as the module catalog and the tool schemas; the model just removes the requirement that the developer already knows the answer. The determinism lives in the modules and the policy, and the model's output is always reviewable as a diff before anything is created. That is the line between a demo toy and something you would run in production.",
+          "The policy is written to avoid the usual trap where a Rego suite passes because no rule ever fires. Every deny rule has a fixture that breaks exactly one thing, plus a base-passes case that proves the rules do not fire spuriously, so the gate is verified to actually gate.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "Bedrock, without a key",
+        paragraphs: [
+          "The model call goes through the Messages-API Bedrock client and authenticates with IAM and SigV4, so there is no Anthropic API key to store, rotate, or leak. For a tool whose entire thesis is FinOps and guardrails, the integration uses a role, not a secret, which is the same posture it enforces on everything it provisions.",
+          "Model access was enabled entirely from the CLI through the Bedrock model-agreement API (use-case form and EULA acceptance), not the console, so the whole enablement path is scriptable and auditable.",
+        ],
+      },
+      {
+        num: "/05",
+        heading: "Testing",
+        paragraphs: [
+          "The deterministic pipeline runs and is verifiable with no AWS credentials at all. Unit tests cover the right-sizing engine and the budget gate, the Rego suite proves every deny rule fires, and an offline scenario sweep exercises the burstable, production-hardened, spot, storage, and over-budget paths end to end, each producing a rendered pull request.",
+          "The headline request, a Postgres for staging at about 50GB with bursty daytime traffic and no latency sensitivity, resolves to a t4g.micro burstable Graviton instance on gp3 with a nightly auto-stop schedule at about $7.53 a month, and an over-budget production request is blocked by the policy gate until an approval label is attached.",
+          "Run live against Bedrock, the same request is driven by the model itself: it calls list_golden_paths, right_size, estimate_cost, check_budget, and submit_for_review in that order, lands on the same t4g.micro plan, and opens the pull request. The tools stay deterministic, so the live path and the offline sweep produce the same artifact.",
+        ],
+      },
+    ],
+    stack: ["Claude on Bedrock", "OPA / Rego", "Infracost", "Terraform", "Python", "FastAPI", "GitHub PRs"],
+    repo: "https://github.com/jordann6/aws-golden-path-copilot",
+    receipt: {
+      rows: [
+        { k: "Right-size", v: "Bursty non-latency staging Postgres resolved to a t4g.micro burstable Graviton on gp3 with nightly auto-stop, ~$7.53/mo" },
+        { k: "Policy", v: "8 Rego tests: every deny rule fires against a fixture, a base-passes case rules out a vacuous gate" },
+        { k: "Budget", v: "Over-budget production request BLOCKED; clears only with an explicit approval label" },
+        { k: "Bedrock", v: "Live run on Claude Sonnet over Bedrock: the model drove the loop list_golden_paths → right_size → estimate_cost → check_budget → submit_for_review, authenticated over IAM/SigV4 with no API key" },
+      ],
+      total: { k: "Output", v: "A reviewed pull request, never a direct apply" },
+    },
+  },
+  {
     slug: "multi-region-failover",
     num: "03",
     title: "Multi-Region",
