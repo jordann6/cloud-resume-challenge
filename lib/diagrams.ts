@@ -472,6 +472,24 @@ export const diagrams: Record<string, Diagram> = {
       { nodes: [{ label: "Collector", sub: "DynamoDB \u00b7 reaper in dry-run" }] },
     ],
   },
+  "golden-path-finops-copilot": {
+    caption:
+      "Plain-language request to a reviewed pull request: the model only proposes, deterministic tools and an OPA gate decide, and nothing reaches Terraform until a human merges",
+    cols: [
+      { nodes: [{ label: "Developer", sub: "plain-language request" }] },
+      { nodes: [{ label: "Claude on Bedrock", sub: "drives tool loop \u00b7 IAM/SigV4", accent: true }] },
+      {
+        nodes: [
+          { label: "right_size", sub: "cheapest that fits" },
+          { label: "estimate_cost", sub: "Infracost \u00b7 static fallback" },
+          { label: "check_budget", sub: "team envelope" },
+        ],
+      },
+      { nodes: [{ label: "OPA / Rego", sub: "deny tags \u00b7 GPU \u00b7 over budget", accent: true }] },
+      { nodes: [{ label: "Pull Request", sub: "tfvars \u00b7 cost \u00b7 rationale", accent: true }] },
+      { nodes: [{ label: "Human merge", sub: "then Terraform applies", accent: true }] },
+    ],
+  },
 };
 
 export function getDiagram(slug: string): Diagram | undefined {
