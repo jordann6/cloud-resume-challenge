@@ -478,4 +478,19 @@ export const projects: Project[] = [
     link: "https://github.com/jordann6/aws-golden-path-copilot",
     caseStudy: "golden-path-finops-copilot",
   },
+  {
+    num: "37",
+    title: "Multi-Vendor",
+    titleOut: "Firewalls as Code (Cisco · Palo Alto · Fortinet)",
+    desc: "Network security vendors keep showing up in cloud and platform roles because most enterprises are hybrid, so this folds Cisco, Palo Alto, and Fortinet into three existing portfolio projects as code rather than clicked-through labs. Cisco is a zero-dependency Meraki Dashboard client added to a Python CLI (stdlib urllib only, read-only against the DevNet always-on sandbox) that lists organizations, networks, and device inventory and exports it to JSON or CSV as a drift-detection snapshot. Palo Alto is an opt-in VM-Series next-generation firewall placed in front of the hardened jump host in azure-vm-hardening: management, untrust, and trust interfaces, with a user-defined route forcing the jump host's default route through the firewall trust IP and the subnet NSG kept behind it as defense in depth, plus a separate Terraform root module that configures least-privilege egress policy on the running appliance through the official panos provider. Fortinet is an opt-in FortiGate-VM added to the azure-landing-zone hub as a network virtual appliance in its own untrust and trust subnets, with route tables forcing both spoke workload subnets' egress through the FortiGate trust interface so all north-south traffic is inspected at one chokepoint, correcting for the fact that a third-party NVA cannot live in AzureFirewallSubnet. Both firewalls were deployed against real Azure and verified live, sequentially rather than together because the subscription's ten-vCPU regional cap cannot hold an eight-vCPU VM-Series and the FortiGate at once, and the first real deploy surfaced six distinct defects (an ed25519 key the managed-image path rejects, three separate quota and capacity walls, a Gen1 image that will not boot a Gen2-only size, and a NIC-count ceiling) that are now baked into the defaults. Torn down clean, regional vCPU back to zero.",
+    tags: ["Palo Alto VM-Series", "FortiGate-VM", "Cisco Meraki", "panos provider", "NVA / UDR", "Terraform", "Packer", "Azure"],
+    categories: ["Azure", "Platform"],
+    link: "https://github.com/jordann6/azure-vm-hardening",
+    links: [
+      { label: "Palo Alto (azure-vm-hardening)", href: "https://github.com/jordann6/azure-vm-hardening" },
+      { label: "FortiGate (azure-landing-zone)", href: "https://github.com/jordann6/azure-landing-zone" },
+      { label: "Cisco Meraki (devops-automation-suite)", href: "https://github.com/jordann6/devops-automation-suite" },
+    ],
+    caseStudy: "multi-vendor-firewalls",
+  },
 ];

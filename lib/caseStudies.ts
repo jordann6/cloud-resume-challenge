@@ -1784,6 +1784,93 @@ export const caseStudies: CaseStudy[] = [
       total: { k: "Total cost", v: "About $8" },
     },
   },
+  {
+    slug: "multi-vendor-firewalls",
+    num: "37",
+    title: "Multi-Vendor",
+    titleOut: "Firewalls as Code (Cisco · Palo Alto · Fortinet)",
+    category: "Azure · Platform",
+    lede: "Network security vendors keep showing up in cloud and platform roles because most enterprises are hybrid, and the firewall layer is where cloud meets the corporate network. So rather than clicked-through labs, Cisco, Palo Alto, and Fortinet got folded into three existing portfolio projects as code. The Palo Alto and FortiGate perimeters were deployed against real Azure, and the first live deploy is the part worth reading: six distinct defects and a hard ten-vCPU regional cap that means an eight-vCPU VM-Series and a FortiGate can never be powered on at once.",
+    meta: [
+      { k: "Role", v: "Cloud / Platform Eng" },
+      { k: "Cloud", v: "Azure" },
+      { k: "Vendors", v: "Cisco Meraki, Palo Alto, Fortinet" },
+      { k: "IaC", v: "Terraform, panos provider, Packer" },
+      { k: "Cost", v: "A few dollars, deployed and destroyed same day" },
+    ],
+    blocks: [
+      {
+        num: "/01",
+        heading: "Why these vendors, and why as code",
+        paragraphs: [
+          "Cisco, Palo Alto, and Fortinet show up constantly in cloud and platform roles because most enterprises run hybrid, and the SD-WAN, next-generation firewall, and network-virtual-appliance layer is exactly where the cloud meets the existing corporate network. The valuable positioning is not knowing a vendor console, it is being able to deploy and manage network security appliances as code across clouds, and to say where a vendor firewall sits next to native controls like NSGs and Security Groups.",
+          "So each vendor was folded into a project that already existed rather than built as a standalone toy. Cisco went into a Python CLI as a Meraki client, Palo Alto went in front of a hardened jump host, and Fortinet went into a landing-zone hub. Each is opt-in, so the base projects still deploy cheaply, and each treats the appliance the same way as any other cloud resource: declared in Terraform, reviewed as a diff, torn down clean.",
+        ],
+      },
+      {
+        num: "/02",
+        heading: "Cisco: Meraki as an API you version",
+        paragraphs: [
+          "The Cisco slice is a read-only Meraki Dashboard client added to the DevOps automation CLI as a meraki subcommand. It lists organizations, networks, and the device inventory, and exports that inventory to JSON or CSV so two snapshots can be diffed over time as a drift-detection starting point. It uses only the Python standard library, no third-party HTTP dependency, matching the rest of the suite, and reads its key from the environment so nothing is committed.",
+          "It is meant to run against the Cisco DevNet always-on read-only sandbox, which is free and needs no hardware. Worth an honest note: the API key Cisco publishes for that sandbox has been rotated and now returns an invalid-key error, so the live run needs a current DevNet sandbox key. The client itself is covered by offline unit tests that monkeypatch urllib, so it is verified without a network or a key at all.",
+        ],
+      },
+      {
+        num: "/03",
+        heading: "Palo Alto: a VM-Series in front of the jump host",
+        paragraphs: [
+          "The hardened jump host in azure-vm-hardening sat behind an internet-deny NSG. The Palo Alto layer puts a VM-Series next-generation firewall in front of it with three interfaces, management, untrust, and trust, and a user-defined route that forces the jump host's default route through the firewall trust IP, with the NSG kept underneath as defense in depth. The appliance is not up during the infrastructure apply, so its security posture lives in a separate Terraform root module that runs against the booted firewall through the official panos provider and sets trust and untrust zones plus a least-privilege egress policy: permit DNS and updates, deny the rest, log both.",
+          "Deployed live, the VM-Series came up with all three interfaces and the jump host's route table confirmed the default route 0.0.0.0/0 pointing at the firewall trust IP as a VirtualAppliance next hop, so egress is genuinely forced through the firewall rather than merely asserted.",
+        ],
+      },
+      {
+        num: "/04",
+        heading: "Fortinet: a FortiGate NVA in the landing-zone hub",
+        paragraphs: [
+          "Enterprises route spoke egress through a network virtual appliance in the hub, so the Fortinet layer adds a FortiGate-VM to the azure-landing-zone hub in its own untrust and trust subnets, then attaches route tables to both spoke workload subnets forcing their default egress through the FortiGate trust interface. All north-south traffic from either spoke passes one inspected chokepoint.",
+          "The placement carries a real constraint that is easy to get wrong: a third-party NVA cannot live in AzureFirewallSubnet, which is reserved for the Azure Firewall managed service, so the FortiGate gets dedicated subnets, the same reserved-subnet discipline this portfolio already applies to Bastion. Deployed live, the FortiGate drew a public IP on untrust and both spoke route tables confirmed the 0.0.0.0/0 route to the FortiGate trust IP.",
+        ],
+      },
+      {
+        num: "/05",
+        heading: "What the first live deploy actually cost",
+        paragraphs: [
+          "Nothing in the firewall paths had run against Azure before. Six distinct defects surfaced on first contact and are now baked into the defaults. The jump host's managed-image path rejects ed25519 keys and only accepts RSA. The Palo Alto-listed Dv2 size had a quota of two cores; the next size was capacity-restricted in the region; the Gen1 byol image would not boot the only available Gen2 sizes, which needed the byol-gen2 image; and a four-vCPU size allows only two NICs while the VM-Series needs three, forcing an eight-vCPU size. On the landing zone, two policy assignments returned a 403 on a mid-flight RBAC read at the new management-group scope, so they were created in Azure but missing from state and had to be imported to reconcile.",
+          "The last wall is the interesting one. The subscription has a hard ten-vCPU regional cap, and an eight-vCPU VM-Series plus a two-vCPU FortiGate plus the one-vCPU jump host is eleven. The two firewalls physically cannot be powered on at once here, so they were proven sequentially: the FortiGate verified live and its evidence captured, then removed to free the cores, then the VM-Series brought fully up and verified, which is honest about the constraint rather than pretending both ran together.",
+        ],
+      },
+      {
+        num: "/06",
+        heading: "Outcome",
+        paragraphs: [
+          "Both Azure firewalls deployed against real Azure and verified live, with the route tables proving egress is forced through each appliance, then torn down clean with regional vCPU usage back to zero and every resource group removed. The Cisco client ships tested offline. All three integrations are committed and public, and the deploy-time corrections, RSA over ed25519, the Gen2 image, the eight-vCPU three-NIC sizing, live in the Terraform defaults and the READMEs so the next run succeeds first try.",
+        ],
+      },
+    ],
+    stack: [
+      "Palo Alto VM-Series",
+      "FortiGate-VM",
+      "Cisco Meraki API",
+      "panos provider",
+      "Azure NVA / UDR",
+      "Terraform",
+      "Packer",
+      "Python",
+    ],
+    repo: "https://github.com/jordann6/azure-vm-hardening",
+    receipt: {
+      rows: [
+        { k: "Cisco", v: "Read-only Meraki Dashboard client (stdlib only): orgs, networks, inventory, JSON/CSV export; 6 offline unit tests passing" },
+        { k: "Palo Alto", v: "VM-Series NGFW deployed live in front of the jump host with mgmt/untrust/trust NICs; least-privilege egress policy as code via the panos provider" },
+        { k: "Fortinet", v: "FortiGate-VM deployed live as a hub NVA; both spoke workload subnets routed 0.0.0.0/0 through the FortiGate trust IP" },
+        { k: "Proven", v: "Both firewalls' route tables confirmed default egress forced through the appliance as a VirtualAppliance next hop, not asserted" },
+        { k: "Live fixes", v: "6 defects on first Azure contact: ed25519 vs RSA key, Dv2 quota, capacity-restricted size, Gen1 vs Gen2 image, 2 vs 4 NIC ceiling, plus a 403 policy-assignment import" },
+        { k: "Quota wall", v: "10-vCPU regional cap cannot hold an 8-vCPU VM-Series and the FortiGate together, so the two were proven sequentially" },
+        { k: "Teardown", v: "Both destroyed clean; regional vCPU back to 0/10, all project resource groups removed" },
+      ],
+      total: { k: "Total cost", v: "A few dollars" },
+    },
+  },
 ];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {
