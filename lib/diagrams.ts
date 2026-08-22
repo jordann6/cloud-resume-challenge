@@ -481,11 +481,11 @@ export const diagrams: Record<string, Diagram> = {
       {
         nodes: [
           { label: "right_size", sub: "cheapest that fits" },
-          { label: "estimate_cost", sub: "Infracost \u00b7 static fallback" },
+          { label: "estimate_cost", sub: "region-aware \u00b7 Infracost" },
           { label: "check_budget", sub: "team envelope" },
         ],
       },
-      { nodes: [{ label: "OPA / Rego", sub: "deny tags \u00b7 GPU \u00b7 over budget", accent: true }] },
+      { nodes: [{ label: "OPA / Rego", sub: "deny tags \u00b7 GPU \u00b7 budget \u00b7 host posture", accent: true }] },
       { nodes: [{ label: "Pull Request", sub: "tfvars \u00b7 cost \u00b7 rationale", accent: true }] },
       { nodes: [{ label: "Human merge", sub: "then Terraform applies", accent: true }] },
     ],
